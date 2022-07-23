@@ -5,7 +5,8 @@
   "source": "src/static/index.html",
   "scripts": {
     "dev": "parcel src/static/index.html",
-    "build": "parcel build src/static/index.html"
+    "build": "parcel build src/static/index.html",
+    "start": "node server.js"
   },
   "dependencies": {
     "handlebars": "^4.7.7",
@@ -13,6 +14,7 @@
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.6.2",
+    "express": "^4.18.1",
     "parcel": "^2.6.2",
     "parcel-transformer-hbs": "^1.0.4"
   },

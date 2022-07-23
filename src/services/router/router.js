@@ -15,8 +15,12 @@ class Router {
   }
 
   getRouteFromLocation() {
+    const location =
+      window.location.pathname.slice(-1) === "/"
+        ? window.location.pathname.slice(0, -1)
+        : window.location.pathname;
     const route = Object.values(routes).find((route) => {
-      return route.location === window.location.pathname;
+      return route.location === location;
     });
     if (route) {
       return route;
