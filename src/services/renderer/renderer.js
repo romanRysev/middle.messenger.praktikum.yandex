@@ -6,8 +6,8 @@ export class Renreder {
     this.render(layuot);
   }
 
-  render(layuot) {
-    this.rootElement.innerHTML = layuot();
+  render(layuot, params) {
+    this.rootElement.innerHTML = layuot(params);
   }
 }
 

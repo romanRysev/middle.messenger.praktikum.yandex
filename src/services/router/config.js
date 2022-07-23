@@ -1,14 +1,37 @@
 import { chat } from "../../modules/chat/chat";
-import { profile } from "../../modules/profile/profile";
-import { entry } from "../../modules/entry/entry";
-import { notFound } from "../../modules/not-found/not-found";
-import { registration } from "../../modules/registration/registration";
+import { profile, profileEventListeners } from "../../modules/profile/profile";
+import { signin } from "../../modules/entry/signin";
+import { registration } from "../../modules/entry/registration";
+import { profileEdit } from "../../modules/profile/profile-edit";
+import { error } from "../../modules/error/error";
+import { passwordChange } from "../../modules/profile/password-change";
 
 export const routes = {
-  mainPage: { getTemplate: chat, location: "/" },
-  chat: { getTemplate: chat, location: "/chat" },
-  profile: { getTemplate: profile, location: "/profile" },
-  entry: { getTemplate: entry, location: "/entry" },
-  registration: { getTemplate: registration, location: "/registration" },
-  notFound: { getTemplate: notFound, location: "/404" },
+  mainPage: { template: chat, location: "/" },
+  chat: { template: chat, location: "/chat" },
+  profile: {
+    template: profile,
+    eventListeners: profileEventListeners,
+    location: "/profile",
+  },
+  signin: {
+    template: (() => {
+      return signin;
+    })(),
+    location: "/signin",
+  },
+  registration: {
+    template: registration,
+    location: "/registration",
+  },
+  error: {
+    template: error,
+    location: "/error",
+    params: { code: "404", text: "Не туда попали" },
+  },
+  profileEdit: { template: profileEdit, location: "/edit-profile" },
+  passwordChange: {
+    template: passwordChange,
+    location: "/change-password",
+  },
 };

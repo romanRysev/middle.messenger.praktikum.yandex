@@ -2,13 +2,14 @@
   "name": "epic-chat",
   "version": "0.0.1",
   "description": "epic chat",
-  "source": "src/index.html",
+  "source": "src/static/index.html",
   "scripts": {
-    "dev": "parcel src/index.html",
-    "build": "parcel build src/index.html"
+    "dev": "parcel src/static/index.html",
+    "build": "parcel build src/static/index.html"
   },
   "dependencies": {
-    "handlebars": "^4.7.7"
+    "handlebars": "^4.7.7",
+    "normalize.css": "^8.0.1"
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.6.2",

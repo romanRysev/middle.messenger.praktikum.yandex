@@ -1,0 +1,15 @@
+.profile-edit {
+  &__avatar {
+    height: 130px;
+    width: 130px;
+    border-radius: 50%;
+    object-fit: scale-down;
+    background-color: #efefef;
+    margin-bottom: 30px;
+    align-self: center;
+  }
+
+  &__avatar:hover {
+    cursor: pointer;
+  }
+}
