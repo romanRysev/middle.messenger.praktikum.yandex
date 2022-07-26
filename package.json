@@ -2,10 +2,10 @@
   "name": "epic-chat",
   "version": "0.0.1",
   "description": "epic chat",
-  "source": "src/static/index.html",
+  "source": "static/index.html",
   "scripts": {
-    "dev": "parcel src/static/index.html",
-    "build": "parcel build src/static/index.html",
+    "dev": "parcel static/index.html",
+    "build": "parcel build static/index.html",
     "start": "node server.js"
   },
   "dependencies": {
@@ -27,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/romanRysev/epic-chat/issues"
   },
-  "homepage": "https://github.com/romanRysev/epic-chat#readme"
+  "homepage": "https://github.com/romanRysev/epic-chat#readme",
+  "engines": {
+    "node": ">=14.6.0 <15"
+  }
 }

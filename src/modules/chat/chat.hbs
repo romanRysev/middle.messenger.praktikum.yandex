@@ -1,1 +1,21 @@
-<h1>Chat!</h1>
+<div class="chat">
+  <aside class="chat__left-column">
+    <a href="/profile">Profile ></a>
+    <input placeholder="Search">
+    <hr class="divider_h">
+    <div class="chat__list">
+      {{#each list}}
+      {{> short-view class="chat__list-item-avatar" avatarUrl=this.avatarUrl userName=this.userName shortText=this.shortText lastMessageTime=this.lastMessageTime unreadNumber=this.unreadNumber}}
+          <hr class="divider_h">
+      {{/each}}
+    </div>
+  </aside>
+  <section class="chat__messages">      {{#each messages}}
+{{#if this.isMy}}
+<div class="chat__message_my"><p>{{this.text}}</p><small>{{this.time}}</small></div>
+{{else}}
+<div class="chat__message_other"><p>{{this.text}}</p><small>{{this.time}}</small></div>
+{{/if}}
+      {{/each}}</section>
+</div>
+

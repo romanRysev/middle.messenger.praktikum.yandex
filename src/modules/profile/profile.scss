@@ -1,0 +1,28 @@
+.profile-container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.back-to-chat {
+  width: 64px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FBFBFB;
+  border-right: #EAEAEA solid 1px;
+}
+
+.back-to-chat:hover {
+  cursor: pointer;
+}
+
+.profile {
+  height: 100%;
+  width: 100%;  
+}
+
+.profile__avatar {
+  align-self: center;
+}

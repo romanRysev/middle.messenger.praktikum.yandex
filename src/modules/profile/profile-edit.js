@@ -1,9 +1,9 @@
 import tpl from "./profile-edit.hbs";
 import "./profile-edit.scss";
-import avatarUrl from "../../static/Union.svg";
+import avatarUrl from "../../../static/Union.svg";
 
 export function profileEdit(
-  data = {
+  params = {
     avatarUrl,
     firstName: "Roman",
     email: "roman@gmail.com",
@@ -13,5 +13,5 @@ export function profileEdit(
     phone: "+71237894567",
   }
 ) {
-  return tpl(data);
+  return tpl(params);
 }
