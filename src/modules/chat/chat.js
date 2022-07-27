@@ -1,7 +1,7 @@
 import tpl from "./chat.hbs";
-import shortView from "./short-view.js";
+import { shortView } from "./short-view.js";
 import "./chat.scss";
-import { list, messages } from "./tempData";
+import { list, messages } from "./tempData.js";
 
 export function chat(
   params = {

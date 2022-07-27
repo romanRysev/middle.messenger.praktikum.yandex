@@ -33,9 +33,7 @@
   },
   "targets": {
     "web": {
-      "context": "browser",
-      "publicUrl": "./",
-      "distDir": "dist"
+      "context": "browser"
     }
   }
 }

@@ -1,4 +1,4 @@
-import { mainLayout } from "../../layout/main-layout";
+import { mainLayout } from "../../layout/main-layout.js";
 
 export class Renreder {
   constructor(rootElement, layuot) {

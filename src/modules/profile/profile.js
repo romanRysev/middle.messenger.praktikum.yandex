@@ -17,3 +17,13 @@ export function profile(
 ) {
   return tpl(params);
 }
+
+export const profileEventListeners = [
+  {
+    selector: ".profile__button",
+    listener: () => {
+      window.location.replace("/signin");
+    },
+    event: "click",
+  },
+];

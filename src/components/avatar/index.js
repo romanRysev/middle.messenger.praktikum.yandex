@@ -1,7 +1,7 @@
 import Handlebars from "handlebars";
 import tpl from "./avatar.hbs";
 import "./avatar.scss";
-import { modal } from "../modal/modal";
+import { modal } from "../modal/modal.js";
 import { avatarChangeModal } from "../modal/avatar-change-modal";
 
 Handlebars.registerPartial("avatar", tpl);

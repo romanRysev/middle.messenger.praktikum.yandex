@@ -3,16 +3,16 @@ import "normalize.css";
 import "./index.scss";
 
 // Компоненты в виде partial.
-import button from "./components/button";
-import input from "./components/input";
-import avatar from "./components/avatar";
+import { button } from "./components/button/index.js";
+import { input } from "./components/input/index.js";
+import { avatar } from "./components/avatar/index.js";
 
 // Слои
-import { mainLayout } from "./layout/main-layout";
+import { mainLayout } from "./layout/main-layout.js";
 
 // Сервисы
-import { renderer } from "./services/renderer/renderer";
-import { router } from "./services/router/router";
+import { renderer } from "./services/renderer/renderer.js";
+import { router } from "./services/router/router.js";
 
 renderer.render(mainLayout, router.currentRoute.params);
 

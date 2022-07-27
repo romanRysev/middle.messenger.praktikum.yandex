@@ -1,18 +1,21 @@
-import { chat } from "../../modules/chat/chat";
-import { profile } from "../../modules/profile/profile";
-import { signin } from "../../modules/entry/signin";
-import { registration } from "../../modules/entry/registration";
-import { profileEdit } from "../../modules/profile/profile-edit";
-import { error } from "../../modules/error/error";
-import { passwordChange } from "../../modules/profile/password-change";
-import { avatarEventListeners } from "../../components/avatar/index";
+import { chat } from "../../modules/chat/chat.js";
+import {
+  profile,
+  profileEventListeners,
+} from "../../modules/profile/profile.js";
+import { signin } from "../../modules/entry/signin.js";
+import { registration } from "../../modules/entry/registration.js";
+import { profileEdit } from "../../modules/profile/profile-edit.js";
+import { error } from "../../modules/error/error.js";
+import { passwordChange } from "../../modules/profile/password-change.js";
+import { avatarEventListeners } from "../../components/avatar/index.js";
 
 export const routes = {
   mainPage: { template: chat, location: "/" },
   chat: { template: chat, location: "/chat" },
   profile: {
     template: profile,
-    eventListeners: avatarEventListeners,
+    eventListeners: [...avatarEventListeners, ...profileEventListeners],
     location: "/profile",
   },
   signin: {

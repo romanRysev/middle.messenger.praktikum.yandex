@@ -1,4 +1,4 @@
-import { routes } from "./config";
+import { routes } from "./config.js";
 
 class Router {
   constructor() {
