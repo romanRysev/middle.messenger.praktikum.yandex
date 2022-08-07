@@ -1,12 +1,14 @@
-import { routes } from "./config.js";
+import { routes } from "./config";
+import { PartialsRegister } from "../partials-register/partials-register";
 
 class Router {
   constructor() {
-    this.currentRoute = null;
     this.setCurrentRoute(this.getRouteFromLocation());
   }
 
-  setCurrentRoute(route) {
+  currentRoute: Route = routes.mainPage;
+
+  setCurrentRoute(route: Route) {
     this.currentRoute = route;
   }
 
@@ -20,17 +22,22 @@ class Router {
       window.location.pathname.length > 1
         ? window.location.pathname.slice(0, -1)
         : window.location.pathname;
-    const route = Object.values(routes).find((route) => {
-      return route.location === location;
-    });
+    const route = Object.values(routes).find(
+      (route) => route.location === location
+    );
     if (route) {
       return route;
-    } else {
+    }
+    if (routes.error.params) {
       routes.error.params.code = "404";
       routes.error.params.text = "Не туда попали";
-      return routes.error;
+    } else {
+      routes.error.params = { code: "404", text: "Не туда попали" };
     }
+    return routes.error;
   }
 }
+
+new PartialsRegister();
 
 export const router = new Router();

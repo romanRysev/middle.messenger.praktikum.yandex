@@ -1,0 +1,121 @@
+import avatarUrl from '../../../static/Union.svg';
+
+export const list = [
+  {
+    userName: 'test',
+    shortText: 'Lorem ipsum',
+    lastMessageTime: '3 p.m.',
+    unreadNumber: 326,
+    avatarUrl,
+  },
+  {
+    userName: 'test1',
+    shortText: 'Lorem ipsum',
+    lastMessageTime: '3 p.m.',
+    unreadNumber: 0,
+    avatarUrl,
+  },
+  {
+    userName: 'test2',
+    shortText: 'Lorem ipsum',
+    lastMessageTime: '3 p.m.',
+    unreadNumber: 0,
+    avatarUrl,
+  },
+  {
+    userName: 'test3',
+    shortText: 'Lorem ipsum',
+    lastMessageTime: '3 p.m.',
+    unreadNumber: 3,
+    avatarUrl,
+  },
+  {
+    userName: 'test',
+    shortText: 'Lorem ipsum',
+    lastMessageTime: '3 p.m.',
+    unreadNumber: 0,
+    avatarUrl,
+  },
+  {
+    userName: 'test1',
+    shortText: 'Lorem ipsum',
+    lastMessageTime: '3 p.m.',
+    unreadNumber: 3,
+    avatarUrl,
+  },
+  {
+    userName: 'test2',
+    shortText: 'Lorem ipsum',
+    lastMessageTime: '3 p.m.',
+    unreadNumber: 3,
+    avatarUrl,
+  },
+  {
+    userName: 'test3',
+    shortText: 'Lorem ipsum',
+    lastMessageTime: '3 p.m.',
+    unreadNumber: 3,
+    avatarUrl,
+  },
+  {
+    userName: 'test',
+    shortText: 'Lorem ipsum',
+    lastMessageTime: '3 p.m.',
+    unreadNumber: 3,
+    avatarUrl,
+  },
+  {
+    userName: 'test1',
+    shortText: 'Lorem ipsum',
+    lastMessageTime: '3 p.m.',
+    unreadNumber: 3,
+    avatarUrl,
+  },
+  {
+    userName: 'test2',
+    shortText: 'Lorem ipsum',
+    lastMessageTime: '3 p.m.',
+    unreadNumber: 3,
+    avatarUrl,
+  },
+  {
+    userName: 'test3',
+    shortText: 'Lorem ipsum',
+    lastMessageTime: '3 p.m.',
+    unreadNumber: 3,
+    avatarUrl,
+  },
+  {
+    userName: 'test',
+    shortText: 'Lorem ipsum',
+    lastMessageTime: '3 p.m.',
+    unreadNumber: 3,
+    avatarUrl,
+  },
+  {
+    userName: 'test1',
+    shortText: 'Lorem ipsum',
+    lastMessageTime: '3 p.m.',
+    unreadNumber: 3,
+    avatarUrl,
+  },
+  {
+    userName: 'test2',
+    shortText: 'Lorem ipsum',
+    lastMessageTime: '3 p.m.',
+    unreadNumber: 3,
+    avatarUrl,
+  },
+  {
+    userName: 'test3',
+    shortText: 'Lorem ipsum',
+    lastMessageTime: '3 p.m.',
+    unreadNumber: 326,
+    avatarUrl,
+  },
+];
+
+export const messages = [
+  { text: 'Lorem ipsum', time: '12:00', isMy: true },
+  { text: 'Lorem ipsum!', time: '12:10', isMy: false },
+];
