@@ -1,0 +1,16 @@
+<div class="profile-container">
+  <a href="/chat"><aside class="back-to-chat"><img class="back-to-chat__icon" src="{{backIconUrl}}" alt="back to chats"></aside></a>
+  <section class="profile container_align-center">
+    {{> avatar class="profile__avatar" url=avatarUrl height="130" width="130"}}
+    <h1 class="profile__title">{{firstName}}</h1>
+    <p>Email: {{email}}</p>
+    <p>Login: {{login}}</p>
+    <p>First name: {{firstName}}</p>
+    <p>Last name: {{lastName}}</p>
+    <p>Display name: {{displayName}}</p>
+    <p>Phone: {{phone}}</p>
+    <a href="/edit-profile">Edit profile</a>
+    <a href="/change-password">Change password</a>
+    {{> button class="profile__button" text="Sign out"}}
+  </section>
+ </div>

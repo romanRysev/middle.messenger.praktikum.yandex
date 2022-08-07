@@ -1,0 +1,21 @@
+<section class="signin card">
+  <form class="signin__form card__form" name="signin">
+    <h1 class="signin__title card__title">Sign in</h1>
+    {{>input
+      class="signin__form-input"
+      type="text"
+      placeholder="login"
+      name="login"
+      errorClass="signin__login-error"
+    }}
+    {{>input
+      class="signin__form-input"
+      type="password"
+      placeholder="password"
+      name="password"
+      errorClass="signin__password-error"
+    }}
+    </form>
+    {{> button text="Sign in" class="signin__button card__button"}}
+    <a class="signin__link link" href="/registration">Registration</a>
+</section>

@@ -1,0 +1,39 @@
+{
+  "name": "epic-chat",
+  "version": "0.0.1",
+  "description": "epic chat",
+  "source": "static/index.html",
+  "scripts": {
+    "dev": "parcel static/index.html",
+    "build": "parcel build static/index.html",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "handlebars": "^4.7.7",
+    "normalize.css": "^8.0.1"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.6.2",
+    "express": "^4.18.1",
+    "parcel": "^2.6.2",
+    "parcel-transformer-hbs": "^1.0.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/romanRysev/epic-chat.git"
+  },
+  "author": "Roman Rysev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/romanRysev/epic-chat/issues"
+  },
+  "homepage": "https://github.com/romanRysev/epic-chat#readme",
+  "engines": {
+    "node": ">=12.0"
+  },
+  "targets": {
+    "web": {
+      "context": "browser"
+    }
+  }
+}

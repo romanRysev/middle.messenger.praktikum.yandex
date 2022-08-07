@@ -1,0 +1,25 @@
+.short-view {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+}
+
+.short-view__right-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: end;
+}
+
+.short-view__unread-number {
+  background-color: #3369F3;
+  border-radius: 50%;
+  height: 20px;
+  min-width: 20px;
+  font-size: 12px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

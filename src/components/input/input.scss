@@ -1,0 +1,23 @@
+.input {
+  display: flex;
+  flex-direction: column;
+  max-width: 280px;
+
+  &__title {
+    font-size: 9px;
+    line-height: 9px;
+    color: #999;
+  }
+
+  &__field {
+    border: none;
+    border-bottom: solid 1px #3369F3;
+    margin: 8px 0;
+  }
+
+  &__error {
+    color: #FF2F2F;
+    font-size: 8px;
+    line-height: 8px;
+  }
+}

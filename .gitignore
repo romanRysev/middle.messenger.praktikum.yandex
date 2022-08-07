@@ -1,0 +1,27 @@
+.DS_Store
+node_modules
+/dist
+/misc/*
+
+# Parcel cache
+.parcel-cache
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+
+# Editor directories and files
+.idea*
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+yarn.lock
+
+# Для сохранения структуры проекта
+!.gitkeep
