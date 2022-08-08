@@ -1,6 +1,6 @@
-declare module '*.hbs';
-declare module '*.svg';
-declare module '*.scss';
+declare module "*.hbs";
+declare module "*.svg";
+declare module "*.scss";
 
 type Route = {
   template: (params: LayoutFunctionParams) => string;
@@ -19,4 +19,4 @@ type Routes = Record<string, Route>;
 
 type LayoutFunction = (params?: LayoutFunctionParams) => string;
 
-type LayoutFunctionParams = Record<string, string>;
+type LayoutFunctionParams = Record<string, unknown> | undefined;
