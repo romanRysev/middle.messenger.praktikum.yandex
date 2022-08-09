@@ -1,21 +1,18 @@
-import { mainLayout } from '../../layout/main-layout';
-
 export class Renreder {
-  constructor(rootElement: Element, layuot: LayoutFunction) {
+  constructor(rootElement: Element) {
     this.rootElement = rootElement;
-    this.render(layuot);
   }
 
   rootElement: Element | null = null;
 
-  render(layuot: LayoutFunction, params?: LayoutFunctionParams) {
+  render(layuot, params?: LayoutFunctionParams) {
     if (this.rootElement) {
-      this.rootElement.innerHTML = layuot(params);
+      this.rootElement.innerHTML = layuot.render(params);
+      layuot.dispatchComponentDidMount();
     }
   }
 }
 
-const rootElement = document.querySelector('#app')
-  ?? document.body.appendChild(document.createElement('div'));
+const rootElement = document.querySelector("#app") ?? document.body.appendChild(document.createElement("div"));
 
-export const renderer = new Renreder(rootElement, mainLayout);
+export const renderer = new Renreder(rootElement);

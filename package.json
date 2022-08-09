@@ -7,7 +7,7 @@
     "dev": "parcel static/index.html",
     "build": "parcel build static/index.html",
     "start": "node server.js",
-    "lint": "npx eslint \"src/**/*.ts\" && npx stylelint \"**/*.scss\" --custom-syntax"
+    "lint": "npx eslint \"src/**/*.ts\" && npx stylelint \"**/*.scss\" --custom-syntax && tsc --noEmit"
   },
   "dependencies": {
     "handlebars": "^4.7.7",

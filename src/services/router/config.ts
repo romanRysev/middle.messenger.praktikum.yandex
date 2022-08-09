@@ -1,4 +1,3 @@
-import { chat } from "../../modules/chat/chat";
 import { profile, profileEventListeners } from "../../modules/profile/profile";
 import { signin } from "../../modules/entry/signin";
 import { registration } from "../../modules/entry/registration";
@@ -8,33 +7,33 @@ import { passwordChange } from "../../modules/profile/password-change";
 import { avatarEventListeners } from "../../components/partials/avatar/avatar";
 
 export const routes: Routes = {
-  mainPage: { template: chat, location: "/" },
-  chat: { template: chat, location: "/chat" },
+  mainPage: { templateName: "chats", location: "/" },
+  chat: { templateName: "chats", location: "/chat" },
   profile: {
-    template: profile,
+    templateName: "profile",
     eventListeners: [...avatarEventListeners, ...profileEventListeners],
     location: "/profile",
   },
   signin: {
-    template: (() => signin)(),
+    templateName: "signin",
     location: "/signin",
   },
   registration: {
-    template: registration,
+    templateName: "registration",
     location: "/registration",
   },
   error: {
-    template: error,
+    templateName: "error",
     location: "/error",
     params: { code: "404", text: "Не туда попали" },
   },
   profileEdit: {
-    template: profileEdit,
+    templateName: "profileEdit",
     eventListeners: avatarEventListeners,
     location: "/edit-profile",
   },
   passwordChange: {
-    template: passwordChange,
+    templateName: "passwordChange",
     location: "/change-password",
   },
 };
