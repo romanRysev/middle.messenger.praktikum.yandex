@@ -1,3 +1,4 @@
+import { Button } from "../../components/partials/button/button";
 import { Block } from "../block/block";
 import tpl from "./signin.hbs";
 import "./signin.scss";
@@ -8,9 +9,9 @@ import "./signin.scss";
 
 export class Signin extends Block {
   constructor(props: Props) {
-    super("div", { ...props });
+    super("div", { button: new Button({ class: "signin__button card__button", text: "Sign in" }), ...props });
   }
   render(): string {
-    return tpl(this.props);
+    return this.compile(tpl);
   }
 }

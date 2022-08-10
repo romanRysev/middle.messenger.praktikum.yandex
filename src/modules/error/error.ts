@@ -7,10 +7,10 @@ import "./error.scss";
 }*/
 
 export class ErrorTemplate extends Block {
-  constructor(props: Props) {
+  constructor(props: Props = { code: "404", text: "Не туда попали" }) {
     super("div", { ...props });
   }
   render(): string {
-    return tpl(this.props);
+    return this.compile(tpl);
   }
 }

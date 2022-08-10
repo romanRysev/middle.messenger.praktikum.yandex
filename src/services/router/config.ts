@@ -1,39 +1,48 @@
-import { profile, profileEventListeners } from "../../modules/profile/profile";
-import { signin } from "../../modules/entry/signin";
-import { registration } from "../../modules/entry/registration";
-import { profileEdit } from "../../modules/profile/profile-edit";
-import { error } from "../../modules/error/error";
-import { passwordChange } from "../../modules/profile/password-change";
-import { avatarEventListeners } from "../../components/partials/avatar/avatar";
+import { Profile, profileEventListeners } from "../../modules/profile/profile";
+import { Signin } from "../../modules/entry/signin";
+import { Registration } from "../../modules/entry/registration";
+import { ProfileEdit } from "../../modules/profile/profile-edit";
+import { ErrorTemplate } from "../../modules/error/error";
+import { PasswordChange } from "../../modules/profile/password-change";
+//import { avatarEventListeners } from "../../components/partials/avatar/avatar";
+import { Chats } from "../../modules/chat/chat";
+
+import { PartialsRegister } from "../partials-register/partials-register";
+
+new PartialsRegister();
 
 export const routes: Routes = {
-  mainPage: { templateName: "chats", location: "/" },
-  chat: { templateName: "chats", location: "/chat" },
+  mainPage: { templateName: "chats", location: "/", params: { content: new Chats() } },
+  chat: { templateName: "chats", location: "/chat", params: { content: new Chats() } },
   profile: {
     templateName: "profile",
-    eventListeners: [...avatarEventListeners, ...profileEventListeners],
+    eventListeners: [...profileEventListeners],
     location: "/profile",
+    params: { content: new Profile() },
   },
   signin: {
     templateName: "signin",
     location: "/signin",
+    params: { content: new Signin() },
   },
   registration: {
     templateName: "registration",
     location: "/registration",
+    params: { content: new Registration() },
   },
   error: {
     templateName: "error",
     location: "/error",
-    params: { code: "404", text: "Не туда попали" },
+    params: { content: new ErrorTemplate() },
   },
   profileEdit: {
     templateName: "profileEdit",
-    eventListeners: avatarEventListeners,
     location: "/edit-profile",
+    params: { content: new ProfileEdit() },
   },
   passwordChange: {
     templateName: "passwordChange",
     location: "/change-password",
+    params: { content: new PasswordChange() },
   },
 };

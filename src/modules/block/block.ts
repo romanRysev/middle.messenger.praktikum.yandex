@@ -1,5 +1,7 @@
 import { EventBus } from "../../services/event-bus/event-bus";
-
+import { v4 as uuidv4 } from "uuid";
+import { renderer } from "../../services/renderer/renderer";
+import * as Handlebars from "handlebars";
 export type Props = Record<string, unknown>;
 
 export abstract class Block {
@@ -11,23 +13,62 @@ export abstract class Block {
   };
 
   private _element: HTMLElement | null = null;
-  private _meta: { tagName: string; props: Props } = { tagName: "div", props: {} };
+  private _meta: { tagName: string; propsAndChildren: Props } = { tagName: "div", propsAndChildren: {} };
+  private _id: "";
 
   public props: Props | undefined;
   public eventBus: () => EventBus;
 
-  protected constructor(tagName = "div", props = {}) {
+  public children: Record<string, Block>;
+
+  protected constructor(tagName = "div", propsAndChildren = {}) {
     const eventBus = new EventBus();
     this._meta = {
       tagName,
-      props,
+      propsAndChildren,
     };
+    this._id = uuidv4();
 
-    this.props = this._makePropsProxy(props);
+    const { children, props } = this._getChildren(propsAndChildren);
+    this.children = children;
+    this.props = this._makePropsProxy({ ...props, id: this._id });
     this.eventBus = () => eventBus;
 
     this._registerEvents(eventBus);
     eventBus.emit(Block.EVENTS.INIT);
+  }
+
+  private _getChildren(propsAndChildren) {
+    const children = {};
+    const props = {};
+
+    Object.entries(propsAndChildren).forEach(([key, value]) => {
+      if (value instanceof Block) {
+        children[key] = value;
+      } else {
+        props[key] = value;
+      }
+    });
+
+    return { children, props };
+  }
+
+  public compile(template) {
+    const propsAndStubs = { ...this.props };
+
+    Object.entries(this.children).forEach(([key, child]) => {
+      propsAndStubs[key] = `<div data-id="${child.props.id}"></div>`;
+    });
+
+    const fragment = this._createDocumentElement("template");
+    fragment.innerHTML = Handlebars.compile(template(propsAndStubs))(propsAndStubs);
+
+    Object.values(this.children).forEach((child) => {
+      const stub = fragment.content.querySelector(`[data-id="${child.props.id}"]`);
+      stub?.replaceWith(child.render());
+    });
+
+    return fragment.content;
   }
 
   private _registerEvents(eventBus: EventBus) {
@@ -47,21 +88,35 @@ export abstract class Block {
     this._element = this._createDocumentElement(tagName);
   }
 
-  _render(props: Props) {
-    const block = this.render(props);
+  _render() {
+    const block = this.render();
 
     if (this._element) {
-      this._element.innerHTML = block;
+      this._element.innerHTML = "";
+      this._element.appendChild(block);
+      this._addEvents();
     }
   }
 
   // Может переопределять пользователь, необязательно трогать
-  render(props: Props) {
+  render() {
     return "domstring";
+  }
+
+  _addEvents() {
+    const { events = {} } = this.props;
+
+    Object.keys(events).forEach((eventName) => {
+      this._element.addEventListener(eventName, events[eventName]);
+    });
   }
 
   private _componentDidMount() {
     this.componentDidMount();
+
+    Object.values(this.children).forEach((child) => {
+      child.dispatchComponentDidMount();
+    });
   }
 
   // Может переопределять пользователь, необязательно трогать
@@ -91,14 +146,13 @@ export abstract class Block {
     }
 
     Object.assign(this.props, nextProps);
-    console.log(1);
   };
 
   get element() {
     return this._element;
   }
 
-  getContent() {
+  public getContent() {
     return this.element;
   }
 
@@ -117,13 +171,16 @@ export abstract class Block {
         return;
       },
       set(target, prop, value) {
-        console.log(2);
-
         if (typeof prop !== "symbol") {
           if (prop.indexOf("_") === 0) {
             throw new Error("нет доступа");
           }
-          target[prop] = value;
+
+          if (value instanceof Block) {
+            self.children[prop] = value;
+          } else {
+            target[prop] = value;
+          }
           self.eventBus().emit(Block.EVENTS.FLOW_CDU);
           return true;
         }
@@ -137,8 +194,9 @@ export abstract class Block {
   }
 
   _createDocumentElement(tagName: string): HTMLElement {
-    // Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
-    return document.createElement(tagName);
+    const element = document.createElement(tagName);
+    element.setAttribute("data-id", String(this.props?.id));
+    return element;
   }
 
   show() {

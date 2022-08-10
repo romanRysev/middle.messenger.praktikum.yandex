@@ -2,10 +2,11 @@ import tpl from "./avatar.hbs";
 import "./avatar.scss";
 import { modal } from "../../modal/modal";
 import { avatarChangeModal } from "../../modal/avatar-change-modal";
+import { Block } from "../../../modules/block/block";
 
 export default (params: LayoutFunctionParams) => tpl(params);
 
-export const avatarEventListeners = [
+/*export const avatarEventListeners = [
   {
     selector: ".avatar",
     listener: () => {
@@ -16,4 +17,13 @@ export const avatarEventListeners = [
     },
     event: "click",
   },
-];
+];*/
+
+export class Avatar extends Block {
+  constructor(props: Props) {
+    super("div", { ...props });
+  }
+  render(): string {
+    return this.compile(tpl);
+  }
+}

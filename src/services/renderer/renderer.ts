@@ -7,7 +7,8 @@ export class Renreder {
 
   render(layuot, params?: LayoutFunctionParams) {
     if (this.rootElement) {
-      this.rootElement.innerHTML = layuot.render(params);
+      layuot.render(params);
+      this.rootElement.appendChild(layuot.getContent());
       layuot.dispatchComponentDidMount();
     }
   }

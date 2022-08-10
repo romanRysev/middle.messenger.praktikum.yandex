@@ -1,7 +1,8 @@
+import { Block } from "../../../modules/block/block";
 import tpl from "./short-view.hbs";
 import "./short-view.scss";
 
-export function shortView(
+/*export function shortView(
   params = {
     userName: "test2",
     shortText: "Lorem ipsum",
@@ -11,4 +12,13 @@ export function shortView(
   }
 ) {
   return tpl(params);
+}*/
+
+export class ShortView extends Block {
+  constructor(props: Props) {
+    super("div", { ...props });
+  }
+  render(): string {
+    return this.compile(tpl);
+  }
 }

@@ -1,3 +1,4 @@
+import { Button } from "../../components/partials/button/button";
 import { Block } from "../block/block";
 import tpl from "./password-change.hbs";
 
@@ -6,9 +7,9 @@ import tpl from "./password-change.hbs";
 }*/
 export class PasswordChange extends Block {
   constructor(props: Props) {
-    super("div", { ...props });
+    super("div", { button: new Button({ class: "password-change__button card__button", text: "Save" }), ...props });
   }
   render(): string {
-    return tpl(this.props);
+    return this.compile(tpl);
   }
 }

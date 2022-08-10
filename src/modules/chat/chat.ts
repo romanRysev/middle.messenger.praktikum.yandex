@@ -7,8 +7,6 @@ export class Chats extends Block {
     super("div", { list, messages, ...props });
   }
   render(): string {
-    console.log("chats render");
-
-    return tpl(this.props);
+    return this.compile(tpl);
   }
 }
