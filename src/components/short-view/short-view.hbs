@@ -1,4 +1,8 @@
+{{#if current}}
+<div class="short-view short-view_active">
+{{else}}
 <div class="short-view">
+{{/if}}
   {{{avatar}}}
   <div class="short-view__central-column">
     <h3 class="short-view__username">{{userName}}</h3>
@@ -10,5 +14,4 @@
       <div class="short-view__unread-number">{{unreadNumber}}</div>
     {{/if}}
   </div>
-  {{current}}
 </div>

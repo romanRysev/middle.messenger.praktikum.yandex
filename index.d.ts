@@ -1,6 +1,7 @@
 declare module "*.hbs";
 declare module "*.svg";
 declare module "*.scss";
+declare module "*.css";
 
 type Route = {
   templateName: string;

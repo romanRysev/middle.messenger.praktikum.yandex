@@ -4,14 +4,15 @@ import tpl from "./chat.hbs";
 import "./chat.scss";
 import { list } from "./tempData";
 
-let currentItem = { item: list[0] };
+let current = { item: list[0] };
 
-let currentItemProxy = new Proxy(currentItem, {
+let currentItem = new Proxy(current, {
   set(target, prop, value) {
     if (typeof prop !== "symbol") {
       const res = chats.find((el) => el.props.current === true);
       res.setProps({ current: false });
       target[prop] = value;
+      asd();
       return true;
     }
     return false;
@@ -24,7 +25,7 @@ const chats = list.map((chatItem, ind) => {
     current: ind === 0 ? true : false,
     callbacks: {
       click: function (event) {
-        currentItemProxy.item = list.find((item) => {
+        currentItem.item = list.find((item) => {
           return item.chatId === this.props.chatId;
         });
         this.setProps({ current: true });
@@ -38,7 +39,7 @@ export class Chats extends Block {
     super("div", {
       shortView: chats,
       list,
-      messages: currentItem.messages,
+      messages: currentItem.item.messages,
       ...props,
     });
   }
@@ -46,4 +47,10 @@ export class Chats extends Block {
   render(): string {
     return this.compile(tpl);
   }
+}
+
+export const chatsModue = new Chats({});
+
+function asd() {
+  chatsModue.setProps({ messages: currentItem.item.messages });
 }

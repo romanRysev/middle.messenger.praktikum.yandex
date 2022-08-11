@@ -6,21 +6,19 @@ import { Block } from "../block/block";
 import { Avatar } from "../../components/avatar/avatar";
 import { Button } from "../../components/button/button";
 
-export const profileEventListeners = [
-  {
-    selector: ".profile__button",
-    listener: () => {
-      window.location.replace("/signin");
-    },
-    event: "click",
-  },
-];
-
 export class Profile extends Block {
   constructor(props: Props) {
     super("div", {
       avatar: new Avatar({ url: avatarUrl, class: "profile__avatar", height: 130, width: 130 }),
-      button: new Button({ class: "profile__button", text: "Sign out" }),
+      button: new Button({
+        class: "profile__button",
+        text: "Sign out",
+        events: {
+          click: () => {
+            window.location.replace("/signin");
+          },
+        },
+      }),
       backIconUrl,
       firstName: "Roman",
       email: "roman@gmail.com",

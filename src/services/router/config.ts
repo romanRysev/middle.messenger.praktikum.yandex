@@ -1,29 +1,28 @@
-import { Profile, profileEventListeners } from "../../modules/profile/profile";
+import { Profile } from "../../modules/profile/profile";
 import { Signin } from "../../modules/entry/signin";
 import { Registration } from "../../modules/entry/registration";
 import { ProfileEdit } from "../../modules/profile/profile-edit";
 import { ErrorTemplate } from "../../modules/error/error";
 import { PasswordChange } from "../../modules/profile/password-change";
-import { Chats } from "../../modules/chat/chat";
+import { chatsModue } from "../../modules/chat/chat";
 
 export const routes: Routes = {
   mainPage: {
     templateName: "chats",
     location: "/",
     params: {
-      content: new Chats({}),
+      content: chatsModue,
     },
   },
   chat: {
     templateName: "chats",
     location: "/chat",
     params: {
-      content: new Chats({}),
+      content: chatsModue,
     },
   },
   profile: {
     templateName: "profile",
-    eventListeners: [...profileEventListeners],
     location: "/profile",
     params: { content: new Profile() },
   },

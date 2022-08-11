@@ -5,11 +5,11 @@
 }
 
 .chat__left-column {
-  max-width: 310px;
+  min-width: 310px;
   max-height: 100%;
-  padding: 10px;
   border-right: #EAEAEA solid 1px;
   background-color: #FBFBFB;
+  text-align: right;
 }
 
 .chat__right-column {
@@ -21,6 +21,7 @@
   max-height: 90%;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  text-align: left;
 }
 
 .chat__list::-webkit-scrollbar {
