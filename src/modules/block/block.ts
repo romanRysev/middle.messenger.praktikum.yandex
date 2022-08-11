@@ -45,6 +45,8 @@ export abstract class Block {
     Object.entries(propsAndChildren).forEach(([key, value]) => {
       if (value instanceof Block) {
         children[key] = value;
+      } else if (Array.isArray(value) && value.length > 0 && value[0] instanceof Block) {
+        children[key] = value;
       } else {
         props[key] = value;
       }
@@ -57,15 +59,32 @@ export abstract class Block {
     const propsAndStubs = { ...this.props };
 
     Object.entries(this.children).forEach(([key, child]) => {
-      propsAndStubs[key] = `<div data-id="${child.props.id}"></div>`;
+      if (Array.isArray(child)) {
+        propsAndStubs[key] = "";
+        child.forEach((child) => {
+          propsAndStubs[key] += `<div data-id="${child.props.id}"></div>`;
+        });
+      } else {
+        propsAndStubs[key] = `<div data-id="${child.props.id}"></div>`;
+      }
     });
 
     const fragment = this._createDocumentElement("template");
     fragment.innerHTML = Handlebars.compile(template(propsAndStubs))(propsAndStubs);
 
     Object.values(this.children).forEach((child) => {
-      const stub = fragment.content.querySelector(`[data-id="${child.props.id}"]`);
-      stub?.replaceWith(child.render());
+      if (Array.isArray(child)) {
+        const stub = fragment.content.querySelector(`[data-id="${child[0].props.id}"]`);
+        const res = this._createDocumentElement("div");
+        child.forEach((child) => {
+          res.appendChild(child.render());
+        });
+
+        stub?.replaceWith(res);
+      } else {
+        const stub = fragment.content.querySelector(`[data-id="${child.props.id}"]`);
+        stub?.replaceWith(child.render());
+      }
     });
 
     return fragment.content;
@@ -115,7 +134,11 @@ export abstract class Block {
     this.componentDidMount();
 
     Object.values(this.children).forEach((child) => {
-      child.dispatchComponentDidMount();
+      if (Array.isArray(child)) {
+        child.forEach((child) => child.dispatchComponentDidMount());
+      } else {
+        child.dispatchComponentDidMount();
+      }
     });
   }
 

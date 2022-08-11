@@ -1,15 +1,14 @@
 import { Button } from "../../components/partials/button/button";
+import { Input } from "../../components/partials/input/input";
 import { Block } from "../block/block";
 import tpl from "./signin.hbs";
 import "./signin.scss";
 
-/*export function signin(params: LayoutFunctionParams) {
-  return tpl(params);
-}*/
+const inputs = [new Input({ type: "text", name: "login", placeholder: "login" }), new Input({ type: "password", name: "password", placeholder: "password" })];
 
 export class Signin extends Block {
   constructor(props: Props) {
-    super("div", { button: new Button({ class: "signin__button card__button", text: "Sign in" }), ...props });
+    super("div", { inputs, button: new Button({ class: "signin__button card__button", text: "Sign in" }), ...props });
   }
   render(): string {
     return this.compile(tpl);

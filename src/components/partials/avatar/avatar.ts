@@ -1,7 +1,5 @@
 import tpl from "./avatar.hbs";
 import "./avatar.scss";
-import { modal } from "../../modal/modal";
-import { avatarChangeModal } from "../../modal/avatar-change-modal";
 import { Block } from "../../../modules/block/block";
 
 export default (params: LayoutFunctionParams) => tpl(params);

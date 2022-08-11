@@ -1,56 +1,8 @@
 <section class="registration card">
   <form class="registration__form card__form" name="registration">
     <h1 class="registration__title card__title">Registration</h1>
-    {{>input
-      class="registration__form-input"
-      type="text"
-      placeholder="first name"
-      name="first_name"
-      errorClass="registration__first-name-error form-error"
-    }}
-    {{>input
-      class="registration__form-input"
-      type="text"
-      placeholder="second name"
-      name="second_name"
-      errorClass="registration__second-name-error form-error"
-    }}
-    {{>input
-      class="registration__form-input"
-      type="text"
-      placeholder="login"
-      name="login"
-      errorClass="registration__login-error form-error"
-    }}
-    {{>input
-      class="registration__form-input"
-      type="email"
-      placeholder="email"
-      name="email"
-      errorClass="registration__email-error form-error"
-    }}
-    {{>input
-      class="registration__form-input"
-      type="password"
-      placeholder="password"
-      name="password"
-      errorClass="registration__first-password-error form-error"
-    }}
-    {{>input
-      class="registration__form-input"
-      type="password"
-      placeholder="password"
-      name="password"
-      errorClass="registration__second-password-error form-error"
-    }}
-    {{>input
-      class="registration__form-input"
-      type="phone"
-      placeholder="phone"
-      name="phone"
-      errorClass="registration__phone-error form-error"
-    }}
+    {{{inputs}}}
   </form>
-{{{button}}}
+  {{{button}}}
   <a class="registration__link link" href="/signin">Sign in</a>
 </section>

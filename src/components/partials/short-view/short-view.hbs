@@ -1,5 +1,5 @@
 <div class="short-view">
-    {{> avatar class=class url=avatarUrl height="47" width="47" alt="avatar"}}
+  {{{avatar}}}
   <div class="short-view__central-column">
     <h3 class="short-view__username">{{userName}}</h3>
     <p class="short-view__short-text">{{shortText}}</p>
@@ -7,7 +7,7 @@
   <div class="short-view__right-column">
     <small class="short-view__last-message-time">{{lastMessageTime}}</small>
     {{#if unreadNumber}}
-    <div class="short-view__unread-number">{{unreadNumber}}</div>
+      <div class="short-view__unread-number">{{unreadNumber}}</div>
     {{/if}}
   </div>
 </div>

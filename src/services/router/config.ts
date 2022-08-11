@@ -4,12 +4,7 @@ import { Registration } from "../../modules/entry/registration";
 import { ProfileEdit } from "../../modules/profile/profile-edit";
 import { ErrorTemplate } from "../../modules/error/error";
 import { PasswordChange } from "../../modules/profile/password-change";
-//import { avatarEventListeners } from "../../components/partials/avatar/avatar";
 import { Chats } from "../../modules/chat/chat";
-
-import { PartialsRegister } from "../partials-register/partials-register";
-
-new PartialsRegister();
 
 export const routes: Routes = {
   mainPage: { templateName: "chats", location: "/", params: { content: new Chats() } },
