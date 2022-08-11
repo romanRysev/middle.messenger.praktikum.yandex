@@ -1,5 +1,5 @@
-import { Button } from "../../components/partials/button/button";
-import { Input } from "../../components/partials/input/input";
+import { Button } from "../../components/button/button";
+import { Input } from "../../components/input/input";
 import { Block } from "../block/block";
 import tpl from "./password-change.hbs";
 

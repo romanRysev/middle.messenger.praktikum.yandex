@@ -3,8 +3,8 @@ import avatarUrl from "../../../static/Union.svg";
 import "./profile.scss";
 import backIconUrl from "../../../static/back.svg";
 import { Block } from "../block/block";
-import { Avatar } from "../../components/partials/avatar/avatar";
-import { Button } from "../../components/partials/button/button";
+import { Avatar } from "../../components/avatar/avatar";
+import { Button } from "../../components/button/button";
 
 export const profileEventListeners = [
   {

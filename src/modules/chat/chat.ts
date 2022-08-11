@@ -1,4 +1,4 @@
-import { ShortView } from "../../components/partials/short-view/short-view";
+import { ShortView } from "../../components/short-view/short-view";
 import { Block, Props } from "../block/block";
 import tpl from "./chat.hbs";
 import "./chat.scss";

@@ -1,8 +1,8 @@
-import { Block } from "../../../modules/block/block";
+import { Block } from "../../modules/block/block";
 import { Avatar } from "../avatar/avatar";
 import tpl from "./short-view.hbs";
 import "./short-view.scss";
-import avatarUrl from "../../../../static/Union.svg";
+import avatarUrl from "../../../static/Union.svg";
 
 export class ShortView extends Block {
   constructor(props: Props) {

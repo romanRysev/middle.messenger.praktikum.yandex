@@ -2,8 +2,8 @@ import tpl from "./profile-edit.hbs";
 import "./profile-edit.scss";
 import avatarUrl from "../../../static/Union.svg";
 import { Block } from "../block/block";
-import { Button } from "../../components/partials/button/button";
-import { Input } from "../../components/partials/input/input";
+import { Button } from "../../components/button/button";
+import { Input } from "../../components/input/input";
 
 const inputs = [
   new Input({ type: "email", name: "email", placeholder: "email" }),
@@ -16,7 +16,18 @@ const inputs = [
 
 export class ProfileEdit extends Block {
   constructor(props: Props) {
-    super("div", { inputs: inputs, button: new Button({ class: "profile-edit__button card__button", text: "Save" }), avatarUrl, firstName: "Roman", email: "roman@gmail.com", login: "roman", lastName: "Rysev", displayName: "ROM", phone: "+71237894567", ...props });
+    super("div", {
+      inputs: inputs,
+      button: new Button({ class: "profile-edit__button card__button", text: "Save" }),
+      avatarUrl,
+      firstName: "Roman",
+      email: "roman@gmail.com",
+      login: "roman",
+      lastName: "Rysev",
+      displayName: "ROM",
+      phone: "+71237894567",
+      ...props,
+    });
   }
   render(): string {
     return this.compile(tpl);

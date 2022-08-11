@@ -1,4 +1,4 @@
-import { Block } from "../../../modules/block/block";
+import { Block } from "../../modules/block/block";
 import tpl from "./input.hbs";
 import "./input.scss";
 
