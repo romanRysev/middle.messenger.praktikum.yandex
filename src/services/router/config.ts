@@ -7,8 +7,20 @@ import { PasswordChange } from "../../modules/profile/password-change";
 import { Chats } from "../../modules/chat/chat";
 
 export const routes: Routes = {
-  mainPage: { templateName: "chats", location: "/", params: { content: new Chats() } },
-  chat: { templateName: "chats", location: "/chat", params: { content: new Chats() } },
+  mainPage: {
+    templateName: "chats",
+    location: "/",
+    params: {
+      content: new Chats({}),
+    },
+  },
+  chat: {
+    templateName: "chats",
+    location: "/chat",
+    params: {
+      content: new Chats({}),
+    },
+  },
   profile: {
     templateName: "profile",
     eventListeners: [...profileEventListeners],

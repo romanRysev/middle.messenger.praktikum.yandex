@@ -11,4 +11,8 @@ export class ShortView extends Block {
   render(): string {
     return this.compile(tpl);
   }
+
+  componentDidMount() {
+    this.getContent()?.addEventListener("click", this.props.callbacks.click.bind(this));
+  }
 }

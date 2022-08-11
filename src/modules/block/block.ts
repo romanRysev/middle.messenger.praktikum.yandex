@@ -69,25 +69,22 @@ export abstract class Block {
       }
     });
 
-    const fragment = this._createDocumentElement("template");
+    const fragment = this._createDocumentElement("div");
     fragment.innerHTML = Handlebars.compile(template(propsAndStubs))(propsAndStubs);
 
     Object.values(this.children).forEach((child) => {
       if (Array.isArray(child)) {
-        const stub = fragment.content.querySelector(`[data-id="${child[0].props.id}"]`);
-        const res = this._createDocumentElement("div");
         child.forEach((child) => {
-          res.appendChild(child.render());
+          const stub = fragment.querySelector(`[data-id="${child.props.id}"]`);
+          stub?.replaceWith(child.getContent());
         });
-
-        stub?.replaceWith(res);
       } else {
-        const stub = fragment.content.querySelector(`[data-id="${child.props.id}"]`);
-        stub?.replaceWith(child.render());
+        const stub = fragment.querySelector(`[data-id="${child.props.id}"]`);
+        stub?.replaceWith(child.getContent());
       }
     });
 
-    return fragment.content;
+    return fragment.firstChild;
   }
 
   private _registerEvents(eventBus: EventBus) {
@@ -113,7 +110,7 @@ export abstract class Block {
     if (this._element) {
       this._element.innerHTML = "";
       this._element.appendChild(block);
-      this._addEvents();
+      this._addEvents(this._element);
     }
   }
 
@@ -122,11 +119,11 @@ export abstract class Block {
     return "domstring";
   }
 
-  _addEvents() {
+  _addEvents(element) {
     const { events = {} } = this.props;
 
     Object.keys(events).forEach((eventName) => {
-      this._element.addEventListener(eventName, events[eventName]);
+      element.addEventListener(eventName, events[eventName]);
     });
   }
 
@@ -158,7 +155,7 @@ export abstract class Block {
 
   // Может переопределять пользователь, необязательно трогать
   public componentDidUpdate(oldProps: Props, newProps: Props) {
-    console.log("updated", oldProps, newProps);
+    console.log("updated", this.props.current);
 
     return true;
   }
@@ -220,17 +217,5 @@ export abstract class Block {
     const element = document.createElement(tagName);
     element.setAttribute("data-id", String(this.props?.id));
     return element;
-  }
-
-  show() {
-    if (this._element) {
-      this._element.style.display = "block";
-    }
-  }
-
-  hide() {
-    if (this._element) {
-      this._element.style.display = "none";
-    }
   }
 }
