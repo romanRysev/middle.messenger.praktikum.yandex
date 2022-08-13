@@ -1,4 +1,4 @@
-import { Validator } from "../services/Validator/validator";
+import { Validator } from "../services/validator/validator";
 
 type ValidationOnBlur = (event: SubmitEvent, form: HTMLFormElement) => void;
 
