@@ -5,6 +5,7 @@ import tpl from "./chat.hbs";
 import "./chat.scss";
 import { list } from "./tempData";
 import sendIconUrl from "../../../static/forward.svg";
+import { getFormData } from "../../helpers/helpers";
 
 let current = { item: list[0] };
 
@@ -14,7 +15,7 @@ let currentItem = new Proxy(current, {
       const res = chats.find((el) => el.props.current === true);
       res.setProps({ current: false });
       target[prop] = value;
-      asd();
+      setProps();
       return true;
     }
     return false;
@@ -48,6 +49,7 @@ export class Chats extends Block {
         submit: (event) => {
           event.preventDefault();
           const form = document.forms.newMessage;
+          console.log(getFormData(new FormData(form)));
           const { message } = form.elements;
           currentItem.item.messages.push({ text: message.value, time: new Date().toUTCString(), isMy: true });
           this.setProps({ messages: currentItem.item.messages });
@@ -69,6 +71,6 @@ export class Chats extends Block {
 
 export const chatsModue = new Chats({});
 
-function asd() {
+function setProps() {
   chatsModue.setProps({ messages: currentItem.item.messages });
 }

@@ -5,7 +5,7 @@ import { Block } from "../block/block";
 import { Button } from "../../components/button/button";
 import { Input } from "../../components/input/input";
 import { loginRegExp, nameRegExp, phoneRegExp } from "../../constants/regexps";
-import { validationOnBlur } from "../../helpers/helpers";
+import { getFormData, validationOnBlur } from "../../helpers/helpers";
 
 const inputs = [
   new Input({
@@ -28,7 +28,18 @@ export class ProfileEdit extends Block {
   constructor(props: Props) {
     super("div", {
       inputs: inputs,
-      button: new Button({ class: "profile-edit__button card__button", text: "Save", name: "submit" }),
+      button: new Button({
+        class: "profile-edit__button card__button",
+        text: "Save",
+        name: "submit",
+        callbacks: {
+          click: (event) => {
+            event.preventDefault();
+            const form = document.forms.profile;
+            console.log(getFormData(new FormData(form)));
+          },
+        },
+      }),
       avatarUrl,
       firstName: "Roman",
       email: "roman@gmail.com",

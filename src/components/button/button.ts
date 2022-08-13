@@ -11,4 +11,9 @@ export class Button extends Block {
   render(): string {
     return this.compile(tpl);
   }
+  componentDidMount() {
+    if (this.props?.callbacks?.click) {
+      this.getContent()?.addEventListener("click", this.props?.callbacks?.click);
+    }
+  }
 }

@@ -1,7 +1,7 @@
 import { Button } from "../../components/button/button";
 import { Input } from "../../components/input/input";
 import { loginRegExp, passwordRegExp } from "../../constants/regexps";
-import { validationOnBlur } from "../../helpers/helpers";
+import { getFormData, validationOnBlur } from "../../helpers/helpers";
 import { Block } from "../block/block";
 import tpl from "./signin.hbs";
 import "./signin.scss";
@@ -13,7 +13,22 @@ const inputs = [
 
 export class Signin extends Block {
   constructor(props: Props) {
-    super("div", { inputs, button: new Button({ class: "signin__button card__button", text: "Sign in", name: "submit" }), ...props });
+    super("div", {
+      inputs,
+      button: new Button({
+        class: "signin__button card__button",
+        text: "Sign in",
+        name: "submit",
+        callbacks: {
+          click: (event) => {
+            event.preventDefault();
+            const form = document.forms.signin;
+            console.log(getFormData(new FormData(form)));
+          },
+        },
+      }),
+      ...props,
+    });
   }
   render(): string {
     return this.compile(tpl);

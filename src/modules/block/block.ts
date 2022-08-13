@@ -108,9 +108,10 @@ export abstract class Block {
     const block = this.render();
 
     if (this._element) {
+      this._removeEvents();
       this._element.innerHTML = "";
       this._element.appendChild(block);
-      this._addEvents(this._element);
+      this._addEvents();
     }
   }
 
@@ -119,11 +120,23 @@ export abstract class Block {
     return "domstring";
   }
 
-  _addEvents(element) {
+  _addEvents() {
     const { events = {} } = this.props;
 
     Object.keys(events).forEach((eventName) => {
-      element.addEventListener(eventName, events[eventName]);
+      this._element?.addEventListener(eventName, events[eventName]);
+    });
+  }
+
+  private _removeEvents() {
+    const events: Record<string, () => void> = (this.props as any).events;
+
+    if (!events || !this.element) {
+      return;
+    }
+
+    Object.entries(events).forEach((event) => {
+      this.element?.removeEventListener(event, events[event]);
     });
   }
 

@@ -1,7 +1,7 @@
 import { Button } from "../../components/button/button";
 import { Input } from "../../components/input/input";
 import { passwordRegExp } from "../../constants/regexps";
-import { validationOnBlur } from "../../helpers/helpers";
+import { getFormData, validationOnBlur } from "../../helpers/helpers";
 import { Block } from "../block/block";
 import tpl from "./password-change.hbs";
 
@@ -19,7 +19,22 @@ const inputs = [
 ];
 export class PasswordChange extends Block {
   constructor(props: Props) {
-    super("div", { inputs, button: new Button({ class: "password-change__button card__button", text: "Save" }), ...props });
+    super("div", {
+      inputs,
+      button: new Button({
+        class: "password-change__button card__button",
+        text: "Save",
+        name: "submit",
+        callbacks: {
+          click: (event) => {
+            event.preventDefault();
+            const form = document.forms.passwordChange;
+            console.log(getFormData(new FormData(form)));
+          },
+        },
+      }),
+      ...props,
+    });
   }
   render(): string {
     return this.compile(tpl);

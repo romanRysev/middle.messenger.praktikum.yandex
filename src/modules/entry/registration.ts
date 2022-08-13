@@ -1,7 +1,7 @@
 import { Button } from "../../components/button/button";
 import { Input } from "../../components/input/input";
 import { loginRegExp, nameRegExp, passwordRegExp, phoneRegExp } from "../../constants/regexps";
-import { validationOnBlur } from "../../helpers/helpers";
+import { getFormData, validationOnBlur } from "../../helpers/helpers";
 import { Block } from "../block/block";
 import tpl from "./registration.hbs";
 import "./registration.scss";
@@ -25,7 +25,23 @@ const inputs = [
 ];
 export class Registration extends Block {
   constructor(props: Props) {
-    super("div", { inputs, button: new Button({ class: "registration__button card__button button", text: "Registration", name: "submit" }), ...props });
+    super("div", {
+      inputs,
+      button: new Button({
+        class: "registration__button card__button button",
+        text: "Registration",
+        name: "submit",
+        disabled: true,
+        callbacks: {
+          click: (event) => {
+            event.preventDefault();
+            const form = document.forms.registration;
+            console.log(getFormData(new FormData(form)));
+          },
+        },
+      }),
+      ...props,
+    });
   }
   render(): string {
     return this.compile(tpl);
