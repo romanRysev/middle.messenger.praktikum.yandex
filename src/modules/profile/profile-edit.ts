@@ -33,10 +33,12 @@ export class ProfileEdit extends Block {
         text: "Save",
         name: "submit",
         callbacks: {
-          click: (event) => {
+          click: (event: Event) => {
             event.preventDefault();
-            const form = document.forms.profile;
-            console.log(getFormData(new FormData(form)));
+            const form = document.forms.namedItem("profile");
+            if (form) {
+              console.log(getFormData(new FormData(form)));
+            }
           },
         },
       }),
@@ -50,7 +52,7 @@ export class ProfileEdit extends Block {
       ...props,
     });
   }
-  render(): string {
+  render(): ChildNode | null {
     return this.compile(tpl);
   }
 }

@@ -3,23 +3,14 @@ declare module "*.svg";
 declare module "*.scss";
 declare module "*.css";
 
-type Route = {
-  templateName: string;
-  location: string;
-  eventListeners?: CustomEventListener[];
-  params?: Record<string, string>;
-};
-
-type CustomEventListener = {
-  selector: string;
-  listener: () => void;
-  event: string;
-};
-
-type Routes = Record<string, Route>;
-
 type LayoutFunction = (params?: LayoutFunctionParams) => string;
 
 type LayoutFunctionParams = Record<string, unknown> | undefined;
 
 type ListenerCallback = (params?: unknown | undefined) => unknown;
+
+type Props = Record<string, unknown>;
+
+type TemplateFunction = (props: Props) => string;
+
+type EventsProp = Record<string, (event?: Event) => void>;

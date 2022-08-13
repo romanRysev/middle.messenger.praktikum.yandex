@@ -7,7 +7,8 @@
     "dev": "parcel static/index.html",
     "build": "parcel build static/index.html",
     "start": "node server.js",
-    "lint": "npx eslint \"src/**/*.ts\" && npx stylelint \"**/*.scss\" --custom-syntax && tsc --noEmit"
+    "lint": "npx eslint \"src/**/*.ts\" && npx stylelint \"**/*.scss\" --custom-syntax",
+    "tsc": "npx tsc --noEmit"
   },
   "dependencies": {
     "handlebars": "4.7.7",
@@ -16,6 +17,8 @@
   },
   "devDependencies": {
     "@parcel/transformer-sass": "2.6.2",
+    "@types/handlebars": "^4.1.0",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "5.32.0",
     "@typescript-eslint/parser": "5.32.0",
     "eslint": "8.21.0",

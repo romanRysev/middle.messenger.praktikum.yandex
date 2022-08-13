@@ -29,7 +29,7 @@ export class Profile extends Block {
       ...props,
     });
   }
-  render(): string {
+  render(): ChildNode | null {
     return this.compile(tpl);
   }
 }

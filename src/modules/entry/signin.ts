@@ -20,17 +20,19 @@ export class Signin extends Block {
         text: "Sign in",
         name: "submit",
         callbacks: {
-          click: (event) => {
+          click: (event: Event) => {
             event.preventDefault();
-            const form = document.forms.signin;
-            console.log(getFormData(new FormData(form)));
+            const form = document.forms.namedItem("signin");
+            if (form) {
+              console.log(getFormData(new FormData(form)));
+            }
           },
         },
       }),
       ...props,
     });
   }
-  render(): string {
+  render(): ChildNode | null {
     return this.compile(tpl);
   }
 }

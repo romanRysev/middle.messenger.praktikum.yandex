@@ -1,3 +1,5 @@
+import { Block } from "../../modules/block/block";
+
 export class Renreder {
   constructor(rootElement: Element) {
     this.rootElement = rootElement;
@@ -5,7 +7,7 @@ export class Renreder {
 
   rootElement: Element | null = null;
 
-  render(layuot, params?: LayoutFunctionParams) {
+  render(layuot: Block) {
     if (this.rootElement) {
       this.rootElement.appendChild(layuot.getContent());
       layuot.dispatchComponentDidMount();

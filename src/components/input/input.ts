@@ -2,22 +2,25 @@ import { Block } from "../../modules/block/block";
 import tpl from "./input.hbs";
 import "./input.scss";
 
-//export default (params: LayoutFunctionParams) => tpl(params);
-
+type InputProps = { callbacks?: InputCallbacks };
+type InputCallbacks = Record<string, (event: FocusEvent, form: HTMLFormElement) => void>;
 export class Input extends Block {
   constructor(props: Props) {
     super("div", { ...props });
   }
-  render(): string {
+  render(): ChildNode | null {
     return this.compile(tpl);
   }
 
   componentDidMount() {
     const form = document.querySelector(".form");
-    if (this.props?.callbacks?.blur) {
-      this.getContent()?.addEventListener("focusout", (event) => {
-        return this.props.callbacks.blur(event, form);
-      });
+    if (form && form instanceof HTMLFormElement) {
+      if ((this.props.callbacks as EventsProp)?.blur) {
+        this.getContent()?.addEventListener("focusout", (event) => {
+          return (this.props as InputProps).callbacks?.blur(event, form);
+        });
+      }
     }
+    return true;
   }
 }

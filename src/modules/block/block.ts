@@ -1,8 +1,8 @@
 import { EventBus } from "../../services/event-bus/event-bus";
 import { v4 as uuidv4 } from "uuid";
-import { renderer } from "../../services/renderer/renderer";
 import * as Handlebars from "handlebars";
-export type Props = Record<string, unknown>;
+
+type Chidren = Record<string, Block | Block[]>;
 
 export abstract class Block {
   static EVENTS = {
@@ -12,14 +12,14 @@ export abstract class Block {
     FLOW_RENDER: "flow:render",
   };
 
-  private _element: HTMLElement | null = null;
+  private _element: HTMLElement;
   private _meta: { tagName: string; propsAndChildren: Props } = { tagName: "div", propsAndChildren: {} };
-  private _id: "";
+  private _id: string;
 
-  public props: Props | undefined;
+  public props: Props;
   public eventBus: () => EventBus;
 
-  public children: Record<string, Block>;
+  public children: Chidren;
 
   protected constructor(tagName = "div", propsAndChildren = {}) {
     const eventBus = new EventBus();
@@ -31,16 +31,16 @@ export abstract class Block {
 
     const { children, props } = this._getChildren(propsAndChildren);
     this.children = children;
-    this.props = this._makePropsProxy({ ...props, id: this._id });
+    this.props = this._makePropsProxy({ ...props, id: this._id }, this);
     this.eventBus = () => eventBus;
 
     this._registerEvents(eventBus);
     eventBus.emit(Block.EVENTS.INIT);
   }
 
-  private _getChildren(propsAndChildren) {
-    const children = {};
-    const props = {};
+  private _getChildren(propsAndChildren: Props) {
+    const children: Chidren = {};
+    const props: Props = {};
 
     Object.entries(propsAndChildren).forEach(([key, value]) => {
       if (value instanceof Block) {
@@ -55,7 +55,7 @@ export abstract class Block {
     return { children, props };
   }
 
-  public compile(template) {
+  public compile(template: TemplateFunction) {
     const propsAndStubs = { ...this.props };
 
     Object.entries(this.children).forEach(([key, child]) => {
@@ -76,11 +76,11 @@ export abstract class Block {
       if (Array.isArray(child)) {
         child.forEach((child) => {
           const stub = fragment.querySelector(`[data-id="${child.props.id}"]`);
-          stub?.replaceWith(child.getContent());
+          stub?.replaceWith(child.getContent() as Node);
         });
       } else {
         const stub = fragment.querySelector(`[data-id="${child.props.id}"]`);
-        stub?.replaceWith(child.getContent());
+        stub?.replaceWith(child.getContent() as Node);
       }
     });
 
@@ -88,13 +88,13 @@ export abstract class Block {
   }
 
   private _registerEvents(eventBus: EventBus) {
-    eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
+    eventBus.on(Block.EVENTS.INIT, this._init.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
     eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
   }
 
-  public init() {
+  private _init() {
     this._createResources();
     this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
   }
@@ -104,39 +104,40 @@ export abstract class Block {
     this._element = this._createDocumentElement(tagName);
   }
 
-  _render() {
+  private _render() {
     const block = this.render();
 
     if (this._element) {
       this._removeEvents();
       this._element.innerHTML = "";
-      this._element.appendChild(block);
+      if (block) {
+        this._element.appendChild(block);
+      }
       this._addEvents();
     }
   }
 
-  // Может переопределять пользователь, необязательно трогать
-  render() {
-    return "domstring";
+  public render(): ChildNode | null {
+    return document.createElement("div");
   }
 
-  _addEvents() {
+  private _addEvents() {
     const { events = {} } = this.props;
 
-    Object.keys(events).forEach((eventName) => {
-      this._element?.addEventListener(eventName, events[eventName]);
+    Object.keys(events as Props).forEach((eventName) => {
+      this._element.addEventListener(eventName, (events as EventsProp)[eventName]);
     });
   }
 
   private _removeEvents() {
-    const events: Record<string, () => void> = (this.props as any).events;
+    const events: EventsProp = this.props.events as EventsProp;
 
     if (!events || !this.element) {
       return;
     }
 
-    Object.entries(events).forEach((event) => {
-      this.element?.removeEventListener(event, events[event]);
+    Object.keys(events).forEach((event) => {
+      this.element.removeEventListener(event, events[event]);
     });
   }
 
@@ -152,20 +153,20 @@ export abstract class Block {
     });
   }
 
-  // Может переопределять пользователь, необязательно трогать
-  public componentDidMount() {}
+  public componentDidMount() {
+    return true;
+  }
 
   public dispatchComponentDidMount() {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
   }
 
-  _componentDidUpdate(oldProps: Props, newProps: Props) {
-    this.componentDidUpdate(oldProps, newProps);
+  private _componentDidUpdate() {
+    this.componentDidUpdate();
     this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
   }
 
-  // Может переопределять пользователь, необязательно трогать
-  public componentDidUpdate(oldProps: Props, newProps: Props) {
+  public componentDidUpdate() {
     return true;
   }
 
@@ -185,8 +186,7 @@ export abstract class Block {
     return this.element;
   }
 
-  _makePropsProxy(props: Record<string, unknown>): Record<string, unknown> {
-    const self = this;
+  _makePropsProxy(props: Record<string, unknown>, self: Block): Record<string, unknown> {
     const proxyData = new Proxy(props, {
       get(target, prop) {
         if (typeof prop !== "symbol") {
@@ -224,7 +224,7 @@ export abstract class Block {
 
   _createDocumentElement(tagName: string): HTMLElement {
     const element = document.createElement(tagName);
-    element.setAttribute("data-id", String(this.props?.id));
+    element.setAttribute("data-id", String(this.props.id));
     return element;
   }
 }

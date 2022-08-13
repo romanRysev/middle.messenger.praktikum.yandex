@@ -8,7 +8,7 @@ export class Avatar extends Block {
   constructor(props: Props) {
     super("div", { ...props });
   }
-  render(): string {
+  render(): ChildNode | null {
     return this.compile(tpl);
   }
 }

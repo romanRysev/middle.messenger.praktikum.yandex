@@ -33,17 +33,19 @@ export class Registration extends Block {
         name: "submit",
         disabled: true,
         callbacks: {
-          click: (event) => {
+          click: (event: Event) => {
             event.preventDefault();
-            const form = document.forms.registration;
-            console.log(getFormData(new FormData(form)));
+            const form = document.forms.namedItem("registration");
+            if (form) {
+              console.log(getFormData(new FormData(form)));
+            }
           },
         },
       }),
       ...props,
     });
   }
-  render(): string {
+  render(): ChildNode | null {
     return this.compile(tpl);
   }
 }

@@ -26,17 +26,19 @@ export class PasswordChange extends Block {
         text: "Save",
         name: "submit",
         callbacks: {
-          click: (event) => {
+          click: (event: Event) => {
             event.preventDefault();
-            const form = document.forms.passwordChange;
-            console.log(getFormData(new FormData(form)));
+            const form = document.forms.namedItem("passwordChange");
+            if (form) {
+              console.log(getFormData(new FormData(form)));
+            }
           },
         },
       }),
       ...props,
     });
   }
-  render(): string {
+  render(): ChildNode | null {
     return this.compile(tpl);
   }
 }

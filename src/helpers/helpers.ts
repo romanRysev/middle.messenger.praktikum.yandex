@@ -1,14 +1,16 @@
 import { Validator } from "../services/Validator/validator";
 
-export const validationOnBlur = (event, form) => {
+type ValidationOnBlur = (event: SubmitEvent, form: HTMLFormElement) => void;
+
+export const validationOnBlur: ValidationOnBlur = (event, form) => {
   const v = new Validator(form);
   v.setSubmitButtonState(v.checkInputValidity(event));
 };
 
-export const getFormData = (formData) => {
-  const res = {};
+export const getFormData = (formData: FormData) => {
+  const formDataObject: Record<string, FormDataEntryValue> = {};
   for (const pair of formData.entries()) {
-    res[pair[0]] = pair[1];
+    formDataObject[pair[0]] = pair[1];
   }
-  return res;
+  return formDataObject;
 };

@@ -2,9 +2,17 @@ import { Profile } from "../../modules/profile/profile";
 import { Signin } from "../../modules/entry/signin";
 import { Registration } from "../../modules/entry/registration";
 import { ProfileEdit } from "../../modules/profile/profile-edit";
-import { ErrorTemplate } from "../../modules/error/error";
 import { PasswordChange } from "../../modules/profile/password-change";
 import { chatsModue } from "../../modules/chat/chat";
+import { Block } from "../../modules/block/block";
+
+export type Route = {
+  templateName: string;
+  location: string;
+  params?: { content: Block; ["string"]?: unknown };
+};
+
+type Routes = Record<string, Route>;
 
 export const routes: Routes = {
   mainPage: {
@@ -24,31 +32,26 @@ export const routes: Routes = {
   profile: {
     templateName: "profile",
     location: "/profile",
-    params: { content: new Profile() },
+    params: { content: new Profile({}) },
   },
   signin: {
     templateName: "signin",
     location: "/signin",
-    params: { content: new Signin() },
+    params: { content: new Signin({}) },
   },
   registration: {
     templateName: "registration",
     location: "/registration",
-    params: { content: new Registration() },
-  },
-  error: {
-    templateName: "error",
-    location: "/error",
-    params: { content: new ErrorTemplate() },
+    params: { content: new Registration({}) },
   },
   profileEdit: {
     templateName: "profileEdit",
     location: "/edit-profile",
-    params: { content: new ProfileEdit() },
+    params: { content: new ProfileEdit({}) },
   },
   passwordChange: {
     templateName: "passwordChange",
     location: "/change-password",
-    params: { content: new PasswordChange() },
+    params: { content: new PasswordChange({}) },
   },
 };

@@ -1,28 +1,36 @@
 export class Validator {
-  constructor(form) {
+  constructor(form: HTMLFormElement) {
     this.form = form;
   }
 
   form;
 
-  checkInputValidity(event) {
-    const errorElement = event?.target.nextElementSibling;
+  checkInputValidity(event: SubmitEvent) {
+    const errorElement = (event.target as Element)?.nextElementSibling;
+
     if (!this.form.checkValidity()) {
-      errorElement.textContent = "Проверьте правильность данных";
+      if (errorElement) {
+        errorElement.textContent = "Проверьте правильность данных";
+      }
       return false;
     }
-    errorElement.textContent = "";
+    if (errorElement) {
+      errorElement.textContent = "";
+    }
+
     return true;
   }
 
-  setSubmitButtonState(result) {
-    const button = this.form.elements.submit;
-    if (result) {
-      button.classList.remove("button_disabled");
-      button.removeAttribute("disabled");
-    } else {
-      button.classList.add("button_disabled");
-      button.setAttribute("disabled", true);
+  setSubmitButtonState(valid: boolean) {
+    const button = this.form.elements.namedItem("submit");
+    if (button && button instanceof Element) {
+      if (valid) {
+        button.classList.remove("button_disabled");
+        button.removeAttribute("disabled");
+      } else {
+        button.classList.add("button_disabled");
+        button.setAttribute("disabled", "true");
+      }
     }
   }
 }
