@@ -140,9 +140,7 @@ export abstract class Block {
   }
 
   // Может переопределять пользователь, необязательно трогать
-  public componentDidMount() {
-    console.log("mounted");
-  }
+  public componentDidMount() {}
 
   public dispatchComponentDidMount() {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
@@ -155,8 +153,6 @@ export abstract class Block {
 
   // Может переопределять пользователь, необязательно трогать
   public componentDidUpdate(oldProps: Props, newProps: Props) {
-    console.log("updated", this.props.current);
-
     return true;
   }
 

@@ -4,6 +4,7 @@ import { Block, Props } from "../block/block";
 import tpl from "./chat.hbs";
 import "./chat.scss";
 import { list } from "./tempData";
+import sendIconUrl from "../../../static/forward.svg";
 
 let current = { item: list[0] };
 
@@ -41,8 +42,8 @@ export class Chats extends Block {
       shortView: chats,
       list,
       messages: currentItem.item.messages,
-      messageInput: new Input({ placeholder: "text...", name: "message", class: "chat__message-input" }),
-      searchInput: new Input({ placeholder: "search" }),
+      sendIconUrl: sendIconUrl,
+      searchInput: new Input({ type: "text", placeholder: "search" }),
       callbacks: {
         submit: (event) => {
           event.preventDefault();

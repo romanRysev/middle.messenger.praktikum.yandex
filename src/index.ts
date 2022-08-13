@@ -12,15 +12,6 @@ import { router } from "./services/router/router";
 
 const layout = new MainLayout({
   ...router.currentRoute?.params,
-  /*events: {
-    click: (event) => {
-      console.log(event);
-    },
-  },*/
 });
 
 renderer.render(layout, { ...router.currentRoute?.params });
-
-/*setTimeout(() => {
-  layout.setProps({ content: new Signin() });
-}, 2000);*/

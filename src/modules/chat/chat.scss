@@ -67,3 +67,9 @@ box-sizing: border-box;
 .chat__message-input {
   width: 100%;
 }
+
+.chat__send-button {
+  background-color: white;
+  border: none;
+  cursor: pointer;
+}

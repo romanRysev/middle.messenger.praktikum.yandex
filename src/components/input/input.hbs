@@ -1,10 +1,22 @@
 <div class="input">
-  <span class="input__title">{{placeholder}}</span>
+  <label class="input__label"><span class="input__title">{{label}}</span>
   <input
     class="{{class}} input__field"
     type="{{type}}"
     placeholder="{{placeholder}}"
     name="{{name}}"
-  />
+    {{#if minlength}}
+    minlength="{{minlength}}"
+    {{/if}}
+    {{#if maxlength}}
+    maxlength="{{maxlength}}"
+    {{/if}}
+    {{#if pattern}}
+    pattern="{{pattern}}"
+    {{/if}}
+    {{#if required}}
+    required
+    {{/if}}
+  /></label>
   <span class="{{errorClass}} input__error">{{errorText}}</span>
 </div>

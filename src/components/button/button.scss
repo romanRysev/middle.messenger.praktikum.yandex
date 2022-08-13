@@ -5,8 +5,9 @@
   width: 280px;
   height: 37px;
   border: none;
+  cursor: pointer;
 }
 
-.button:hover {
-cursor: pointer;
+.button_disabled {
+  background-color: gray;
 }

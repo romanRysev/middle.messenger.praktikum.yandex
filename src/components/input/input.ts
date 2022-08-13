@@ -11,4 +11,13 @@ export class Input extends Block {
   render(): string {
     return this.compile(tpl);
   }
+
+  componentDidMount() {
+    const form = document.querySelector(".form");
+    if (this.props?.callbacks?.blur) {
+      this.getContent()?.addEventListener("focusout", (event) => {
+        return this.props.callbacks.blur(event, form);
+      });
+    }
+  }
 }
