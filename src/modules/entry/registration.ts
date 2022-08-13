@@ -28,7 +28,7 @@ export class Registration extends Block {
     super("div", {
       inputs,
       button: new Button({
-        class: "registration__button card__button button",
+        class: "registration__button card__button button button_disabled",
         text: "Registration",
         name: "submit",
         disabled: true,

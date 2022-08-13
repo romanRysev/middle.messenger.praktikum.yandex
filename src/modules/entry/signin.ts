@@ -16,7 +16,7 @@ export class Signin extends Block {
     super("div", {
       inputs,
       button: new Button({
-        class: "signin__button card__button",
+        class: "signin__button card__button button_disabled",
         text: "Sign in",
         name: "submit",
         callbacks: {

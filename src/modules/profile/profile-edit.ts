@@ -29,7 +29,7 @@ export class ProfileEdit extends Block {
     super("div", {
       inputs: inputs,
       button: new Button({
-        class: "profile-edit__button card__button",
+        class: "profile-edit__button card__button button_disabled",
         text: "Save",
         name: "submit",
         callbacks: {

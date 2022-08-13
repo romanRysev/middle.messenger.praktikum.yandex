@@ -22,7 +22,7 @@ export class PasswordChange extends Block {
     super("div", {
       inputs,
       button: new Button({
-        class: "password-change__button card__button",
+        class: "password-change__button card__button button_disabled",
         text: "Save",
         name: "submit",
         callbacks: {
