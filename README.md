@@ -23,6 +23,11 @@
 - `npm run build` — собрать дистрибутив
 - `npm run start` — запустить локальный сервер express,
 
+Дополнительные команды:
+
+- `npm run lint` — запустить линтеры,
+- `npm run tsc` — запустить проверку типов
+
 ## Макет
 
 Шаблоны страниц в [фигме](<https://www.figma.com/file/tjTyt0y8VmAYLPANE0sBlw/Chat_external_link-(Copy)>)
