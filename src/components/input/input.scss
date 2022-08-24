@@ -3,6 +3,11 @@
   flex-direction: column;
   max-width: 280px;
 
+  &__label {
+    display: flex;
+    flex-direction: column;
+  }
+
   &__title {
     font-size: 9px;
     line-height: 9px;
