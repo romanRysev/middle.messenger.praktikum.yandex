@@ -1,6 +1,6 @@
 import { Input } from "../../components/input/input";
 import { ShortView } from "../../components/short-view/short-view";
-import { Block } from "../block/block";
+import { Block } from "../../core/block/block";
 import tpl from "./chat.hbs";
 import "./chat.scss";
 import { list } from "./tempData";

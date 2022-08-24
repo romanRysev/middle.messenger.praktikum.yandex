@@ -1,4 +1,4 @@
-import { Block } from "../../modules/block/block";
+import { Block } from "../../core/block/block";
 
 export class Renreder {
   constructor(rootElement: Element) {

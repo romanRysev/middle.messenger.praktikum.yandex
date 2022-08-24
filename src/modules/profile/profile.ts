@@ -2,7 +2,7 @@ import tpl from "./profile.hbs";
 import avatarUrl from "../../../static/Union.svg";
 import "./profile.scss";
 import backIconUrl from "../../../static/back.svg";
-import { Block } from "../block/block";
+import { Block } from "../../core/block/block";
 import { Avatar } from "../../components/avatar/avatar";
 import { Button } from "../../components/button/button";
 

@@ -1,6 +1,6 @@
 import tpl from "./avatar.hbs";
 import "./avatar.scss";
-import { Block } from "../../modules/block/block";
+import { Block } from "../../core/block/block";
 
 export default (params: LayoutFunctionParams) => tpl(params);
 

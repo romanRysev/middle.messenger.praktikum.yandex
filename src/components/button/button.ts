@@ -1,4 +1,4 @@
-import { Block } from "../../modules/block/block";
+import { Block } from "../../core/block/block";
 import tpl from "./button.hbs";
 import "./button.scss";
 

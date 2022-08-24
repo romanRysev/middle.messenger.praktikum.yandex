@@ -4,7 +4,7 @@ import { Registration } from "../../modules/entry/registration";
 import { ProfileEdit } from "../../modules/profile/profile-edit";
 import { PasswordChange } from "../../modules/profile/password-change";
 import { chatsModue } from "../../modules/chat/chat";
-import { Block } from "../../modules/block/block";
+import { Block } from "../../core/block/block";
 
 export type Route = {
   templateName: string;

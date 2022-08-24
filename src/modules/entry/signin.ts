@@ -2,7 +2,7 @@ import { Button } from "../../components/button/button";
 import { Input } from "../../components/input/input";
 import { loginRegExp, passwordRegExp } from "../../constants/regexps";
 import { getFormData, validationOnBlur } from "../../helpers/helpers";
-import { Block } from "../block/block";
+import { Block } from "../../core/block/block";
 import tpl from "./signin.hbs";
 import "./signin.scss";
 

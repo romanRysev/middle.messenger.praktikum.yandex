@@ -1,4 +1,4 @@
-import { Block } from "../block/block";
+import { Block } from "../../core/block/block";
 import tpl from "./error.hbs";
 import "./error.scss";
 

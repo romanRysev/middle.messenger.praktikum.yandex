@@ -1,4 +1,4 @@
-import { Block } from "../../modules/block/block";
+import { Block } from "../../core/block/block";
 import { Avatar } from "../avatar/avatar";
 import tpl from "./short-view.hbs";
 import "./short-view.scss";

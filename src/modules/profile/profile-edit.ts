@@ -1,7 +1,7 @@
 import tpl from "./profile-edit.hbs";
 import "./profile-edit.scss";
 import avatarUrl from "../../../static/Union.svg";
-import { Block } from "../block/block";
+import { Block } from "../../core/block/block";
 import { Button } from "../../components/button/button";
 import { Input } from "../../components/input/input";
 import { loginRegExp, nameRegExp, phoneRegExp } from "../../constants/regexps";
