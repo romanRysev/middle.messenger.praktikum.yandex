@@ -186,7 +186,7 @@ export abstract class Block {
     return this.element;
   }
 
-  _makePropsProxy(props: Record<string, unknown>, self: Block): Record<string, unknown> {
+  private _makePropsProxy(props: Record<string, unknown>, self: Block): Record<string, unknown> {
     const proxyData = new Proxy(props, {
       get(target, prop) {
         if (typeof prop !== "symbol") {
@@ -222,9 +222,17 @@ export abstract class Block {
     return proxyData;
   }
 
-  _createDocumentElement(tagName: string): HTMLElement {
+  private _createDocumentElement(tagName: string): HTMLElement {
     const element = document.createElement(tagName);
     element.setAttribute("data-id", String(this.props.id));
     return element;
+  }
+
+  public show() {
+    this.getContent().style.display = "block";
+  }
+
+  public hide() {
+    this.getContent().style.display = "none";
   }
 }

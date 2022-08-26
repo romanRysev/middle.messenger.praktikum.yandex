@@ -5,6 +5,8 @@ import backIconUrl from "../../../static/back.svg";
 import { Block } from "../../core/block/block";
 import { Avatar } from "../../components/avatar/avatar";
 import { Button } from "../../components/button/button";
+import { Link } from "../../components/link/link";
+import { router } from "../../services/router/router";
 
 export class Profile extends Block {
   constructor(props: Props) {
@@ -16,6 +18,24 @@ export class Profile extends Block {
         events: {
           click: () => {
             window.location.replace("/signin");
+          },
+        },
+      }),
+      passwordLink: new Link({
+        text: "Change password",
+        events: {
+          click: (event: Event) => {
+            event.preventDefault();
+            router.go("/change-password");
+          },
+        },
+      }),
+      profileEditLink: new Link({
+        text: "Edit profile",
+        events: {
+          click: (event: Event) => {
+            event.preventDefault();
+            router.go("/edit-profile");
           },
         },
       }),
@@ -31,5 +51,12 @@ export class Profile extends Block {
   }
   render(): ChildNode | null {
     return this.compile(tpl);
+  }
+
+  public componentDidMount(): boolean {
+    document.querySelector(".profile-container__back-link")?.addEventListener("click", () => {
+      router.go("/chat");
+    });
+    return true;
   }
 }

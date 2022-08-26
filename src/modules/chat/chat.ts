@@ -6,6 +6,8 @@ import "./chat.scss";
 import { list } from "./tempData";
 import sendIconUrl from "../../../static/forward.svg";
 import { getFormData } from "../../helpers/helpers";
+import { router } from "../../services/router/router";
+import { Link } from "../../components/link/link";
 
 type Messages = {
   text: string;
@@ -79,6 +81,15 @@ export class Chats extends Block {
       messages: activeShortView.item.messages,
       sendIconUrl: sendIconUrl,
       searchInput: new Input({ type: "text", placeholder: "search" }),
+      profileLink: new Link({
+        text: "Profile >",
+        events: {
+          click: (event: Event) => {
+            event.preventDefault();
+            router.go("/profile");
+          },
+        },
+      }),
       callbacks: {
         submit: (event: SubmitEvent) => {
           event.preventDefault();

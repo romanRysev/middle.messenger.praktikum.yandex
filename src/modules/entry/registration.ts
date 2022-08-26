@@ -5,6 +5,8 @@ import { getFormData, validationOnBlur } from "../../helpers/helpers";
 import { Block } from "../../core/block/block";
 import tpl from "./registration.hbs";
 import "./registration.scss";
+import { Link } from "../../components/link/link";
+import { router } from "../../services/router/router";
 
 const inputs = [
   new Input({ label: "first name", type: "text", name: "first_name", placeholder: "first name", pattern: nameRegExp, callbacks: { blur: validationOnBlur } }),
@@ -39,6 +41,16 @@ export class Registration extends Block {
             if (form) {
               console.log(getFormData(new FormData(form)));
             }
+          },
+        },
+      }),
+      signinLink: new Link({
+        text: "Sign in",
+        class: "registration__link",
+        events: {
+          click: (event: Event) => {
+            event.preventDefault();
+            router.go("/signin");
           },
         },
       }),
