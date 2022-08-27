@@ -17,8 +17,4 @@ export class ShortView extends Block {
     this.getContent()?.addEventListener("click", (this.props as ShortViewProps).callbacks?.click.bind(this));
     return true;
   }
-
-  public componentDidUpdate(): boolean {
-    console.log(this.props);
-  }
 }

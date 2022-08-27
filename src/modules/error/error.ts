@@ -5,7 +5,7 @@ import tpl from "./error.hbs";
 import "./error.scss";
 
 export class ErrorTemplate extends Block {
-  constructor(props: Props = { code: "404", text: "Не туда попали" }) {
+  constructor(props: Props) {
     super("div", {
       chatsLink: new Link({
         text: "Back to chats",
@@ -17,6 +17,8 @@ export class ErrorTemplate extends Block {
           },
         },
       }),
+      code: "404",
+      text: "Не туда попали",
       ...props,
     });
   }

@@ -5,7 +5,7 @@ enum METHODS {
   DELETE = "DELETE",
 }
 
-type RequestOptions = { headers?: Record<string, string> | null; method?: METHODS; data?: Record<string, unknown> | null };
+type RequestOptions = { headers?: Record<string, string> | null; method?: METHODS; data?: Record<string, unknown> | null; timeout?: number };
 
 function queryStringify(data: Record<string, unknown>): string {
   if (typeof data !== "object") {
@@ -23,7 +23,7 @@ export class HTTPTransport {
     return this.request(url, { ...options, method: METHODS.GET }, options.timeout);
   };
 
-  post = (url: string, options = { timeout: 5000 }) => {
+  post = (url: string, options: RequestOptions = { timeout: 5000 }) => {
     return this.request(url, { ...options, method: METHODS.POST }, options.timeout);
   };
 
@@ -53,6 +53,7 @@ export class HTTPTransport {
       xhr.onload = function () {
         resolve(xhr);
       };
+      xhr.withCredentials = options.withCredentials;
 
       xhr.onabort = reject;
       xhr.onerror = reject;

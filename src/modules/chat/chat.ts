@@ -6,8 +6,9 @@ import "./chat.scss";
 import { list } from "./tempData";
 import sendIconUrl from "../../../static/forward.svg";
 import { getFormData } from "../../helpers/helpers";
-import { router } from "../../services/router/router";
+import { isEqual, router } from "../../services/router/router";
 import { Link } from "../../components/link/link";
+import { store, StoreEvents } from "../../core/store/store";
 
 type Messages = {
   text: string;
@@ -48,7 +49,7 @@ const activeShortView = new Proxy(activeChat, {
       const activeShortView = chats.find((el) => el.props.current === true);
       activeShortView?.setProps({ current: false });
       target[prop] = value;
-      setProps();
+      store.set("activeShortView.item", target[prop]);
       return true;
     }
     return false;
@@ -64,8 +65,9 @@ const chats = list.map((chatItem, ind) => {
         const newActiveChat = list.find((item) => {
           return item.chatId === this.props.chatId;
         });
+
         if (newActiveChat) {
-          activeShortView.item = newActiveChat;
+          activeShortView.item = JSON.parse(JSON.stringify(newActiveChat));
           this.setProps({ current: true });
         }
       },
@@ -105,6 +107,12 @@ export class Chats extends Block {
       },
       ...props,
     } as ChatsProps);
+
+    store.on(StoreEvents.Updated, () => {
+      if (store.getState().activeShortView?.item?.messages && !isEqual(this.props?.messages, store.getState().activeShortView?.item?.messages)) {
+        this.setProps({ messages: store.getState().activeShortView.item.messages });
+      }
+    });
   }
 
   render(): ChildNode | null {
@@ -118,7 +126,3 @@ export class Chats extends Block {
 }
 
 export const chatsModue = new Chats({});
-
-function setProps() {
-  chatsModue.setProps({ messages: activeShortView.item.messages });
-}

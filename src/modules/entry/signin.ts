@@ -7,10 +7,11 @@ import tpl from "./signin.hbs";
 import "./signin.scss";
 import { Link } from "../../components/link/link";
 import { router } from "../../services/router/router";
+import { Auth } from "../../services/api/auth";
 
 const inputs = [
   new Input({ label: "login", type: "text", name: "login", placeholder: "login", minlength: "3", maxlength: "20", pattern: loginRegExp, callbacks: { blur: validationOnBlur } }),
-  new Input({ label: "password", type: "password", name: "password", placeholder: "password", pattern: passwordRegExp, callbacks: { blur: validationOnBlur } }),
+  new Input({ label: "password", type: "password", name: "password", placeholder: "password", /* pattern: passwordRegExp,*/ callbacks: { blur: validationOnBlur } }),
 ];
 
 export class Signin extends Block {
@@ -21,12 +22,15 @@ export class Signin extends Block {
         class: "signin__button card__button button_disabled",
         text: "Sign in",
         name: "submit",
+        disabled: true,
         callbacks: {
           click: (event: Event) => {
             event.preventDefault();
-            const form = document.forms.namedItem("signin");
-            if (form) {
-              console.log(getFormData(new FormData(form)));
+            if (!this.element.attributes.getNamedItem("disabled")) {
+              const form = document.forms.namedItem("signin");
+              if (form) {
+                new Auth().signin(getFormData(new FormData(form)));
+              }
             }
           },
         },

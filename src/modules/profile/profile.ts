@@ -7,6 +7,7 @@ import { Avatar } from "../../components/avatar/avatar";
 import { Button } from "../../components/button/button";
 import { Link } from "../../components/link/link";
 import { router } from "../../services/router/router";
+import { Auth } from "../../services/api/auth";
 
 export class Profile extends Block {
   constructor(props: Props) {
@@ -17,7 +18,7 @@ export class Profile extends Block {
         text: "Sign out",
         events: {
           click: () => {
-            window.location.replace("/signin");
+            new Auth().signout().then(() => router.go("/signin"));
           },
         },
       }),
@@ -54,7 +55,8 @@ export class Profile extends Block {
   }
 
   public componentDidMount(): boolean {
-    document.querySelector(".profile-container__back-link")?.addEventListener("click", () => {
+    document.querySelector(".profile-container__back-link")?.addEventListener("click", (event) => {
+      event.preventDefault();
       router.go("/chat");
     });
     return true;

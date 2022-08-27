@@ -1,4 +1,5 @@
 import { Block } from "../../core/block/block";
+import { store } from "../../core/store/store";
 import { Chats } from "../../modules/chat/chat";
 import { Registration } from "../../modules/entry/registration";
 import { Signin } from "../../modules/entry/signin";
@@ -8,8 +9,16 @@ import { Profile } from "../../modules/profile/profile";
 import { ProfileEdit } from "../../modules/profile/profile-edit";
 import { renderer } from "../renderer/renderer";
 
-function isEqual(lhs: unknown, rhs: unknown) {
-  return lhs === rhs;
+export function isEqual(a: object, b: object): boolean {
+  const res = Object.keys(a).filter((key) => {
+    if (typeof (a as Indexed)[key] !== "object" || (a as Indexed)[key] === null) {
+      return (a as Indexed)[key] !== (b as Indexed)[key];
+    } else {
+      return !isEqual((a as Indexed)[key] as object, (b as Indexed)[key] as object);
+    }
+  });
+
+  return res.length === 0;
 }
 
 type BlockType = typeof Chats | typeof Registration | typeof Signin | typeof ErrorTemplate | typeof PasswordChange | typeof Profile | typeof ProfileEdit;
@@ -92,7 +101,21 @@ class Router {
   }
 
   _onRoute(pathname: string) {
-    const route = this.getRoute(pathname);
+    const signinPageUnreachable = pathname === "/signin" && store.getState().isAuthorized;
+    const unAuthorized = pathname !== "/signin" && pathname !== "/registration" && !store.getState().isAuthorized;
+
+    let path = pathname;
+    if (unAuthorized) {
+      this.history.replaceState({}, "", "/signin");
+      path = "/signin";
+    }
+
+    if (signinPageUnreachable) {
+      this.history.replaceState({}, "", "/");
+      path = "/";
+    }
+
+    const route = this.getRoute(path);
 
     if (this._currentRoute) {
       this._currentRoute.leave();
