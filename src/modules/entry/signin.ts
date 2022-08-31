@@ -11,7 +11,7 @@ import { Auth } from "../../services/api/auth";
 
 const inputs = [
   new Input({ label: "login", type: "text", name: "login", placeholder: "login", minlength: "3", maxlength: "20", pattern: loginRegExp, callbacks: { blur: validationOnBlur } }),
-  new Input({ label: "password", type: "password", name: "password", placeholder: "password", /* pattern: passwordRegExp,*/ callbacks: { blur: validationOnBlur } }),
+  new Input({ label: "password", type: "password", name: "password", placeholder: "password", pattern: passwordRegExp, callbacks: { blur: validationOnBlur } }),
 ];
 
 export class Signin extends Block {

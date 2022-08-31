@@ -25,7 +25,10 @@ export class Auth {
   }
   getUserInfo() {
     return requester.get(`${host}/user`, { headers, withCredentials: true }).then((data) => {
-      return data.status === 200;
+      if (data.status === 200) {
+        return JSON.parse(data.response);
+      }
+      return null;
     });
   }
 

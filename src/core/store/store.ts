@@ -43,7 +43,7 @@ function set(object: Indexed | unknown, path: string, value: unknown): Indexed |
 }
 
 class Store extends EventBus {
-  private state: Record<string, unknown> = { activeShortView: {} };
+  private state: Record<string, unknown> = { activeShortView: {}, isAuthorized: false, userData: {} };
 
   public set(path: string, value: unknown) {
     set(this.state, path, value);

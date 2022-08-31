@@ -1,10 +1,10 @@
 import { Validator } from "../services/validator/validator";
 
-type ValidationOnBlur = (event: SubmitEvent, form: HTMLFormElement) => void;
+type ValidationOnBlur = (form: HTMLFormElement) => void;
 
-export const validationOnBlur: ValidationOnBlur = (event, form) => {
+export const validationOnBlur: ValidationOnBlur = (form) => {
   const v = new Validator(form);
-  v.setSubmitButtonState(v.checkInputValidity(event));
+  v.getFormValidity();
 };
 
 export const getFormData = (formData: FormData) => {

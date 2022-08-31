@@ -5,10 +5,9 @@ export class Validator {
 
   form;
 
-  checkInputValidity(event: SubmitEvent) {
-    const errorElement = (event.target as Element)?.nextElementSibling;
-
-    if (!this.form.checkValidity()) {
+  checkInputValidity(element: HTMLInputElement) {
+    const errorElement = element.nextElementSibling;
+    if (!element.checkValidity()) {
       if (errorElement) {
         errorElement.textContent = "Проверьте правильность данных";
       }
@@ -19,6 +18,11 @@ export class Validator {
     }
 
     return true;
+  }
+
+  getFormValidity() {
+    const isValid = Array.from(this.form.elements).filter((el) => !this.checkInputValidity(el)).length === 0;
+    this.setSubmitButtonState(isValid);
   }
 
   setSubmitButtonState(valid: boolean) {

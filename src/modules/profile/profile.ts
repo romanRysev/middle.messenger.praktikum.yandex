@@ -8,6 +8,7 @@ import { Button } from "../../components/button/button";
 import { Link } from "../../components/link/link";
 import { router } from "../../services/router/router";
 import { Auth } from "../../services/api/auth";
+import { store, StoreEvents } from "../../core/store/store";
 
 export class Profile extends Block {
   constructor(props: Props) {
@@ -41,13 +42,26 @@ export class Profile extends Block {
         },
       }),
       backIconUrl,
-      firstName: "Roman",
-      email: "roman@gmail.com",
-      login: "roman",
-      lastName: "Rysev",
-      displayName: "ROM",
-      phone: "+71237894567",
+      firstName: store.getState().userData.first_name,
+      email: store.getState().userData.email,
+      login: store.getState().userData.login,
+      lastName: store.getState().userData.second_name,
+      displayName: store.getState().userData.display_name,
+      phone: store.getState().userData.phone,
       ...props,
+    });
+
+    store.on(StoreEvents.Updated, () => {
+      if (store.getState().userData) {
+        this.setProps({
+          firstName: store.getState().userData.first_name,
+          email: store.getState().userData.email,
+          login: store.getState().userData.login,
+          lastName: store.getState().userData.second_name,
+          displayName: store.getState().userData.display_name,
+          phone: store.getState().userData.phone,
+        });
+      }
     });
   }
   render(): ChildNode | null {

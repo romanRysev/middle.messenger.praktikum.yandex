@@ -6,10 +6,11 @@ import { Auth } from "./services/api/auth";
 import { router } from "./services/router/router";
 
 async function init() {
-  const res = await new Auth().getUserInfo();
+  const userData = await new Auth().getUserInfo();
 
-  if (res) {
+  if (userData) {
     store.set("isAuthorized", true);
+    store.set("userData", userData);
   } else {
     store.set("isAuthorized", false);
   }

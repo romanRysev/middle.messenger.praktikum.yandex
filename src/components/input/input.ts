@@ -16,8 +16,8 @@ export class Input extends Block {
     const form = document.querySelector(".form");
     if (form && form instanceof HTMLFormElement) {
       if ((this.props.callbacks as EventsProp)?.blur) {
-        this.getContent()?.addEventListener("focusout", (event) => {
-          return (this.props as InputProps).callbacks?.blur(event, form);
+        this.getContent()?.addEventListener("focusout", () => {
+          return (this.props as InputProps).callbacks?.blur(form);
         });
       }
     }
