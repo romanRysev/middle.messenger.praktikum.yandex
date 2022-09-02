@@ -7,6 +7,7 @@ import tpl from "./registration.hbs";
 import "./registration.scss";
 import { Link } from "../../components/link/link";
 import { router } from "../../services/router/router";
+import { Auth } from "../../services/api/auth";
 
 const inputs = [
   new Input({ label: "first name", type: "text", name: "first_name", placeholder: "first name", pattern: nameRegExp, callbacks: { blur: validationOnBlur } }),
@@ -30,16 +31,17 @@ export class Registration extends Block {
     super("div", {
       inputs,
       button: new Button({
-        class: "registration__button card__button button button_disabled",
+        class: "registration__button card__button button",
         text: "Registration",
         name: "submit",
-        disabled: true,
         callbacks: {
           click: (event: Event) => {
             event.preventDefault();
-            const form = document.forms.namedItem("registration");
-            if (form) {
-              console.log(getFormData(new FormData(form)));
+            if (!this.element.attributes.getNamedItem("disabled")) {
+              const form = document.forms.namedItem("registration");
+              if (form) {
+                new Auth().signup(getFormData(new FormData(form)));
+              }
             }
           },
         },

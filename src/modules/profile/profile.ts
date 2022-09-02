@@ -9,11 +9,26 @@ import { Link } from "../../components/link/link";
 import { router } from "../../services/router/router";
 import { Auth } from "../../services/api/auth";
 import { store, StoreEvents } from "../../core/store/store";
+import { Modal } from "../../components/modal/modal";
+import { AvatarChangeModal } from "../../components/modal/avatar-change-modal";
+import { renderer } from "../../services/renderer/renderer";
 
 export class Profile extends Block {
   constructor(props: Props) {
     super("div", {
-      avatar: new Avatar({ url: avatarUrl, class: "profile__avatar", height: 130, width: 130 }),
+      avatar: new Avatar({
+        url: store.getState().userData.avatar ? "https://ya-praktikum.tech/api/v2/resources" + store.getState().userData.avatar : avatarUrl,
+        class: "profile__avatar",
+        height: 130,
+        width: 130,
+        events: {
+          click: () => {
+            console.log(12);
+
+            renderer.render(new Modal({ content: new AvatarChangeModal({}) }), ".popup-container");
+          },
+        },
+      }),
       button: new Button({
         class: "profile__button",
         text: "Sign out",

@@ -5,9 +5,9 @@ enum METHODS {
   DELETE = "DELETE",
 }
 
-type RequestOptions = { headers?: Record<string, string> | null; method?: METHODS; data?: Record<string, unknown> | null; timeout?: number };
+type RequestOptions = { headers?: Record<string, string> | null; method?: METHODS; data?: Record<string, unknown> | FormData | null; timeout?: number; withCredentials?: boolean; file?: boolean };
 
-function queryStringify(data: Record<string, unknown>): string {
+function queryStringify(data: Record<string, unknown> | FormData): string {
   if (typeof data !== "object") {
     throw new Error("Data must be object");
   }
@@ -19,7 +19,7 @@ function queryStringify(data: Record<string, unknown>): string {
 }
 
 export class HTTPTransport {
-  get = (url: string, options = { timeout: 5000 }) => {
+  get = (url: string, options: RequestOptions = { timeout: 5000 }) => {
     return this.request(url, { ...options, method: METHODS.GET }, options.timeout);
   };
 
@@ -27,11 +27,11 @@ export class HTTPTransport {
     return this.request(url, { ...options, method: METHODS.POST }, options.timeout);
   };
 
-  put = (url: string, options = { timeout: 5000 }) => {
+  put = (url: string, options: RequestOptions = { timeout: 5000 }) => {
     return this.request(url, { ...options, method: METHODS.PUT }, options.timeout);
   };
 
-  delete = (url: string, options = { timeout: 5000 }) => {
+  delete = (url: string, options: RequestOptions = { timeout: 5000 }) => {
     return this.request(url, { ...options, method: METHODS.DELETE }, options.timeout);
   };
 
@@ -53,7 +53,10 @@ export class HTTPTransport {
       xhr.onload = function () {
         resolve(xhr);
       };
-      xhr.withCredentials = options.withCredentials;
+
+      if (options.withCredentials) {
+        xhr.withCredentials = options.withCredentials;
+      }
 
       xhr.onabort = reject;
       xhr.onerror = reject;
@@ -63,6 +66,8 @@ export class HTTPTransport {
 
       if (isGet || !data) {
         xhr.send();
+      } else if (options.file) {
+        xhr.send(data as FormData);
       } else {
         xhr.send(JSON.stringify(data));
       }
