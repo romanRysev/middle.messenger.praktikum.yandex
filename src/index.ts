@@ -6,14 +6,20 @@ import { Auth } from "./services/api/auth";
 import { router } from "./services/router/router";
 
 async function init() {
-  const userData = await new Auth().getUserInfo();
-
-  if (userData) {
-    store.set("isAuthorized", true);
-    store.set("userData", userData);
-  } else {
+  try {
+    const userData = await new Auth().getUserInfo();
+    if (userData) {
+      store.set("isAuthorized", true);
+      store.set("userData", userData);
+    } else {
+      store.set("isAuthorized", false);
+    }
+    router.start();
+  } catch (error) {
+    console.log(error);
     store.set("isAuthorized", false);
+    store.set("userData", {});
+    router.start();
   }
-  router.start();
 }
 init();

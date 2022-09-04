@@ -9,6 +9,11 @@ import { getFormData } from "../../helpers/helpers";
 import { isEqual, router } from "../../services/router/router";
 import { Link } from "../../components/link/link";
 import { store, StoreEvents } from "../../core/store/store";
+import { ChatAPI } from "../../services/api/chat";
+
+async function getChats() {
+  return new ChatAPI().getChats();
+}
 
 type Messages = {
   text: string;
@@ -17,17 +22,22 @@ type Messages = {
 }[];
 
 type ListItem = {
-  chatId: number;
-  userName: string;
-  shortText: string;
-  lastMessageTime: string;
-  unreadNumber: number;
-  avatarUrl: string;
-  messages: {
-    text: string;
+  id: number;
+  title: string;
+  avatar: string;
+  unread_count: number;
+  last_message: {
+    user: {
+      first_name: string;
+      second_name: string;
+      avatar: string;
+      email: string;
+      login: string;
+      phone: string;
+    };
     time: string;
-    isMy: boolean;
-  }[];
+    content: string;
+  };
 };
 
 type List = ListItem[];
@@ -63,7 +73,7 @@ const chats = list.map((chatItem, ind) => {
     callbacks: {
       click: function () {
         const newActiveChat = list.find((item) => {
-          return item.chatId === this.props.chatId;
+          return item.id === this.props.id;
         });
 
         if (newActiveChat) {
@@ -121,6 +131,29 @@ export class Chats extends Block {
 
   componentDidMount() {
     this.getContent()?.addEventListener("submit", (this.props as ChatsProps)?.callbacks?.submit?.bind(this));
+    getChats().then((data) => {
+      this.setProps({
+        shortView: data.map((chatItem, ind) => {
+          return new ShortView({
+            ...chatItem,
+            current: ind === 0 ? true : false,
+            callbacks: {
+              click: function () {
+                const newActiveChat = list.find((item) => {
+                  return item.id === this.props.id;
+                });
+
+                if (newActiveChat) {
+                  activeShortView.item = JSON.parse(JSON.stringify(newActiveChat));
+                  this.setProps({ current: true });
+                }
+              },
+            },
+          });
+        }),
+      });
+      console.log(this.props.shortView);
+    });
     return true;
   }
 }

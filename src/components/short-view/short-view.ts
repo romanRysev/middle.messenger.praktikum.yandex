@@ -7,7 +7,17 @@ import avatarUrl from "../../../static/Union.svg";
 type ShortViewProps = { avatar: Block; callbacks?: EventsProp };
 export class ShortView extends Block {
   constructor(props: Props) {
-    super("div", { avatar: new Avatar({ url: props.avatarUrl ?? avatarUrl, class: "profile__avatar", height: 64, width: 64 }), ...props });
+    super("div", {
+      avatarComponent: new Avatar({
+        url: "https://ya-praktikum.tech/api/v2/resources" + props.avatar,
+        class: "profile__avatar",
+        alt: "avatar",
+        height: 64,
+        width: 64,
+      }),
+      ...props,
+    });
+    console.log(this.props.avatar);
   }
   render(): ChildNode | null {
     return this.compile(tpl);
