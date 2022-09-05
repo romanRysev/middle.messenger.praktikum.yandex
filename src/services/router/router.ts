@@ -1,12 +1,5 @@
 import { Block } from "../../core/block/block";
 import { store } from "../../core/store/store";
-import { Chats } from "../../modules/chat/chat";
-import { Registration } from "../../modules/entry/registration";
-import { Signin } from "../../modules/entry/signin";
-import { ErrorTemplate } from "../../modules/error/error";
-import { PasswordChange } from "../../modules/profile/password-change";
-import { Profile } from "../../modules/profile/profile";
-import { ProfileEdit } from "../../modules/profile/profile-edit";
 import { renderer } from "../renderer/renderer";
 
 export function isEqual(a: object, b: object): boolean {
@@ -21,7 +14,7 @@ export function isEqual(a: object, b: object): boolean {
   return res.length === 0;
 }
 
-type BlockType = typeof Chats | typeof Registration | typeof Signin | typeof ErrorTemplate | typeof PasswordChange | typeof Profile | typeof ProfileEdit;
+//type BlockType = typeof Chats | typeof Registration | typeof Signin | typeof ErrorTemplate | typeof PasswordChange | typeof Profile | typeof ProfileEdit;
 
 class Route {
   private _pathname: string;
@@ -64,7 +57,7 @@ class Route {
   }
 }
 
-class Router {
+export class Router {
   public routes: Route[];
   public history: History;
   private _currentRoute: Route | null;
@@ -92,8 +85,6 @@ class Router {
 
   start() {
     window.onpopstate = (event) => {
-      console.log(event);
-
       this._onRoute((event.currentTarget as Window)?.location.pathname);
     };
 
@@ -131,7 +122,10 @@ class Router {
   }
 
   back() {
+    console.log(this.history.length);
+
     this.history.back();
+    console.log(this.history.length);
   }
 
   forward() {
@@ -144,21 +138,7 @@ class Router {
     if (route) {
       return route;
     } else {
-      return this.routes.find((route) => route.match("/404")) ?? new Route("/404", ErrorTemplate, { rootQuery: this._rootQuery });
+      return this.routes.find((route) => route.match("/404")) /*?? new Route("/404", ErrorTemplate, { rootQuery: this._rootQuery })*/;
     }
   }
 }
-
-const routerModule = new Router("#app");
-
-routerModule
-  .use("/chat", Chats)
-  .use("/", Chats)
-  .use("/profile", Profile)
-  .use("/signin", Signin)
-  .use("/registration", Registration)
-  .use("/edit-profile", ProfileEdit)
-  .use("/change-password", PasswordChange)
-  .use("/404", ErrorTemplate);
-
-export const router = routerModule;

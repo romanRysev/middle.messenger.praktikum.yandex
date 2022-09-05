@@ -1,5 +1,5 @@
 import { store } from "../../core/store/store";
-import { router } from "../router/router";
+import { router } from "../../index";
 import { HTTPTransport } from "../../core/api/requester";
 
 const requester = new HTTPTransport();

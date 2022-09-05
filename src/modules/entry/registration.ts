@@ -6,7 +6,7 @@ import { Block } from "../../core/block/block";
 import tpl from "./registration.hbs";
 import "./registration.scss";
 import { Link } from "../../components/link/link";
-import { router } from "../../services/router/router";
+import { router } from "../../index";
 import { Auth } from "../../services/api/auth";
 
 const inputs = [

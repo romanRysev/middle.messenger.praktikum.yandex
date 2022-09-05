@@ -6,7 +6,7 @@ import { Block } from "../../core/block/block";
 import { Avatar } from "../../components/avatar/avatar";
 import { Button } from "../../components/button/button";
 import { Link } from "../../components/link/link";
-import { router } from "../../services/router/router";
+import { router } from "../../index";
 import { Auth } from "../../services/api/auth";
 import { store, StoreEvents } from "../../core/store/store";
 import { Modal } from "../../components/modal/modal";

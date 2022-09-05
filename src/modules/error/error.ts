@@ -1,6 +1,6 @@
 import { Link } from "../../components/link/link";
 import { Block } from "../../core/block/block";
-import { router } from "../../services/router/router";
+import { router } from "../../index";
 import tpl from "./error.hbs";
 import "./error.scss";
 
