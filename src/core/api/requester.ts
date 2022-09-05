@@ -38,7 +38,7 @@ export class HTTPTransport {
   request = (url: string, options: RequestOptions = { headers: null, method: METHODS.GET, data: null }, timeout = 5000) => {
     const { headers, method = METHODS.GET, data } = options;
 
-    return new Promise(function (resolve, reject) {
+    return new Promise<XMLHttpRequest>(function (resolve, reject) {
       const xhr = new XMLHttpRequest();
       const isGet = method === METHODS.GET;
 

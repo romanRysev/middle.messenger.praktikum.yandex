@@ -1,9 +1,10 @@
 import { store } from "../../core/store/store";
 import { router } from "../../index";
 import { HTTPTransport } from "../../core/api/requester";
+import { HOST } from "../../constants/base";
 
 const requester = new HTTPTransport();
-const host = "https://ya-praktikum.tech/api/v2/auth";
+const host = `${HOST}auth`;
 const headers = { "Access-Control-Allow-Credentials": "true", "content-type": "application/json" };
 
 export class Auth {

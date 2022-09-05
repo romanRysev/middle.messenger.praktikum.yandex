@@ -12,19 +12,18 @@ import { store, StoreEvents } from "../../core/store/store";
 import { Modal } from "../../components/modal/modal";
 import { AvatarChangeModal } from "../../components/modal/avatar-change-modal";
 import { renderer } from "../../services/renderer/renderer";
+import { HOST } from "../../constants/base";
 
 export class Profile extends Block {
   constructor(props: Props) {
     super("div", {
       avatar: new Avatar({
-        url: store.getState().userData.avatar ? "https://ya-praktikum.tech/api/v2/resources" + store.getState().userData.avatar : avatarUrl,
+        url: store.getState().userData.avatar ? `${HOST}resources` + store.getState().userData.avatar : avatarUrl,
         class: "profile__avatar",
         height: 130,
         width: 130,
         events: {
           click: () => {
-            console.log(12);
-
             renderer.render(new Modal({ content: new AvatarChangeModal({}) }), ".popup-container");
           },
         },

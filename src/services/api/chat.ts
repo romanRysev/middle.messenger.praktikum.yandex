@@ -1,14 +1,14 @@
 import { store } from "../../core/store/store";
 import { router } from "../../index";
 import { HTTPTransport } from "../../core/api/requester";
+import { HOST } from "../../constants/base";
 
 const requester = new HTTPTransport();
-const host = "https://ya-praktikum.tech/api/v2";
 const headers = { "Access-Control-Allow-Credentials": "true", "content-type": "application/json" };
 
 export class ChatAPI {
   createChat(title: string) {
-    return requester.post(`${host}/chats`, { headers, withCredentials: true, data: { title: title } }).then((data: XMLHttpRequest) => {
+    return requester.post(`${HOST}chats`, { headers, withCredentials: true, data: { title: title } }).then((data) => {
       if (data.status === 200) {
         console.log(data.response);
         return true;
@@ -17,7 +17,7 @@ export class ChatAPI {
   }
 
   getChats() {
-    return requester.get(`${host}/chats`, { headers, withCredentials: true }).then((data: XMLHttpRequest) => {
+    return requester.get(`${HOST}chats`, { headers, withCredentials: true }).then((data) => {
       if (data.status === 200) {
         return data.response;
       }
@@ -31,7 +31,7 @@ export class ChatAPI {
    * Лучше ничего не придумал...
    */
   isExists(url: string) {
-    return requester.get(url, { headers, withCredentials: true }).then((data: XMLHttpRequest) => {
+    return requester.get(url, { headers, withCredentials: true }).then((data) => {
       if (data.status === 200) {
         console.log(data.response);
         return true;

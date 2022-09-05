@@ -152,7 +152,6 @@ export class Chats extends Block {
           });
         }),
       });
-      console.log(this.props.shortView);
     });
     return true;
   }

@@ -122,10 +122,7 @@ export class Router {
   }
 
   back() {
-    console.log(this.history.length);
-
     this.history.back();
-    console.log(this.history.length);
   }
 
   forward() {
