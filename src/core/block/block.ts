@@ -205,7 +205,7 @@ export abstract class Block {
             throw new Error("нет доступа");
           }
 
-          if (value instanceof Block) {
+          if (value instanceof Block || (Array.isArray(value) && value[0] instanceof Block)) {
             self.children[prop] = value;
           } else {
             target[prop] = value;

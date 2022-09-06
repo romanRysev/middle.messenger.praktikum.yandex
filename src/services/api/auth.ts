@@ -11,7 +11,7 @@ export class Auth {
   signup(data: Record<string, FormDataEntryValue>) {
     return requester.post(`${host}/signup`, { headers, withCredentials: true, data: data }).then((data) => {
       if (data.status === 200) {
-        router.go("/signin");
+        router.go("/");
       }
     });
   }

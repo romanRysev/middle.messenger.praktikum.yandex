@@ -5,11 +5,10 @@
 {{/if}}
   {{{avatarComponent}}}
   <div class="short-view__central-column">
-    <h3 class="short-view__username">{{last_message.user.first_name}}</h3>
-    <p class="short-view__short-text">{{last_message.content}}</p>
+    <h3 class="short-view__username">{{title}}</h3>
+    <p class="short-view__short-text">{{last_message}}</p>
   </div>
   <div class="short-view__right-column">
-    <small class="short-view__last-message-time">{{last_message.time}}</small>
     {{#if unread_count}}
       <div class="short-view__unread-number">{{unread_count}}</div>
     {{/if}}

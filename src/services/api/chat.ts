@@ -8,7 +8,7 @@ const headers = { "Access-Control-Allow-Credentials": "true", "content-type": "a
 
 export class ChatAPI {
   createChat(title: string) {
-    return requester.post(`${HOST}chats`, { headers, withCredentials: true, data: { title: title } }).then((data) => {
+    requester.post(`${HOST}chats`, { headers, withCredentials: true, data: { title: title } }).then((data) => {
       if (data.status === 200) {
         console.log(data.response);
         return true;
@@ -19,7 +19,7 @@ export class ChatAPI {
   getChats() {
     return requester.get(`${HOST}chats`, { headers, withCredentials: true }).then((data) => {
       if (data.status === 200) {
-        return data.response;
+        return JSON.parse(data.response);
       }
       return [];
     });

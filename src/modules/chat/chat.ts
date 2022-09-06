@@ -6,10 +6,12 @@ import "./chat.scss";
 import { list } from "./tempData";
 import sendIconUrl from "../../../static/forward.svg";
 import { getFormData } from "../../helpers/helpers";
-import { isEqual, router } from "../../services/router/router";
+import { isEqual } from "../../services/router/router";
 import { Link } from "../../components/link/link";
 import { store, StoreEvents } from "../../core/store/store";
 import { ChatAPI } from "../../services/api/chat";
+import { Button } from "../../components/button/button";
+import { router } from "../..";
 
 async function getChats() {
   return new ChatAPI().getChats();
@@ -43,8 +45,7 @@ type ListItem = {
 type List = ListItem[];
 
 type ChatsProps = {
-  shortView: Block[];
-  list: List;
+  shortView?: Block[];
   messages: Messages;
   sendIconUrl: "";
   searchInput: Input;
@@ -56,8 +57,8 @@ const activeChat: Record<string, ListItem> = { item: list[0] };
 const activeShortView = new Proxy(activeChat, {
   set(target, prop, value) {
     if (typeof prop !== "symbol") {
-      const activeShortView = chats.find((el) => el.props.current === true);
-      activeShortView?.setProps({ current: false });
+      //const activeShortView = chats.find((el) => el.props.current === true);
+      //activeShortView?.setProps({ current: false });
       target[prop] = value;
       store.set("activeShortView.item", target[prop]);
       return true;
@@ -66,7 +67,7 @@ const activeShortView = new Proxy(activeChat, {
   },
 });
 
-const chats = list.map((chatItem, ind) => {
+/*const chats = list.map((chatItem, ind) => {
   return new ShortView({
     ...chatItem,
     current: ind === 0 ? true : false,
@@ -83,16 +84,50 @@ const chats = list.map((chatItem, ind) => {
       },
     },
   });
-});
+});*/
+
+function setChats(chats) {
+  return {
+    shortView: chats.map((chatItem, ind) => {
+      return new ShortView({
+        ...chatItem,
+        current: ind === 0 ? true : false,
+        callbacks: {
+          click: function () {
+            const newActiveChat = list.find((item) => {
+              return item.id === this.props.id;
+            });
+
+            if (newActiveChat) {
+              activeShortView.item = JSON.parse(JSON.stringify(newActiveChat));
+              this.setProps({ current: true });
+            }
+          },
+        },
+      });
+    }),
+  };
+}
 
 export class Chats extends Block {
   constructor(props: Props) {
     super("div", {
-      shortView: chats,
-      list,
+      //shortView: [],
+      //list,
       messages: activeShortView.item.messages,
       sendIconUrl: sendIconUrl,
       searchInput: new Input({ type: "text", placeholder: "search" }),
+      newChatButton: new Button({
+        text: "new chat",
+        events: {
+          click: async () => {
+            const chatApi = new ChatAPI();
+            await chatApi.createChat("new chat");
+            const newChats = await chatApi.getChats();
+            this.setProps(setChats(newChats));
+          },
+        },
+      }),
       profileLink: new Link({
         text: "Profile >",
         events: {
@@ -132,26 +167,7 @@ export class Chats extends Block {
   componentDidMount() {
     this.getContent()?.addEventListener("submit", (this.props as ChatsProps)?.callbacks?.submit?.bind(this));
     getChats().then((data) => {
-      this.setProps({
-        shortView: data.map((chatItem, ind) => {
-          return new ShortView({
-            ...chatItem,
-            current: ind === 0 ? true : false,
-            callbacks: {
-              click: function () {
-                const newActiveChat = list.find((item) => {
-                  return item.id === this.props.id;
-                });
-
-                if (newActiveChat) {
-                  activeShortView.item = JSON.parse(JSON.stringify(newActiveChat));
-                  this.setProps({ current: true });
-                }
-              },
-            },
-          });
-        }),
-      });
+      this.setProps(setChats(data));
     });
     return true;
   }

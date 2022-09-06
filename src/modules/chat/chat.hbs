@@ -4,9 +4,12 @@
     {{{searchInput}}}
     <hr class="divider_h" />
     <div class="chat__list">
-      {{{shortView}}}
+      {{#if this.shortView}}
+        {{{shortView}}}
+      {{/if}}
       <hr class="divider_h" />
     </div>
+    {{{newChatButton}}}
   </aside>
   <section class="chat__right-column">
     <div class="chat__messages">
