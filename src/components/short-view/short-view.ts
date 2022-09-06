@@ -4,6 +4,7 @@ import tpl from "./short-view.hbs";
 import "./short-view.scss";
 import avatarUrl from "../../../static/Union.svg";
 import { HOST } from "../../constants/base";
+import { store, StoreEvents } from "../../core/store/store";
 
 function getAvatarUrl(avatar: string | null) {
   if (!avatar) return avatarUrl;
@@ -24,13 +25,23 @@ export class ShortView extends Block {
       }),
       ...props,
     });
+
+    store.on(StoreEvents.Updated, () => {
+      if (store.getState().activeChat !== this.props.id) {
+        this.setProps({ current: false });
+      }
+    });
   }
   render(): ChildNode | null {
     return this.compile(tpl);
   }
 
   componentDidMount() {
-    this.getContent()?.addEventListener("click", (this.props as ShortViewProps).callbacks?.click.bind(this));
+    this.getContent().addEventListener("click", () => {
+      store.set("activeChat", this.props.id);
+      this.setProps({ current: true });
+    });
+
     return true;
   }
 }

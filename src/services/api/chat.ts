@@ -33,7 +33,6 @@ export class ChatAPI {
   isExists(url: string) {
     return requester.get(url, { headers, withCredentials: true }).then((data) => {
       if (data.status === 200) {
-        console.log(data.response);
         return true;
       }
     });
