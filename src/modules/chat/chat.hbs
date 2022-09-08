@@ -12,13 +12,14 @@
     {{{newChatButton}}}
   </aside>
   <section class="chat__right-column">
+    {{{addUserButton}}}
     <div class="chat__messages">
       {{#each messages}}
         {{#if this.isMy}}
-          <div class="chat__message_my"><p>{{this.text}}</p><small
+          <div class="chat__message_my"><p>{{this.content}}</p><small
             >{{this.time}}</small></div>
         {{else}}
-          <div class="chat__message_other"><p>{{this.text}}</p><small
+          <div class="chat__message_other"><p>{{this.content}}</p><small
             >{{this.time}}</small></div>
         {{/if}}
       {{/each}}</div>

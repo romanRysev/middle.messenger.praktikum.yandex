@@ -17,6 +17,7 @@
   flex-direction: column;
   display: flex;
   justify-content: space-between;
+  overflow-y: scroll;
 }
 
 .chat__list {

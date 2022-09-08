@@ -31,7 +31,7 @@ export abstract class Block {
 
     const { children, props } = this._getChildren(propsAndChildren);
     this.children = children;
-    this.props = this._makePropsProxy({ ...props, id: this._id }, this);
+    this.props = this._makePropsProxy({ ...props, uuid: this._id }, this);
     this.eventBus = () => eventBus;
 
     this._registerEvents(eventBus);
@@ -62,10 +62,10 @@ export abstract class Block {
       if (Array.isArray(child)) {
         propsAndStubs[key] = "";
         child.forEach((child) => {
-          propsAndStubs[key] += `<div data-id="${child.props.id}"></div>`;
+          propsAndStubs[key] += `<div data-id="${child.props.uuid}"></div>`;
         });
       } else {
-        propsAndStubs[key] = `<div data-id="${child.props.id}"></div>`;
+        propsAndStubs[key] = `<div data-id="${child.props.uuid}"></div>`;
       }
     });
 
@@ -75,11 +75,11 @@ export abstract class Block {
     Object.values(this.children).forEach((child) => {
       if (Array.isArray(child)) {
         child.forEach((child) => {
-          const stub = fragment.querySelector(`[data-id="${child.props.id}"]`);
+          const stub = fragment.querySelector(`[data-id="${child.props.uuid}"]`);
           stub?.replaceWith(child.getContent() as Node);
         });
       } else {
-        const stub = fragment.querySelector(`[data-id="${child.props.id}"]`);
+        const stub = fragment.querySelector(`[data-id="${child.props.uuid}"]`);
         stub?.replaceWith(child.getContent() as Node);
       }
     });
@@ -224,7 +224,7 @@ export abstract class Block {
 
   private _createDocumentElement(tagName: string): HTMLElement {
     const element = document.createElement(tagName);
-    element.setAttribute("data-id", String(this.props.id));
+    element.setAttribute("data-id", String(this.props.uuid));
     return element;
   }
 

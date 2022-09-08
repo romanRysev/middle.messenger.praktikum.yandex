@@ -4,6 +4,7 @@ import { passwordRegExp } from "../../constants/regexps";
 import { getFormData, validationOnBlur } from "../../helpers/helpers";
 import { Block } from "../../core/block/block";
 import tpl from "./password-change.hbs";
+import { UserAPI } from "../../services/api/user";
 
 const inputs = [
   new Input({ label: "old password", type: "password", name: "oldPassword", placeholder: "old password", pattern: passwordRegExp, callbacks: { blur: validationOnBlur } }),
@@ -30,7 +31,7 @@ export class PasswordChange extends Block {
             event.preventDefault();
             const form = document.forms.namedItem("passwordChange");
             if (form) {
-              console.log(getFormData(new FormData(form)));
+              new UserAPI().updatePassword({ newPassword: getFormData(new FormData(form)).newPassport, oldPassword: getFormData(new FormData(form)).oldPassword });
             }
           },
         },

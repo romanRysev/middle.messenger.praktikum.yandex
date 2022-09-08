@@ -6,7 +6,7 @@ import { Button } from "../../components/button/button";
 import { Input } from "../../components/input/input";
 import { loginRegExp, nameRegExp, phoneRegExp } from "../../constants/regexps";
 import { getFormData, validationOnBlur } from "../../helpers/helpers";
-import { User } from "../../services/api/user";
+import { UserAPI } from "../../services/api/user";
 import { store, StoreEvents } from "../../core/store/store";
 
 const inputs = [
@@ -82,7 +82,7 @@ export class ProfileEdit extends Block {
             event.preventDefault();
             const form = document.forms.namedItem("profile");
             if (form) {
-              new User().changeProfile(getFormData(new FormData(form)));
+              new UserAPI().changeProfile(getFormData(new FormData(form)));
             }
           },
         },

@@ -1,12 +1,16 @@
 import { Block } from "../../core/block/block";
-import tpl from "./link.hbs";
-import "./link.scss";
+import tpl from "./add-user-modal.hbs";
+//import "./create-chat-modal.scss";
 
-export class Link extends Block {
+export class AddUserModal extends Block {
   constructor(props: Props) {
     super("div", { ...props });
   }
   render(): ChildNode | null {
     return this.compile(tpl);
+  }
+
+  public componentDidMount(): boolean {
+    return true;
   }
 }

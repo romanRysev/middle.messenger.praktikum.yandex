@@ -25,6 +25,24 @@ export class ChatAPI {
     });
   }
 
+  getToken(id: number) {
+    return requester
+      .post(`${HOST}chats/token/${String(id)}`, { headers, withCredentials: true })
+      .then((data) => JSON.parse(data.response))
+      .then((data) => {
+        return data.token;
+      });
+  }
+
+  addUsersToChat(users: number[], chatId: number) {
+    return requester.put(`${HOST}chats/users`, { headers, withCredentials: true, data: { users, chatId } }).then((data) => {
+      if (data.status === 200) {
+        return true;
+      }
+      return false;
+    });
+  }
+
   /*
    * Понимаю, что проверка существования картинки по средствам ее запроса - такая себе идея...
    * Изначально была идея отправлять OPTIONS для проверки наличия ресурса, но OPTIONS запрещен на сервере(

@@ -14,6 +14,9 @@ import { router } from "../..";
 import { renderer } from "../../services/renderer/renderer";
 import { Modal } from "../../components/modal/modal";
 import { CreateChatModal } from "../../components/modal/create-chat-modal";
+import { AddUserModal } from "../../components/modal/add-user-modal";
+import { UserAPI } from "../../services/api/user";
+import { MessagesWSS } from "../../services/api/messages";
 
 async function getChats() {
   return new ChatAPI().getChats();
@@ -30,17 +33,46 @@ type ChatsProps = {
   messages: Messages | null;
   sendIconUrl: "";
   searchInput: Input;
-  callbacks: EventsProp;
 };
 
-function setChats(chats) {
-  return {
-    shortView: chats.map((chatItem, ind) => {
-      return new ShortView({
+const connections = {};
+
+async function setChats(chats) {
+  const res = chats.reduce((acc, chatItem) => {
+    const connection = new ChatAPI().getToken(chatItem.id).then((token) => {
+      return new MessagesWSS({ userId: store.getState().userData.id, chatId: chatItem.id, token: token });
+    });
+    connections[chatItem.id] = connection;
+    acc.push(
+      new ShortView({
+        connection: connection,
         ...chatItem,
-      });
+      })
+    );
+    return acc;
+  }, []);
+  return res;
+}
+
+function openUserAddingModal() {
+  renderer.render(
+    new Modal({
+      content: new AddUserModal({
+        saveButton: new Button({
+          text: "Add",
+          name: "add-user",
+          events: {
+            click: async () => {
+              const userId = document.forms.namedItem("add-user")?.elements.namedItem("login").value;
+              await new ChatAPI().addUsersToChat([userId], store.getState().activeChat);
+            },
+          },
+        }),
+        titleInput: new Input({ label: "User ID", name: "login" }),
+      }),
     }),
-  };
+    ".popup-container"
+  );
 }
 
 export class Chats extends Block {
@@ -50,6 +82,7 @@ export class Chats extends Block {
       messages: [],
       sendIconUrl: sendIconUrl,
       searchInput: new Input({ type: "text", placeholder: "search" }),
+      addUserButton: new Button({ text: "Add user to chat", events: { click: openUserAddingModal } }),
       newChatButton: new Button({
         text: "new chat",
         events: {
@@ -66,7 +99,7 @@ export class Chats extends Block {
                         const title = document.forms.namedItem("create-chat")?.elements.namedItem("title").value;
                         await chatApi.createChat(title);
                         const newChats = await chatApi.getChats();
-                        this.setProps(setChats(newChats));
+                        this.setProps(await setChats(newChats));
                         this.children.shortView.forEach((child) => child.dispatchComponentDidMount());
                         document.querySelector(".modal__close").click();
                       },
@@ -89,13 +122,16 @@ export class Chats extends Block {
           },
         },
       }),
-      callbacks: {
+      events: {
         submit: (event: SubmitEvent) => {
           event.preventDefault();
-
           const form = document.forms.namedItem("newMessage");
+
           if (form) {
-            console.log(getFormData(new FormData(form)));
+            connections[store.getState().activeChat].then((connection) => {
+              connection.send(form.elements.namedItem("message").value);
+              form.elements.namedItem("message").value = "";
+            });
           }
         },
       },
@@ -103,9 +139,16 @@ export class Chats extends Block {
     } as ChatsProps);
 
     store.on(StoreEvents.Updated, () => {
-      if (store.getState().activeChat) {
-        this.setProps({ messages: [] });
-      }
+      this.setProps({
+        messages: store
+          .getState()
+          .chatMessages.map((message) => {
+            return { ...message, isMy: message.user_id === store.getState().userData.id };
+          })
+          .reverse(),
+      });
+      const chatElem = document.querySelector(".chat__right-column");
+      chatElem?.scrollTo(0, chatElem.scrollHeight);
     });
   }
 
@@ -114,10 +157,13 @@ export class Chats extends Block {
   }
 
   componentDidMount() {
-    this.getContent()?.addEventListener("submit", (this.props as ChatsProps)?.callbacks?.submit?.bind(this));
     getChats().then((data) => {
-      this.setProps(setChats(data));
-      this.children.shortView.forEach((child) => child.dispatchComponentDidMount());
+      store.set("activeChat", data[0]?.id);
+      setChats(data).then((chats) => {
+        this.setProps({ shortView: chats });
+
+        this.children.shortView.forEach((child) => child.dispatchComponentDidMount());
+      });
     });
     return true;
   }

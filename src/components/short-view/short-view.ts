@@ -40,6 +40,7 @@ export class ShortView extends Block {
     this.getContent().addEventListener("click", () => {
       store.set("activeChat", this.props.id);
       this.setProps({ current: true });
+      this.props.connection.then((data) => data.getOldMessages());
     });
 
     return true;

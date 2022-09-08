@@ -27,12 +27,28 @@ export class UserAPI {
       });
   }
 
+  updatePassword(data) {
+    return requester
+      .put(`${HOST}user/password`, { headers: { "Access-Control-Allow-Credentials": "true", enctype: "multipart/form-data" }, withCredentials: true, data: data })
+      .then((data: XMLHttpRequest) => {
+        if (data.status === 200) {
+          return true;
+        }
+      });
+  }
+
   getAvatar(path: string) {
     return requester.get(`${HOST}resources${path}`, { headers, withCredentials: true }).then((data) => {
       if (data.status === 200) {
-        console.log(data.response);
-
         return true;
+      }
+    });
+  }
+
+  findUser(login: string) {
+    return requester.post(`${HOST}user/search`, { headers, withCredentials: true, data: { login } }).then((data) => {
+      if (data.status === 200) {
+        return data.response;
       }
     });
   }
