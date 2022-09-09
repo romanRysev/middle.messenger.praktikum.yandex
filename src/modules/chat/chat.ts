@@ -37,6 +37,8 @@ const connections: Record<string, Promise<MessagesWSS>> = {};
 async function setChats(chats: ChatsData) {
   const res = chats.reduce<ShortView[]>((acc, chatItem) => {
     const connection = new ChatAPI().getToken(chatItem.id).then((token) => {
+      console.log(token);
+
       return new MessagesWSS({ userId: String(store.getState().userData.id), chatId: String(chatItem.id), token: String(token) });
     });
     connections[chatItem.id] = connection;

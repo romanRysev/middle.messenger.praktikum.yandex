@@ -21,9 +21,12 @@ export class Auth {
   signin(data: SigninProps) {
     return requester.post(`${host}/signin`, { headers, withCredentials: true, data: data }).then((data) => {
       if (data.status === 200) {
-        this.getUserInfo();
-        store.set("isAuthorized", true);
-        router.go("/");
+        this.getUserInfo()
+          .then((data) => store.set("userData", data))
+          .then(() => {
+            store.set("isAuthorized", true);
+            router.go("/");
+          });
       }
     });
   }
