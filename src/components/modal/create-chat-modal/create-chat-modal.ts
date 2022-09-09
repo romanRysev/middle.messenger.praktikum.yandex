@@ -1,8 +1,8 @@
-import { Block } from "../../core/block/block";
-import tpl from "./add-user-modal.hbs";
+import { Block } from "../../../core/block/block";
+import tpl from "./create-chat-modal.hbs";
 //import "./create-chat-modal.scss";
 
-export class AddUserModal extends Block {
+export class CreateChatModal extends Block {
   constructor(props: Props) {
     super("div", { ...props });
   }

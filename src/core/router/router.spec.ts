@@ -1,5 +1,5 @@
 import { expect } from "expect";
-import { Block } from "../../core/block/block";
+import { Block } from "../block/block";
 
 require("jsdom-global")('<div id="app"></div>', { url: "http://localhost" });
 

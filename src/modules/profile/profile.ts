@@ -10,8 +10,8 @@ import { router } from "../../index";
 import { Auth } from "../../services/api/auth";
 import { store, StoreEvents } from "../../core/store/store";
 import { Modal } from "../../components/modal/modal";
-import { AvatarChangeModal } from "../../components/modal/avatar-change-modal";
-import { renderer } from "../../services/renderer/renderer";
+import { AvatarChangeModal } from "../../components/modal/avatar-change-modal/avatar-change-modal";
+import { renderer } from "../../core/renderer/renderer";
 import { HOST } from "../../constants/base";
 
 export class Profile extends Block {

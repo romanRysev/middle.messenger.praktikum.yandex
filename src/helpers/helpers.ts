@@ -14,3 +14,15 @@ export const getFormData = (formData: FormData) => {
   }
   return formDataObject;
 };
+
+export function isEqual(a: object, b: object): boolean {
+  const res = Object.keys(a).filter((key) => {
+    if (typeof (a as Indexed)[key] !== "object" || (a as Indexed)[key] === null) {
+      return (a as Indexed)[key] !== (b as Indexed)[key];
+    } else {
+      return !isEqual((a as Indexed)[key] as object, (b as Indexed)[key] as object);
+    }
+  });
+
+  return res.length === 0;
+}

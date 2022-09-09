@@ -1,18 +1,7 @@
-import { Block } from "../../core/block/block";
-import { store } from "../../core/store/store";
+import { Block } from "../block/block";
+import { store } from "../store/store";
 import { renderer } from "../renderer/renderer";
-
-export function isEqual(a: object, b: object): boolean {
-  const res = Object.keys(a).filter((key) => {
-    if (typeof (a as Indexed)[key] !== "object" || (a as Indexed)[key] === null) {
-      return (a as Indexed)[key] !== (b as Indexed)[key];
-    } else {
-      return !isEqual((a as Indexed)[key] as object, (b as Indexed)[key] as object);
-    }
-  });
-
-  return res.length === 0;
-}
+import { isEqual } from "../../helpers/helpers";
 
 //type BlockType = typeof Chats | typeof Registration | typeof Signin | typeof ErrorTemplate | typeof PasswordChange | typeof Profile | typeof ProfileEdit;
 

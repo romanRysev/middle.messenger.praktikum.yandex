@@ -1,4 +1,4 @@
-import { EventBus } from "../../services/event-bus/event-bus";
+import { EventBus } from "../event-bus/event-bus";
 import { v4 as uuidv4 } from "uuid";
 import * as Handlebars from "handlebars";
 

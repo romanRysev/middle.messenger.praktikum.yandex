@@ -2,7 +2,7 @@ import tpl from "./avatar.hbs";
 import "./avatar.scss";
 import { Block } from "../../core/block/block";
 import avatarUrl from "../../../static/Union.svg";
-import { ChatAPI } from "../../services/api/chat";
+import { ChatAPI } from "../../services/api/chats";
 
 export class Avatar extends Block {
   constructor(props: Props) {

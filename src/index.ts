@@ -3,13 +3,13 @@ import "./index.scss";
 import { store } from "./core/store/store";
 import { Auth } from "./services/api/auth";
 
-import { Router } from "./services/router/router";
+import { Router } from "./core/router/router";
 import { Chats } from "./modules/chat/chat";
 import { Profile } from "./modules/profile/profile";
 import { Signin } from "./modules/entry/signin";
 import { Registration } from "./modules/entry/registration";
-import { ProfileEdit } from "./modules/profile/profile-edit";
-import { PasswordChange } from "./modules/profile/password-change";
+import { ProfileEdit } from "./modules/profile/profile-edit/profile-edit";
+import { PasswordChange } from "./modules/profile/password-change/password-change";
 import { ErrorTemplate } from "./modules/error/error";
 
 const routerModule = new Router("#app");

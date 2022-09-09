@@ -1,4 +1,4 @@
-import { Block } from "../../core/block/block";
+import { Block } from "../block/block";
 
 export class Renreder {
   render(layuot: Block, rootQuery: string) {

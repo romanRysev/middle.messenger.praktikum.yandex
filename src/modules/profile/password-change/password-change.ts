@@ -1,10 +1,10 @@
-import { Button } from "../../components/button/button";
-import { Input } from "../../components/input/input";
-import { passwordRegExp } from "../../constants/regexps";
-import { getFormData, validationOnBlur } from "../../helpers/helpers";
-import { Block } from "../../core/block/block";
+import { Button } from "../../../components/button/button";
+import { Input } from "../../../components/input/input";
+import { passwordRegExp } from "../../../constants/regexps";
+import { getFormData, validationOnBlur } from "../../../helpers/helpers";
+import { Block } from "../../../core/block/block";
 import tpl from "./password-change.hbs";
-import { UserAPI } from "../../services/api/user";
+import { UserAPI } from "../../../services/api/user";
 
 const inputs = [
   new Input({ label: "old password", type: "password", name: "oldPassword", placeholder: "old password", pattern: passwordRegExp, callbacks: { blur: validationOnBlur } }),

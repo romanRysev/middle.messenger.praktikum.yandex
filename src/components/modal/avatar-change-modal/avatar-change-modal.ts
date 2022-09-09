@@ -1,9 +1,8 @@
-import { Block } from "../../core/block/block";
-import { store } from "../../core/store/store";
-import { getFormData } from "../../helpers/helpers";
-import { UserAPI } from "../../services/api/user";
-import { Button } from "../button/button";
-import { Input } from "../input/input";
+import { Block } from "../../../core/block/block";
+import { store } from "../../../core/store/store";
+import { UserAPI } from "../../../services/api/user";
+import { Button } from "../../button/button";
+import { Input } from "../../input/input";
 import tpl from "./avatar-change-modal.hbs";
 
 export class AvatarChangeModal extends Block {

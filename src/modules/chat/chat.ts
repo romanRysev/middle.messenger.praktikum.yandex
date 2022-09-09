@@ -4,18 +4,15 @@ import { Block } from "../../core/block/block";
 import tpl from "./chat.hbs";
 import "./chat.scss";
 import sendIconUrl from "../../../static/forward.svg";
-import { getFormData } from "../../helpers/helpers";
-import { isEqual } from "../../services/router/router";
 import { Link } from "../../components/link/link";
 import { store, StoreEvents } from "../../core/store/store";
-import { ChatAPI } from "../../services/api/chat";
+import { ChatAPI } from "../../services/api/chats";
 import { Button } from "../../components/button/button";
 import { router } from "../..";
-import { renderer } from "../../services/renderer/renderer";
+import { renderer } from "../../core/renderer/renderer";
 import { Modal } from "../../components/modal/modal";
-import { CreateChatModal } from "../../components/modal/create-chat-modal";
-import { AddUserModal } from "../../components/modal/add-user-modal";
-import { UserAPI } from "../../services/api/user";
+import { CreateChatModal } from "../../components/modal/create-chat-modal/create-chat-modal";
+import { AddUserModal } from "../../components/modal/add-user-modal/add-user-modal";
 import { MessagesWSS } from "../../services/api/messages";
 
 async function getChats() {
