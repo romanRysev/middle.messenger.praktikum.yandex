@@ -62,7 +62,7 @@ export class MessagesWSS {
             type: "get old",
           })
         );
-      }, 2000);
+      }, 1000);
     }
   }
 

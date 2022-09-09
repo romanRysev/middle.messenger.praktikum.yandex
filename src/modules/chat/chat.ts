@@ -12,7 +12,7 @@ import { router } from "../..";
 import { renderer } from "../../core/renderer/renderer";
 import { Modal } from "../../components/modal/modal";
 import { CreateChatModal } from "../../components/modal/create-chat-modal/create-chat-modal";
-import { AddUserModal } from "../../components/modal/add-user-modal/add-user-modal";
+import { ChatUserModal } from "../../components/modal/chat-user-modal/chat-user-modal";
 import { MessagesWSS } from "../../services/api/messages";
 
 async function getChats() {
@@ -57,18 +57,43 @@ function openUserAddingModal() {
   if (store.getState().activeChatId) {
     renderer.render(
       new Modal({
-        content: new AddUserModal({
+        content: new ChatUserModal({
           saveButton: new Button({
             text: "Add",
             name: "add-user",
             events: {
               click: async () => {
-                const userId = (document.forms.namedItem("add-user")?.elements.namedItem("login") as HTMLInputElement)?.value;
+                const userId = (document.forms.namedItem("chat-user")?.elements.namedItem("id") as HTMLInputElement)?.value;
                 await new ChatAPI().addUsersToChat([Number(userId)], store.getState().activeChatId ?? 0);
+                (document.querySelector(".modal__close") as HTMLButtonElement)?.click();
               },
             },
           }),
-          titleInput: new Input({ label: "User ID", name: "login", required: true }),
+          titleInput: new Input({ label: "User ID", name: "id", required: true }),
+        }),
+      }),
+      ".popup-container"
+    );
+  }
+}
+
+function openUserDelitingModal() {
+  if (store.getState().activeChatId) {
+    renderer.render(
+      new Modal({
+        content: new ChatUserModal({
+          saveButton: new Button({
+            text: "Remove",
+            name: "delete-user",
+            events: {
+              click: async () => {
+                const userId = (document.forms.namedItem("chat-user")?.elements.namedItem("id") as HTMLInputElement)?.value;
+                await new ChatAPI().removeUsersFromChat([Number(userId)], store.getState().activeChatId ?? 0);
+                (document.querySelector(".modal__close") as HTMLButtonElement)?.click();
+              },
+            },
+          }),
+          titleInput: new Input({ label: "User ID", name: "id", required: true }),
         }),
       }),
       ".popup-container"
@@ -84,6 +109,7 @@ export class Chats extends Block {
       sendIconUrl: sendIconUrl,
       searchInput: new Input({ type: "text", placeholder: "search" }),
       addUserButton: new Button({ text: "Add user to chat", events: { click: openUserAddingModal } }),
+      deleteUserButton: new Button({ text: "Remove user from chat", events: { click: openUserDelitingModal } }),
       newChatButton: new Button({
         text: "new chat",
         events: {

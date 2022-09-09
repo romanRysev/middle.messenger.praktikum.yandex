@@ -7,12 +7,14 @@
       {{#if this.shortView}}
         {{{shortView}}}
       {{/if}}
-      <hr class="divider_h" />
     </div>
-    {{{newChatButton}}}
+    <div class="chat__left-column-footer">
+      {{{newChatButton}}}</div>
   </aside>
   <section class="chat__right-column">
-    {{{addUserButton}}}
+    <div class="chat__right-column-header">
+      {{{addUserButton}}}
+      {{{deleteUserButton}}}</div>
     <div class="chat__messages">
       {{#each messages}}
         {{#if this.isMy}}

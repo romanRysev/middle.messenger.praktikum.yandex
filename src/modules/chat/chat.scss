@@ -12,12 +12,30 @@
   text-align: right;
 }
 
+.chat__left-column-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
 .chat__right-column {
   width: 100%;
   flex-direction: column;
   display: flex;
   justify-content: space-between;
-  overflow-y: scroll;
+
+}
+
+.chat__messages {
+  overflow-y: auto;
+  height: 100%;
+}
+
+.chat__right-column-header {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
 }
 
 .chat__list {

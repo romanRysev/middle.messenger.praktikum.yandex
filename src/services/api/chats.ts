@@ -58,6 +58,15 @@ export class ChatAPI {
     });
   }
 
+  removeUsersFromChat(users: number[], chatId: number) {
+    return requester.delete(`${HOST}chats/users`, { headers, withCredentials: true, data: { users, chatId } }).then((data) => {
+      if (data.status === 200) {
+        return true;
+      }
+      return false;
+    });
+  }
+
   /*
    * Понимаю, что проверка существования картинки по средствам ее запроса - такая себе идея...
    * Изначально была идея отправлять OPTIONS для проверки наличия ресурса, но OPTIONS запрещен на сервере(
