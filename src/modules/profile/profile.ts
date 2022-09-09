@@ -18,7 +18,7 @@ export class Profile extends Block {
   constructor(props: Props) {
     super("div", {
       avatar: new Avatar({
-        url: store.getState().userData.avatar ? `${HOST}resources` + store.getState().userData.avatar : avatarUrl,
+        url: store.getState().userData?.avatar ? `${HOST}resources` + store.getState().userData?.avatar : avatarUrl,
         class: "profile__avatar",
         height: 130,
         width: 130,
@@ -56,24 +56,24 @@ export class Profile extends Block {
         },
       }),
       backIconUrl,
-      firstName: store.getState().userData.first_name,
-      email: store.getState().userData.email,
-      login: store.getState().userData.login,
-      lastName: store.getState().userData.second_name,
-      displayName: store.getState().userData.display_name,
-      phone: store.getState().userData.phone,
+      firstName: store.getState().userData?.first_name,
+      email: store.getState().userData?.email,
+      login: store.getState().userData?.login,
+      lastName: store.getState().userData?.second_name,
+      displayName: store.getState().userData?.display_name,
+      phone: store.getState().userData?.phone,
       ...props,
     });
 
     store.on(StoreEvents.Updated, () => {
       if (store.getState().userData) {
         this.setProps({
-          firstName: store.getState().userData.first_name,
-          email: store.getState().userData.email,
-          login: store.getState().userData.login,
-          lastName: store.getState().userData.second_name,
-          displayName: store.getState().userData.display_name,
-          phone: store.getState().userData.phone,
+          firstName: store.getState().userData?.first_name,
+          email: store.getState().userData?.email,
+          login: store.getState().userData?.login,
+          lastName: store.getState().userData?.second_name,
+          displayName: store.getState().userData?.display_name,
+          phone: store.getState().userData?.phone,
         });
       }
     });

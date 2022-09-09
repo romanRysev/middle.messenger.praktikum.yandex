@@ -1,9 +1,15 @@
 import { Block } from "../block/block";
 import { store } from "../store/store";
 import { renderer } from "../renderer/renderer";
-import { isEqual } from "../../helpers/helpers";
+import { Chats } from "../../modules/chat/chat";
+import { Signin } from "../../modules/entry/signin";
+import { Registration } from "../../modules/entry/registration";
+import { ErrorTemplate } from "../../modules/error/error";
+import { PasswordChange } from "../../modules/profile/password-change/password-change";
+import { ProfileEdit } from "../../modules/profile/profile-edit/profile-edit";
+import { Profile } from "../../modules/profile/profile";
 
-//type BlockType = typeof Chats | typeof Registration | typeof Signin | typeof ErrorTemplate | typeof PasswordChange | typeof Profile | typeof ProfileEdit;
+type BlockType = typeof Chats | typeof Registration | typeof Signin | typeof ErrorTemplate | typeof PasswordChange | typeof Profile | typeof ProfileEdit;
 
 class Route {
   private _pathname: string;
@@ -32,7 +38,7 @@ class Route {
   }
 
   match(pathname: string) {
-    return isEqual(pathname, this._pathname);
+    return pathname === this._pathname;
   }
 
   render() {
@@ -49,7 +55,7 @@ class Route {
 export class Router {
   public routes: Route[];
   public history: History;
-  private _currentRoute: Route | null;
+  private _currentRoute?: Route | null;
   private _rootQuery: string;
   static __instance: Router;
 
@@ -102,7 +108,7 @@ export class Router {
     }
 
     this._currentRoute = route;
-    route.render(/*route, pathname*/);
+    route?.render();
   }
 
   go(pathname: string) {

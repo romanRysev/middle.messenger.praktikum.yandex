@@ -6,7 +6,7 @@ import "./chat.scss";
 import sendIconUrl from "../../../static/forward.svg";
 import { Link } from "../../components/link/link";
 import { store, StoreEvents } from "../../core/store/store";
-import { ChatAPI } from "../../services/api/chats";
+import { ChatAPI, ChatsData } from "../../services/api/chats";
 import { Button } from "../../components/button/button";
 import { router } from "../..";
 import { renderer } from "../../core/renderer/renderer";
@@ -32,12 +32,12 @@ type ChatsProps = {
   searchInput: Input;
 };
 
-const connections = {};
+const connections: Record<string, Promise<MessagesWSS>> = {};
 
-async function setChats(chats) {
-  const res = chats.reduce((acc, chatItem) => {
+async function setChats(chats: ChatsData) {
+  const res = chats.reduce<ShortView[]>((acc, chatItem) => {
     const connection = new ChatAPI().getToken(chatItem.id).then((token) => {
-      return new MessagesWSS({ userId: store.getState().userData.id, chatId: chatItem.id, token: token });
+      return new MessagesWSS({ userId: String(store.getState().userData.id), chatId: String(chatItem.id), token: String(token) });
     });
     connections[chatItem.id] = connection;
     acc.push(
@@ -52,24 +52,26 @@ async function setChats(chats) {
 }
 
 function openUserAddingModal() {
-  renderer.render(
-    new Modal({
-      content: new AddUserModal({
-        saveButton: new Button({
-          text: "Add",
-          name: "add-user",
-          events: {
-            click: async () => {
-              const userId = document.forms.namedItem("add-user")?.elements.namedItem("login").value;
-              await new ChatAPI().addUsersToChat([userId], store.getState().activeChat);
+  if (store.getState().activeChatId) {
+    renderer.render(
+      new Modal({
+        content: new AddUserModal({
+          saveButton: new Button({
+            text: "Add",
+            name: "add-user",
+            events: {
+              click: async () => {
+                const userId = (document.forms.namedItem("add-user")?.elements.namedItem("login") as HTMLInputElement)?.value;
+                await new ChatAPI().addUsersToChat([Number(userId)], store.getState().activeChatId ?? 0);
+              },
             },
-          },
+          }),
+          titleInput: new Input({ label: "User ID", name: "login" }),
         }),
-        titleInput: new Input({ label: "User ID", name: "login" }),
       }),
-    }),
-    ".popup-container"
-  );
+      ".popup-container"
+    );
+  }
 }
 
 export class Chats extends Block {
@@ -93,12 +95,23 @@ export class Chats extends Block {
                     events: {
                       click: async () => {
                         const chatApi = new ChatAPI();
-                        const title = document.forms.namedItem("create-chat")?.elements.namedItem("title").value;
+                        const title = (document.forms.namedItem("create-chat")?.elements.namedItem("title") as HTMLInputElement)?.value;
                         await chatApi.createChat(title);
                         const newChats = await chatApi.getChats();
-                        this.setProps(await setChats(newChats));
-                        this.children.shortView.forEach((child) => child.dispatchComponentDidMount());
-                        document.querySelector(".modal__close").click();
+                        setChats(newChats).then((chats) => {
+                          this.setProps({ shortView: chats });
+                          if (Array.isArray(this.children.shortView)) {
+                            this.children.shortView.forEach((child) => child.dispatchComponentDidMount());
+                          } else {
+                            this.children.shortView.dispatchComponentDidMount();
+                          }
+                        });
+                        if (Array.isArray(this.children.shortView)) {
+                          this.children.shortView.forEach((child) => child.dispatchComponentDidMount());
+                        } else {
+                          this.children.shortView.dispatchComponentDidMount();
+                        }
+                        (document.querySelector(".modal__close") as HTMLButtonElement)?.click();
                       },
                     },
                   }),
@@ -124,10 +137,10 @@ export class Chats extends Block {
           event.preventDefault();
           const form = document.forms.namedItem("newMessage");
 
-          if (form) {
-            connections[store.getState().activeChat].then((connection) => {
-              connection.send(form.elements.namedItem("message").value);
-              form.elements.namedItem("message").value = "";
+          if (form && store.getState().activeChatId) {
+            connections[store.getState().activeChatId ?? 0].then((connection: MessagesWSS) => {
+              connection.send((form.elements.namedItem("message") as HTMLInputElement)?.value);
+              (form.elements.namedItem("message") as HTMLInputElement).value = "";
             });
           }
         },
@@ -135,12 +148,13 @@ export class Chats extends Block {
       ...props,
     } as ChatsProps);
 
+    /** Обновляем список сообщений, если обновился store */
     store.on(StoreEvents.Updated, () => {
       this.setProps({
         messages: store
           .getState()
           .chatMessages.map((message) => {
-            return { ...message, isMy: message.user_id === store.getState().userData.id };
+            return { ...message, isMy: message.user_id === String(store.getState().userData.id) };
           })
           .reverse(),
       });
@@ -155,11 +169,15 @@ export class Chats extends Block {
 
   componentDidMount() {
     getChats().then((data) => {
-      store.set("activeChat", data[0]?.id);
+      store.set("activeChatId", data[0]?.id);
       setChats(data).then((chats) => {
         this.setProps({ shortView: chats });
-
-        this.children.shortView.forEach((child) => child.dispatchComponentDidMount());
+        if (Array.isArray(this.children.shortView)) {
+          this.children.shortView.forEach((child) => child.dispatchComponentDidMount());
+        } else {
+          this.children.shortView.dispatchComponentDidMount();
+        }
+        (chats[0].props.connection as Promise<MessagesWSS>).then((data: MessagesWSS) => data.getOldMessages());
       });
     });
     return true;

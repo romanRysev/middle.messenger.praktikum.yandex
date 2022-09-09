@@ -8,8 +8,8 @@ enum METHODS {
 type RequestOptions = { headers?: Record<string, string> | null; method?: METHODS; data?: Record<string, unknown> | FormData | null; timeout?: number; withCredentials?: boolean; file?: boolean };
 
 function queryStringify(data: Record<string, unknown> | FormData): string {
-  if (typeof data !== "object") {
-    throw new Error("Data must be object");
+  if (typeof data !== "object" || data instanceof FormData) {
+    throw new Error("Data must be object, not a file");
   }
 
   const keys = Object.keys(data);

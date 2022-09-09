@@ -13,6 +13,7 @@ class EmptyLayout extends Block {
     return el;
   }
 }
+
 const routerModule = require("../router/router");
 const router = new routerModule.Router();
 router.use("/signin", EmptyLayout, "div", { content: "signin" });

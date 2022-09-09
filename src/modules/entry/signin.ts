@@ -7,7 +7,7 @@ import tpl from "./signin.hbs";
 import "./signin.scss";
 import { Link } from "../../components/link/link";
 import { router } from "../../index";
-import { Auth } from "../../services/api/auth";
+import { Auth, SigninProps } from "../../services/api/auth";
 
 const inputs = [
   new Input({ label: "login", type: "text", name: "login", placeholder: "login", minlength: "3", maxlength: "20", pattern: loginRegExp, callbacks: { blur: validationOnBlur } }),
@@ -29,7 +29,7 @@ export class Signin extends Block {
             if (!this.element.attributes.getNamedItem("disabled")) {
               const form = document.forms.namedItem("signin");
               if (form) {
-                new Auth().signin(getFormData(new FormData(form)));
+                new Auth().signin(getFormData(new FormData(form)) as SigninProps);
               }
             }
           },

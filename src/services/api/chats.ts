@@ -1,22 +1,37 @@
-import { store } from "../../core/store/store";
-import { router } from "../../index";
 import { HTTPTransport } from "../../core/api/requester";
 import { HOST } from "../../constants/base";
 
 const requester = new HTTPTransport();
 const headers = { "Access-Control-Allow-Credentials": "true", "content-type": "application/json" };
 
+export type ChatsData = {
+  id: number;
+  title: string;
+  avatar: string;
+  unread_count: number;
+  last_message: {
+    user: {
+      first_name: string;
+      second_name: string;
+      avatar: string;
+      email: string;
+      login: string;
+      phone: string;
+    };
+    time: string;
+    content: string;
+  };
+}[];
 export class ChatAPI {
   createChat(title: string) {
     requester.post(`${HOST}chats`, { headers, withCredentials: true, data: { title: title } }).then((data) => {
       if (data.status === 200) {
-        console.log(data.response);
         return true;
       }
     });
   }
 
-  getChats() {
+  getChats(): Promise<ChatsData> {
     return requester.get(`${HOST}chats`, { headers, withCredentials: true }).then((data) => {
       if (data.status === 200) {
         return JSON.parse(data.response);

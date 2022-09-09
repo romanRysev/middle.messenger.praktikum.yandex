@@ -8,6 +8,7 @@ import "./registration.scss";
 import { Link } from "../../components/link/link";
 import { router } from "../../index";
 import { Auth } from "../../services/api/auth";
+import { UserDataSendable } from "../../services/api/user";
 
 const inputs = [
   new Input({ label: "first name", type: "text", name: "first_name", placeholder: "first name", pattern: nameRegExp, callbacks: { blur: validationOnBlur } }),
@@ -40,7 +41,7 @@ export class Registration extends Block {
             if (!this.element.attributes.getNamedItem("disabled")) {
               const form = document.forms.namedItem("registration");
               if (form) {
-                new Auth().signup(getFormData(new FormData(form)));
+                new Auth().signup(getFormData(new FormData(form)) as UserDataSendable);
               }
             }
           },

@@ -1,49 +1,52 @@
+import { set } from "../../helpers/helpers";
 import { EventBus } from "../event-bus/event-bus";
 
 export enum StoreEvents {
   Updated = "updated",
 }
 
-function merge(lhs: Indexed, rhs: Indexed): Indexed {
-  for (const p in rhs) {
-    if (!rhs.hasOwnProperty(p)) {
-      continue;
-    }
+type State = {
+  activeChatId: number | null;
+  isAuthorized: boolean;
+  userData: UserData;
+  chatMessages: ChatMessages;
+};
 
-    try {
-      if (rhs[p].constructor === Object) {
-        rhs[p] = merge(lhs[p] as Indexed, rhs[p] as Indexed);
-      } else {
-        lhs[p] = rhs[p];
-      }
-    } catch (e) {
-      lhs[p] = rhs[p];
-    }
-  }
+export type UserData = {
+  id: number;
+  first_name: string;
+  second_name: string;
+  display_name: string;
+  login: string;
+  email: string;
+  phone: string;
+  avatar: string;
+};
 
-  return lhs;
-}
-
-function set(object: Indexed | unknown, path: string, value: unknown): Indexed | unknown {
-  if (typeof object !== "object" || object === null) {
-    return object;
-  }
-
-  if (typeof path !== "string") {
-    throw new Error("path must be string");
-  }
-
-  const result = path.split(".").reduceRight<Indexed>(
-    (acc, key) => ({
-      [key]: acc,
-    }),
-    value as any
-  );
-  return merge(object as Indexed, result);
-}
+export type ChatMessages = {
+  chat_id: number;
+  time: string;
+  type: string;
+  user_id: string;
+  content: string;
+  file?: {
+    id: number;
+    user_id: number;
+    path: string;
+    filename: string;
+    content_type: string;
+    content_size: number;
+    upload_date: string;
+  };
+}[];
 
 class Store extends EventBus {
-  private state: Record<string, unknown> = { activeShortView: {}, isAuthorized: false, userData: {}, chatMessages: [] };
+  private state: State = {
+    activeChatId: null,
+    isAuthorized: false,
+    userData: { id: -1, first_name: "", second_name: "", display_name: "", login: "", email: "", phone: "", avatar: "" },
+    chatMessages: [],
+  };
 
   public set(path: string, value: unknown) {
     set(this.state, path, value);

@@ -5,6 +5,7 @@ import "./short-view.scss";
 import avatarUrl from "../../../static/Union.svg";
 import { HOST } from "../../constants/base";
 import { store, StoreEvents } from "../../core/store/store";
+import { MessagesWSS } from "../../services/api/messages";
 
 function getAvatarUrl(avatar: string | null) {
   if (!avatar) return avatarUrl;
@@ -12,12 +13,12 @@ function getAvatarUrl(avatar: string | null) {
   return `${HOST}resources/` + (avatar && avatar[0] === "/") ? avatar?.slice(1) : avatar;
 }
 
-type ShortViewProps = { avatar: Block; callbacks?: EventsProp };
+//type ShortViewProps = { avatar: Block; callbacks?: EventsProp };
 export class ShortView extends Block {
   constructor(props: Props) {
     super("div", {
       avatarComponent: new Avatar({
-        url: getAvatarUrl(props.avatar),
+        url: getAvatarUrl(props.avatar as string),
         class: "profile__avatar",
         alt: "avatar",
         height: 64,
@@ -27,7 +28,7 @@ export class ShortView extends Block {
     });
 
     store.on(StoreEvents.Updated, () => {
-      if (store.getState().activeChat !== this.props.id) {
+      if (store.getState().activeChatId !== this.props.id) {
         this.setProps({ current: false });
       }
     });
@@ -38,9 +39,9 @@ export class ShortView extends Block {
 
   componentDidMount() {
     this.getContent().addEventListener("click", () => {
-      store.set("activeChat", this.props.id);
+      store.set("activeChatId", this.props.id);
       this.setProps({ current: true });
-      this.props.connection.then((data) => data.getOldMessages());
+      (this.props.connection as Promise<MessagesWSS>).then((data) => data.getOldMessages());
     });
 
     return true;

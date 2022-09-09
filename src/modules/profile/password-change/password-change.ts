@@ -31,7 +31,7 @@ export class PasswordChange extends Block {
             event.preventDefault();
             const form = document.forms.namedItem("passwordChange");
             if (form) {
-              new UserAPI().updatePassword({ newPassword: getFormData(new FormData(form)).newPassport, oldPassword: getFormData(new FormData(form)).oldPassword });
+              new UserAPI().updatePassword({ newPassword: getFormData(new FormData(form)).newPassport as string, oldPassword: getFormData(new FormData(form)).oldPassword as string });
             }
           },
         },

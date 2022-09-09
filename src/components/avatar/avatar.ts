@@ -15,7 +15,7 @@ export class Avatar extends Block {
   }
 
   componentDidMount() {
-    new ChatAPI().isExists(this.props.url).then((data) => {
+    new ChatAPI().isExists((this.props.url as string) ?? "").then((data) => {
       if (!data) {
         this.setProps({ url: avatarUrl });
       }

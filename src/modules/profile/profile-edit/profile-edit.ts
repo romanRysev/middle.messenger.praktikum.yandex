@@ -5,9 +5,20 @@ import { Block } from "../../../core/block/block";
 import { Button } from "../../../components/button/button";
 import { Input } from "../../../components/input/input";
 import { loginRegExp, nameRegExp, phoneRegExp } from "../../../constants/regexps";
-import { getFormData, validationOnBlur } from "../../../helpers/helpers";
+import { getFormData, ValidationOnBlur, validationOnBlur } from "../../../helpers/helpers";
 import { UserAPI } from "../../../services/api/user";
-import { store, StoreEvents } from "../../../core/store/store";
+import { store, StoreEvents, UserData } from "../../../core/store/store";
+
+type InputProps = { value: string; label?: string; type?: string; name: names; placeholder?: string; pattern?: RegExp; callbacks?: { blur: ValidationOnBlur } };
+
+enum names {
+  "first_name" = "first_name",
+  "second_name" = "second_name",
+  "login" = "login",
+  "email" = "email",
+  "display_name" = "display_name",
+  "phone" = "phone",
+}
 
 const inputs = [
   new Input({
@@ -62,11 +73,11 @@ const inputs = [
 ];
 
 const updateInput = () => {
-  if (store.getState().userData) {
-    inputs.forEach((item) => {
-      item.setProps({ value: store.getState().userData[item.props.name] });
-    });
-  }
+  inputs.forEach((item) => {
+    if (store.getState().userData) {
+      item.setProps({ value: store.getState().userData[(item.props as InputProps).name] });
+    }
+  });
 };
 
 export class ProfileEdit extends Block {
@@ -82,7 +93,7 @@ export class ProfileEdit extends Block {
             event.preventDefault();
             const form = document.forms.namedItem("profile");
             if (form) {
-              new UserAPI().changeProfile(getFormData(new FormData(form)));
+              new UserAPI().changeProfile(getFormData(new FormData(form)) as unknown as UserData);
             }
           },
         },
