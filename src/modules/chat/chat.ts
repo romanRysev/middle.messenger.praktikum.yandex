@@ -66,7 +66,7 @@ function openUserAddingModal() {
               },
             },
           }),
-          titleInput: new Input({ label: "User ID", name: "login" }),
+          titleInput: new Input({ label: "User ID", name: "login", required: true }),
         }),
       }),
       ".popup-container"
@@ -115,7 +115,7 @@ export class Chats extends Block {
                       },
                     },
                   }),
-                  titleInput: new Input({ label: "Chat title", name: "title" }),
+                  titleInput: new Input({ label: "Chat title", name: "title", required: true }),
                 }),
               }),
               ".popup-container"

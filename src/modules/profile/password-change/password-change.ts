@@ -7,13 +7,14 @@ import tpl from "./password-change.hbs";
 import { UserAPI } from "../../../services/api/user";
 
 const inputs = [
-  new Input({ label: "old password", type: "password", name: "oldPassword", placeholder: "old password", pattern: passwordRegExp, callbacks: { blur: validationOnBlur } }),
-  new Input({ label: "new password", type: "password", name: "newPassport", placeholder: "new password", pattern: passwordRegExp, callbacks: { blur: validationOnBlur } }),
+  new Input({ label: "old password", type: "password", name: "oldPassword", placeholder: "old password", pattern: passwordRegExp, required: true, callbacks: { blur: validationOnBlur } }),
+  new Input({ label: "new password", type: "password", name: "newPassport", placeholder: "new password", pattern: passwordRegExp, required: true, callbacks: { blur: validationOnBlur } }),
   new Input({
     label: "new password one more time",
     type: "password",
     name: "newPassportRepeat",
     placeholder: "new password one more time",
+    required: true,
     pattern: passwordRegExp,
     callbacks: { blur: validationOnBlur },
   }),

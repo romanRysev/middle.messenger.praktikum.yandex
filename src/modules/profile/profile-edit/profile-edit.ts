@@ -27,6 +27,7 @@ const inputs = [
     type: "email",
     name: "email",
     placeholder: "email",
+    required: true,
     callbacks: {
       blur: validationOnBlur,
     },
@@ -40,6 +41,7 @@ const inputs = [
     minlength: "3",
     maxlength: "20",
     pattern: loginRegExp,
+    required: true,
     callbacks: { blur: validationOnBlur },
   }),
   new Input({
@@ -49,6 +51,7 @@ const inputs = [
     name: "first_name",
     placeholder: "first name",
     pattern: nameRegExp,
+    required: true,
     callbacks: { blur: validationOnBlur },
   }),
   new Input({
@@ -58,6 +61,7 @@ const inputs = [
     name: "second_name",
     placeholder: "second name",
     pattern: nameRegExp,
+    required: true,
     callbacks: { blur: validationOnBlur },
   }),
   new Input({
@@ -67,9 +71,19 @@ const inputs = [
     name: "display_name",
     placeholder: "display name",
     pattern: loginRegExp,
+    required: true,
     callbacks: { blur: validationOnBlur },
   }),
-  new Input({ value: store.getState()?.userData?.phone ?? "", label: "phone", type: "phone", name: "phone", placeholder: "phone", pattern: phoneRegExp, callbacks: { blur: validationOnBlur } }),
+  new Input({
+    value: store.getState()?.userData?.phone ?? "",
+    label: "phone",
+    type: "phone",
+    name: "phone",
+    placeholder: "phone",
+    pattern: phoneRegExp,
+    required: true,
+    callbacks: { blur: validationOnBlur },
+  }),
 ];
 
 const updateInput = () => {

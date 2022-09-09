@@ -21,6 +21,8 @@ export class Validator {
   }
 
   getFormValidity() {
+    console.log(this.form);
+
     const isValid = Array.from(this.form.elements).filter((el) => !this.checkInputValidity(el as HTMLInputElement)).length === 0;
     this.setSubmitButtonState(isValid);
   }

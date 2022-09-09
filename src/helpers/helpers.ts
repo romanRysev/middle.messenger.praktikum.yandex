@@ -1,8 +1,12 @@
 import { Validator } from "../services/validator/validator";
 
-export type ValidationOnBlur = (form: HTMLFormElement) => void;
+export type ValidationOnBlur = (event: Event) => void;
 
-export const validationOnBlur: ValidationOnBlur = (form) => {
+export const validationOnBlur: ValidationOnBlur = (event) => {
+  const form = (event.target as HTMLInputElement).closest("form");
+  if (!form) {
+    return;
+  }
   const v = new Validator(form);
   v.getFormValidity();
 };
