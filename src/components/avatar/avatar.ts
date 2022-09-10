@@ -14,12 +14,13 @@ export class Avatar extends Block {
     return this.compile(tpl);
   }
 
-  componentDidMount() {
-    new ChatAPI().isExists((this.props.url as string) ?? "").then((data) => {
-      if (!data) {
-        this.setProps({ url: avatarUrl });
-      }
-    });
+  async componentDidMount() {
+    console.log(this.props.url);
+
+    const res = await new ChatAPI().isExists(String(this.props.url ?? ""));
+    if (!res) {
+      this.setProps({ url: avatarUrl });
+    }
     return true;
   }
 }

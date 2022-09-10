@@ -34,8 +34,9 @@ export class Profile extends Block {
         class: "profile__button",
         text: "Sign out",
         events: {
-          click: () => {
-            new Auth().signout().then(() => router.go("/signin"));
+          click: async () => {
+            await new Auth().signout();
+            router.go("/signin");
           },
         },
       }),

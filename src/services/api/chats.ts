@@ -1,8 +1,7 @@
 import { HTTPTransport } from "../../core/api/requester";
-import { HOST } from "../../constants/base";
+import { DEFAULT_HEADERS, HOST } from "../../constants/base";
 
 const requester = new HTTPTransport();
-const headers = { "Access-Control-Allow-Credentials": "true", "content-type": "application/json" };
 
 export type ChatsData = {
   id: number;
@@ -23,66 +22,101 @@ export type ChatsData = {
   };
 }[];
 export class ChatAPI {
-  createChat(title: string) {
-    requester
-      .post(`${HOST}chats`, { headers, withCredentials: true, data: { title: title } })
-      .then((data) => {
-        if (data.status === 200) {
-          return true;
-        }
+  async createChat(title: string) {
+    try {
+      const result = await requester.post(`${HOST}chats`, {
+        headers: DEFAULT_HEADERS,
+        withCredentials: true,
+        data: { title: title },
       });
+
+      if (result.status === 200) {
+        return true;
+      } else throw `Error: ${result.status}`;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   }
 
-  getChats(): Promise<ChatsData> {
-    return requester.get(`${HOST}chats`, { headers, withCredentials: true }).then((data) => {
-      if (data.status === 200) {
-        return JSON.parse(data.response);
-      }
+  async getChats(): Promise<ChatsData> {
+    try {
+      const result = await requester.get(`${HOST}chats`, {
+        headers: DEFAULT_HEADERS,
+        withCredentials: true,
+      });
+      if (result.status === 200) {
+        return JSON.parse(result.response);
+      } else throw `Error: ${result.status}`;
+    } catch (error) {
+      console.error(error);
       return [];
-    });
+    }
   }
 
-  getToken(id: number) {
-    return requester
-      .post(`${HOST}chats/token/${String(id)}`, { headers, withCredentials: true })
-      .then((data) => JSON.parse(data.response))
-      .then((data) => {
-        return data.token;
+  async getToken(id: number) {
+    try {
+      const result = await requester.post(`${HOST}chats/token/${String(id)}`, {
+        headers: DEFAULT_HEADERS,
+        withCredentials: true,
       });
+      if (result.status === 200) {
+        return JSON.parse(result.response).token;
+      } else {
+        throw `Error: ${result.status}`;
+      }
+    } catch (error) {
+      console.error(error);
+      return "";
+    }
   }
 
-  addUsersToChat(users: number[], chatId: number) {
-    return requester
-      .put(`${HOST}chats/users`, { headers, withCredentials: true, data: { users, chatId } })
-      .then((data) => {
-        if (data.status === 200) {
-          return true;
-        }
-        return false;
+  async addUsersToChat(users: number[], chatId: number) {
+    try {
+      const result = await requester.put(`${HOST}chats/users`, {
+        headers: DEFAULT_HEADERS,
+        withCredentials: true,
+        data: { users, chatId },
       });
-  }
 
-  removeUsersFromChat(users: number[], chatId: number) {
-    return requester
-      .delete(`${HOST}chats/users`, { headers, withCredentials: true, data: { users, chatId } })
-      .then((data) => {
-        if (data.status === 200) {
-          return true;
-        }
-        return false;
-      });
-  }
-
-  /*
-   * Понимаю, что проверка существования картинки по средствам ее запроса - такая себе идея...
-   * Изначально была идея отправлять OPTIONS для проверки наличия ресурса, но OPTIONS запрещен на сервере(
-   * Лучше ничего не придумал...
-   */
-  isExists(url: string) {
-    return requester.get(url, { headers, withCredentials: true }).then((data) => {
-      if (data.status === 200) {
+      if (result.status === 200) {
         return true;
       }
-    });
+      throw `Error: ${result.status}`;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  }
+
+  async removeUsersFromChat(users: number[], chatId: number) {
+    try {
+      const result = await requester.delete(`${HOST}chats/users`, {
+        headers: DEFAULT_HEADERS,
+        withCredentials: true,
+        data: { users, chatId },
+      });
+
+      if (result.status === 200) {
+        return true;
+      }
+      throw `Error: ${result.status}`;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  }
+
+  async isExists(url: string) {
+    try {
+      const result = await requester.get(url, { headers: DEFAULT_HEADERS, withCredentials: true });
+      if (result.status === 200) {
+        return true;
+      }
+      throw `Error: ${result.status}`;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   }
 }

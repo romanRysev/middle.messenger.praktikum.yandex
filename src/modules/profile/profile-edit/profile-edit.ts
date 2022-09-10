@@ -5,19 +5,9 @@ import { Block } from "../../../core/block/block";
 import { Button } from "../../../components/button/button";
 import { Input } from "../../../components/input/input";
 import { loginRegExp, nameRegExp, phoneRegExp } from "../../../constants/regexps";
-import { getFormData, ValidationOnBlur, validationOnBlur } from "../../../helpers/helpers";
+import { getFormData, validationOnBlur } from "../../../helpers/helpers";
 import { UserAPI } from "../../../services/api/user";
 import { store, StoreEvents, UserData } from "../../../core/store/store";
-
-type InputProps = {
-  value: string;
-  label?: string;
-  type?: string;
-  name: names;
-  placeholder?: string;
-  pattern?: RegExp;
-  callbacks?: { blur: ValidationOnBlur };
-};
 
 enum names {
   "first_name" = "first_name",
@@ -33,7 +23,7 @@ const inputs = [
     label: "email",
     value: store.getState()?.userData?.email ?? "",
     type: "email",
-    name: "email",
+    name: names.email,
     placeholder: "email",
     required: true,
     callbacks: {
@@ -44,7 +34,7 @@ const inputs = [
     value: store.getState()?.userData?.login ?? "",
     label: "login",
     type: "text",
-    name: "login",
+    name: names.login,
     placeholder: "login",
     minlength: "3",
     maxlength: "20",
@@ -56,7 +46,7 @@ const inputs = [
     value: store.getState()?.userData?.first_name ?? "",
     label: "first name",
     type: "text",
-    name: "first_name",
+    name: names.first_name,
     placeholder: "first name",
     pattern: nameRegExp,
     required: true,
@@ -66,7 +56,7 @@ const inputs = [
     value: store.getState()?.userData?.second_name ?? "",
     label: "second name",
     type: "text",
-    name: "second_name",
+    name: names.second_name,
     placeholder: "second name",
     pattern: nameRegExp,
     required: true,
@@ -76,7 +66,7 @@ const inputs = [
     value: store.getState()?.userData?.display_name ?? "",
     label: "display name",
     type: "text",
-    name: "display_name",
+    name: names.display_name,
     placeholder: "display name",
     pattern: loginRegExp,
     required: true,
@@ -86,21 +76,13 @@ const inputs = [
     value: store.getState()?.userData?.phone ?? "",
     label: "phone",
     type: "phone",
-    name: "phone",
+    name: names.phone,
     placeholder: "phone",
     pattern: phoneRegExp,
     required: true,
     callbacks: { blur: validationOnBlur },
   }),
 ];
-
-const updateInput = () => {
-  inputs.forEach((item) => {
-    if (store.getState().userData) {
-      item.setProps({ value: store.getState().userData[(item.props as InputProps).name] });
-    }
-  });
-};
 
 export class ProfileEdit extends Block {
   constructor(props: Props) {
@@ -115,7 +97,7 @@ export class ProfileEdit extends Block {
             event.preventDefault();
             const form = document.forms.namedItem("profile");
             if (form) {
-              new UserAPI().changeProfile(getFormData(new FormData(form)) as unknown as UserData);
+              new UserAPI().changeProfile(getFormData<UserData>(new FormData(form)));
             }
           },
         },
@@ -124,10 +106,18 @@ export class ProfileEdit extends Block {
       ...props,
     });
 
-    store.on(StoreEvents.Updated, updateInput);
+    store.on(StoreEvents.Updated, this.updateInput);
   }
+
+  updateInput = () => {
+    inputs.forEach((item) => {
+      if (store.getState().userData) {
+        item.setProps({ value: store.getState().userData[<names>item.props.name] });
+      }
+    });
+  };
   render(): ChildNode | null {
-    updateInput();
+    this.updateInput();
     return this.compile(tpl);
   }
 }

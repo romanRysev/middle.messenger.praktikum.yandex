@@ -29,7 +29,7 @@ export class AvatarChangeModal extends Block {
               const formData = new FormData();
               formData.append("avatar", files[0]);
               new UserAPI().updateAvatar(formData);
-              (document.querySelector(".modal__close") as HTMLButtonElement)?.click();
+              document.querySelector<HTMLButtonElement>(".modal__close")?.click();
             }
           },
         },

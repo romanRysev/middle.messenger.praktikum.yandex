@@ -92,7 +92,7 @@ export class Registration extends Block {
             if (!this.element.attributes.getNamedItem("disabled")) {
               const form = document.forms.namedItem("registration");
               if (form) {
-                new Auth().signup(getFormData(new FormData(form)) as UserDataSendable);
+                new Auth().signup(getFormData<UserDataSendable>(new FormData(form)));
               }
             }
           },

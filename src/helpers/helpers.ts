@@ -11,20 +11,20 @@ export const validationOnBlur: ValidationOnBlur = (event) => {
   v.getFormValidity();
 };
 
-export const getFormData = (formData: FormData) => {
+export const getFormData = <T>(formData: FormData): T => {
   const formDataObject: Record<string, FormDataEntryValue> = {};
   for (const pair of formData.entries()) {
     formDataObject[pair[0]] = pair[1];
   }
-  return formDataObject;
+  return <T>formDataObject;
 };
 
-export function isEqual(a: object, b: object): boolean {
+export function isEqual(a: Indexed, b: Indexed): boolean {
   const res = Object.keys(a).filter((key) => {
-    if (typeof (a as Indexed)[key] !== "object" || (a as Indexed)[key] === null) {
-      return (a as Indexed)[key] !== (b as Indexed)[key];
+    if (typeof a[key] !== "object" || a[key] === null) {
+      return a[key] !== b[key];
     } else {
-      return !isEqual((a as Indexed)[key] as object, (b as Indexed)[key] as object);
+      return !isEqual(a[key], b[key]);
     }
   });
 

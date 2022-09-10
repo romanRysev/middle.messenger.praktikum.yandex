@@ -15,10 +15,6 @@ import { CreateChatModal } from "../../components/modal/create-chat-modal/create
 import { ChatUserModal } from "../../components/modal/chat-user-modal/chat-user-modal";
 import { MessagesWSS } from "../../services/api/messages";
 
-async function getChats() {
-  return new ChatAPI().getChats();
-}
-
 type Messages = {
   text: string;
   time: string;
@@ -32,30 +28,7 @@ type ChatsProps = {
   searchInput: Input;
 };
 
-const connections: Record<string, Promise<MessagesWSS>> = {};
-
-async function setChats(chats: ChatsData) {
-  const res = chats.reduce<ShortView[]>((acc, chatItem) => {
-    const connection = new ChatAPI().getToken(chatItem.id).then((token) => {
-      console.log(token);
-
-      return new MessagesWSS({
-        userId: String(store.getState().userData.id),
-        chatId: String(chatItem.id),
-        token: String(token),
-      });
-    });
-    connections[chatItem.id] = connection;
-    acc.push(
-      new ShortView({
-        connection: connection,
-        ...chatItem,
-      })
-    );
-    return acc;
-  }, []);
-  return res;
-}
+const connections: Record<string, MessagesWSS> = {};
 
 function openUserAddingModal() {
   if (store.getState().activeChatId) {
@@ -76,7 +49,7 @@ function openUserAddingModal() {
                   [Number(userId)],
                   store.getState().activeChatId ?? 0
                 );
-                (document.querySelector(".modal__close") as HTMLButtonElement)?.click();
+                document.querySelector<HTMLButtonElement>(".modal__close")?.click();
               },
             },
           }),
@@ -107,7 +80,7 @@ function openUserDelitingModal() {
                   [Number(userId)],
                   store.getState().activeChatId ?? 0
                 );
-                (document.querySelector(".modal__close") as HTMLButtonElement)?.click();
+                document.querySelector<HTMLButtonElement>(".modal__close")?.click();
               },
             },
           }),
@@ -146,7 +119,7 @@ export class Chats extends Block {
                     name: "save-chat",
                     events: {
                       click: async () => {
-                        const chatApi = new ChatAPI();
+                        const chatApi = this.chatAPI;
                         const title = (
                           document.forms
                             .namedItem("create-chat")
@@ -154,16 +127,9 @@ export class Chats extends Block {
                         )?.value;
                         await chatApi.createChat(title);
                         const newChats = await chatApi.getChats();
-                        setChats(newChats).then((chats) => {
-                          this.setProps({ shortView: chats });
-                          if (Array.isArray(this.children.shortView)) {
-                            this.children.shortView.forEach((child) =>
-                              child.dispatchComponentDidMount()
-                            );
-                          } else {
-                            this.children.shortView.dispatchComponentDidMount();
-                          }
-                        });
+                        const chats = await this.setChats(newChats);
+
+                        this.setProps({ shortView: chats });
                         if (Array.isArray(this.children.shortView)) {
                           this.children.shortView.forEach((child) =>
                             child.dispatchComponentDidMount()
@@ -171,7 +137,15 @@ export class Chats extends Block {
                         } else {
                           this.children.shortView.dispatchComponentDidMount();
                         }
-                        (document.querySelector(".modal__close") as HTMLButtonElement)?.click();
+
+                        if (Array.isArray(this.children.shortView)) {
+                          this.children.shortView.forEach((child) =>
+                            child.dispatchComponentDidMount()
+                          );
+                        } else {
+                          this.children.shortView.dispatchComponentDidMount();
+                        }
+                        document.querySelector<HTMLButtonElement>(".modal__close")?.click();
                       },
                     },
                   }),
@@ -193,15 +167,15 @@ export class Chats extends Block {
         },
       }),
       events: {
-        submit: (event: SubmitEvent) => {
+        submit: async (event: SubmitEvent) => {
           event.preventDefault();
           const form = document.forms.namedItem("newMessage");
 
           if (form && store.getState().activeChatId) {
-            connections[store.getState().activeChatId ?? 0].then((connection: MessagesWSS) => {
-              connection.send((form.elements.namedItem("message") as HTMLInputElement)?.value);
-              (form.elements.namedItem("message") as HTMLInputElement).value = "";
-            });
+            const connection = await connections[store.getState().activeChatId ?? 0];
+
+            connection.send((<HTMLInputElement>form.elements.namedItem("message"))?.value);
+            (<HTMLInputElement>form.elements.namedItem("message")).value = "";
           }
         },
       },
@@ -221,27 +195,53 @@ export class Chats extends Block {
       const chatElem = document.querySelector(".chat__right-column");
       chatElem?.scrollTo(0, chatElem.scrollHeight);
     });
+
+    this.chatAPI = new ChatAPI();
+  }
+
+  chatAPI: ChatAPI;
+
+  async setChats(chats: ChatsData) {
+    const res = await chats.reduce<Promise<ShortView[]>>(async (acc, chatItem) => {
+      const token = await this.chatAPI.getToken(chatItem.id);
+
+      const connection = new MessagesWSS({
+        userId: String(store.getState().userData.id),
+        chatId: String(chatItem.id),
+        token: String(token),
+      });
+
+      connections[chatItem.id] = connection;
+      const accAwaited = await acc;
+      accAwaited.push(
+        new ShortView({
+          connection: connection,
+          ...chatItem,
+        })
+      );
+      return acc;
+    }, Promise.resolve([]));
+    return res;
   }
 
   render(): ChildNode | null {
     return this.compile(tpl);
   }
 
-  componentDidMount() {
-    getChats().then((data) => {
-      store.set("activeChatId", data[0]?.id);
-      setChats(data).then((chats) => {
-        this.setProps({ shortView: chats });
-        if (Array.isArray(this.children.shortView)) {
-          this.children.shortView.forEach((child) => child.dispatchComponentDidMount());
-        } else {
-          this.children.shortView.dispatchComponentDidMount();
-        }
-        (chats[0].props.connection as Promise<MessagesWSS>).then((data: MessagesWSS) =>
-          data.getOldMessages()
-        );
-      });
-    });
+  async componentDidMount() {
+    const data = await this.chatAPI.getChats();
+    store.set("activeChatId", data[0]?.id);
+    const chats = await this.setChats(data);
+    this.setProps({ shortView: chats });
+    if (Array.isArray(this.children.shortView)) {
+      this.children.shortView.forEach((child) => child.dispatchComponentDidMount());
+    } else {
+      this.children.shortView.dispatchComponentDidMount();
+    }
+    const connection = await (chats[0].props.connection as Promise<MessagesWSS>);
+
+    connection.getOldMessages();
+
     return true;
   }
 }

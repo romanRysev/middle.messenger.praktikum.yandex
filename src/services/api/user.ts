@@ -14,68 +14,90 @@ export type UserDataSendable = {
   phone: string;
 };
 export class UserAPI {
-  changeProfile(data: UserDataSendable) {
-    return requester
-      .put(`${HOST}user/profile`, { headers: DEFAULT_HEADERS, withCredentials: true, data: data })
-      .then((data) => {
-        if (data.status === 200) {
-          store.set("userData", JSON.parse(data.response));
-          router.go("/profile");
-          return true;
-        }
+  async changeProfile(data: UserDataSendable) {
+    try {
+      const result = await requester.put(`${HOST}user/profile`, {
+        headers: DEFAULT_HEADERS,
+        withCredentials: true,
+        data: data,
       });
+
+      if (result.status === 200) {
+        store.set("userData", JSON.parse(result.response));
+        router.go("/profile");
+        return true;
+      } else throw `Error: ${result.status}`;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   }
 
-  updateAvatar(data: FormData) {
-    return requester
-      .put(`${HOST}user/profile/avatar`, {
+  async updateAvatar(data: FormData) {
+    try {
+      const result = await requester.put(`${HOST}user/profile/avatar`, {
         headers: { "Access-Control-Allow-Credentials": "true", enctype: "multipart/form-data" },
         withCredentials: true,
         data: data,
         file: true,
-      })
-      .then((data: XMLHttpRequest) => {
-        if (data.status === 200) {
-          return true;
-        }
       });
+
+      if (result.status === 200) {
+        return true;
+      } else throw `Error: ${result.status}`;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   }
 
-  updatePassword(data: { oldPassword: string; newPassword: string }) {
-    return requester
-      .put(`${HOST}user/password`, {
+  async updatePassword(data: { oldPassword: string; newPassword: string }) {
+    try {
+      const result = await requester.put(`${HOST}user/password`, {
         headers: { "Access-Control-Allow-Credentials": "true", enctype: "multipart/form-data" },
         withCredentials: true,
         data: data,
-      })
-      .then((data: XMLHttpRequest) => {
-        if (data.status === 200) {
-          return true;
-        }
       });
+
+      if (result.status === 200) {
+        return true;
+      } else throw `Error: ${result.status}`;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   }
 
-  getAvatar(path: string) {
-    return requester
-      .get(`${HOST}resources${path}`, { headers: DEFAULT_HEADERS, withCredentials: true })
-      .then((data) => {
-        if (data.status === 200) {
-          return true;
-        }
+  async getAvatar(path: string) {
+    try {
+      const result = await requester.get(`${HOST}resources${path}`, {
+        headers: DEFAULT_HEADERS,
+        withCredentials: true,
       });
+
+      if (result.status === 200) {
+        return true;
+      } else throw `Error: ${result.status}`;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   }
 
-  findUser(login: string) {
-    return requester
-      .post(`${HOST}user/search`, {
+  async findUser(login: string) {
+    try {
+      const result = await requester.post(`${HOST}user/search`, {
         headers: DEFAULT_HEADERS,
         withCredentials: true,
         data: { login },
-      })
-      .then((data) => {
-        if (data.status === 200) {
-          return data.response;
-        }
       });
+
+      if (result.status === 200) {
+        return result.response;
+      } else throw `Error: ${result.status}`;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   }
 }

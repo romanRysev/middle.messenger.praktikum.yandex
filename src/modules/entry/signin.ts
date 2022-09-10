@@ -47,7 +47,7 @@ export class Signin extends Block {
             if (!this.element.attributes.getNamedItem("disabled")) {
               const form = document.forms.namedItem("signin");
               if (form) {
-                new Auth().signin(getFormData(new FormData(form)) as SigninProps);
+                new Auth().signin(getFormData<SigninProps>(new FormData(form)));
               }
             }
           },

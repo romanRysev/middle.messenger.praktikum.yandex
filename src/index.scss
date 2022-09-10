@@ -1,3 +1,5 @@
+@import './vars';
+
 .container_align-center {
   display: flex;
   flex-direction: column;
@@ -36,7 +38,7 @@
 
 .link {
   text-decoration: none;
-  color: #3369F3;
+  color: $primary-color;
   font-size: 11px;
   line-height: 11px;
   margin: 0;

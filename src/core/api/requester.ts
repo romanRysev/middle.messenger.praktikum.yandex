@@ -77,8 +77,8 @@ export class HTTPTransport {
 
       if (isGet || !data) {
         xhr.send();
-      } else if (options.file) {
-        xhr.send(data as FormData);
+      } else if (options.file && data instanceof FormData) {
+        xhr.send(data);
       } else {
         xhr.send(JSON.stringify(data));
       }

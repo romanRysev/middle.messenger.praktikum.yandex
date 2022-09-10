@@ -8,11 +8,7 @@ const requester = new HTTPTransport();
 
 describe("Testing requester", () => {
   it("GET to auth/user must returns 401", async () => {
-    requester
-      .get(`${HOST}auth/user`)
-      .then((data) => {
-        return data.status;
-      })
-      .then((status) => expect(status).toEqual(401));
+    const res = await requester.get(`${HOST}auth/user`);
+    expect(res.status).toEqual(401);
   });
 });

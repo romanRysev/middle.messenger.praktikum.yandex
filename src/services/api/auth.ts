@@ -1,53 +1,82 @@
 import { store } from "../../core/store/store";
 import { router } from "../../index";
 import { HTTPTransport } from "../../core/api/requester";
-import { HOST } from "../../constants/base";
+import { DEFAULT_HEADERS, HOST } from "../../constants/base";
 import { UserDataSendable } from "./user";
 
 const requester = new HTTPTransport();
 const host = `${HOST}auth`;
-const headers = { "Access-Control-Allow-Credentials": "true", "content-type": "application/json" };
 
 export type SigninProps = { login: string; password: string };
 
 export class Auth {
-  signup(data: UserDataSendable) {
-    return requester
-      .post(`${host}/signup`, { headers, withCredentials: true, data: data })
-      .then((data) => {
-        if (data.status === 200) {
-          router.go("/");
-        }
+  async signup(data: UserDataSendable) {
+    try {
+      const result = await requester.post(`${host}/signup`, {
+        headers: DEFAULT_HEADERS,
+        withCredentials: true,
+        data: data,
       });
-  }
-  signin(data: SigninProps) {
-    return requester
-      .post(`${host}/signin`, { headers, withCredentials: true, data: data })
-      .then((data) => {
-        if (data.status === 200) {
-          this.getUserInfo()
-            .then((data) => store.set("userData", data))
-            .then(() => {
-              store.set("isAuthorized", true);
-              router.go("/");
-            });
-        }
-      });
-  }
-  getUserInfo() {
-    return requester.get(`${host}/user`, { headers, withCredentials: true }).then((data) => {
-      if (data.status === 200) {
-        return JSON.parse(data.response);
+
+      if (result.status === 200) {
+        router.go("/");
+      } else {
+        throw `Error: ${result.status}`;
       }
-      return null;
-    });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  async signin(data: SigninProps) {
+    try {
+      const result = await requester.post(`${host}/signin`, {
+        headers: DEFAULT_HEADERS,
+        withCredentials: true,
+        data: data,
+      });
+
+      if (result.status === 200) {
+        const userInfo = await this.getUserInfo();
+        store.set("userData", userInfo);
+        store.set("isAuthorized", true);
+        router.go("/");
+      } else {
+        throw `Error: ${result.status}`;
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
 
-  signout() {
-    return requester.post(`${host}/logout`, { headers, withCredentials: true }).then((data) => {
-      if (data.status === 200) {
+  async getUserInfo() {
+    try {
+      const result = await requester.get(`${host}/user`, {
+        headers: DEFAULT_HEADERS,
+        withCredentials: true,
+      });
+      if (result.status === 200) {
+        return JSON.parse(result.response);
+      } else {
+        throw `Error: ${result.status}`;
+      }
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+
+  async signout() {
+    try {
+      const result = await requester.post(`${host}/logout`, {
+        headers: DEFAULT_HEADERS,
+        withCredentials: true,
+      });
+      if (result.status === 200) {
         store.set("isAuthorized", false);
       }
-    });
+      throw `Error: ${result.status}`;
+    } catch (error) {
+      console.error(error);
+    }
   }
 }

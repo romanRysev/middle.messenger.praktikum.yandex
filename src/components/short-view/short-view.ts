@@ -8,17 +8,17 @@ import { store, StoreEvents } from "../../core/store/store";
 import { MessagesWSS } from "../../services/api/messages";
 
 function getAvatarUrl(avatar: string | null) {
+  console.log(typeof avatar);
+
   if (!avatar) return avatarUrl;
 
   return `${HOST}resources/` + (avatar && avatar[0] === "/") ? avatar?.slice(1) : avatar;
 }
-
-//type ShortViewProps = { avatar: Block; callbacks?: EventsProp };
 export class ShortView extends Block {
   constructor(props: Props) {
     super("div", {
       avatarComponent: new Avatar({
-        url: getAvatarUrl(props.avatar as string),
+        url: getAvatarUrl(props.avatar as string | null),
         class: "profile__avatar",
         alt: "avatar",
         height: 64,
@@ -38,10 +38,11 @@ export class ShortView extends Block {
   }
 
   componentDidMount() {
-    this.getContent().addEventListener("click", () => {
+    this.getContent().addEventListener("click", async () => {
       store.set("activeChatId", this.props.id);
       this.setProps({ current: true });
-      (this.props.connection as Promise<MessagesWSS>).then((data) => data.getOldMessages());
+      const res = await (this.props.connection as Promise<MessagesWSS>);
+      res.getOldMessages();
     });
 
     return true;

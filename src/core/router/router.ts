@@ -138,9 +138,7 @@ export class Router {
     if (route) {
       return route;
     } else {
-      return this.routes.find((route) =>
-        route.match("/404")
-      ) /*?? new Route("/404", ErrorTemplate, { rootQuery: this._rootQuery })*/;
+      return this.routes.find((route) => route.match("/404"));
     }
   }
 }

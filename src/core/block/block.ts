@@ -156,7 +156,7 @@ export abstract class Block {
     });
   }
 
-  public componentDidMount() {
+  public componentDidMount(): Promise<boolean> | boolean {
     return true;
   }
 
