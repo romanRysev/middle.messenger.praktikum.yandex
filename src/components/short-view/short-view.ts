@@ -8,8 +8,6 @@ import { store, StoreEvents } from "../../core/store/store";
 import { MessagesWSS } from "../../services/api/messages";
 
 function getAvatarUrl(avatar: string | null) {
-  console.log(typeof avatar);
-
   if (!avatar) return avatarUrl;
 
   return `${HOST}resources/` + (avatar && avatar[0] === "/") ? avatar?.slice(1) : avatar;

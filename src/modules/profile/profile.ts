@@ -86,7 +86,7 @@ export class Profile extends Block {
   }
 
   public componentDidMount(): boolean {
-    document.querySelector(".profile-container__back-link")?.addEventListener("click", (event) => {
+    document.querySelector("#profile-container__back-link")?.addEventListener("click", (event) => {
       event.preventDefault();
       router.go("/chat");
     });

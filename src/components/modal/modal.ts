@@ -11,7 +11,7 @@ export class Modal extends Block {
   }
 
   public componentDidMount(): boolean {
-    document.querySelector(".modal__close")?.addEventListener("click", (event) => {
+    document.querySelector("#modal__close")?.addEventListener("click", (event) => {
       event.preventDefault();
       this.element.remove();
     });

@@ -36,7 +36,7 @@ async function init() {
     }
     router.start();
   } catch (error) {
-    console.log(error);
+    console.error(error);
     store.set("isAuthorized", false);
     store.set("userData", {});
     router.start();

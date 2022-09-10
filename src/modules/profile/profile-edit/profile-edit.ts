@@ -109,13 +109,14 @@ export class ProfileEdit extends Block {
     store.on(StoreEvents.Updated, this.updateInput);
   }
 
-  updateInput = () => {
+  updateInput() {
     inputs.forEach((item) => {
       if (store.getState().userData) {
         item.setProps({ value: store.getState().userData[<names>item.props.name] });
       }
     });
-  };
+  }
+
   render(): ChildNode | null {
     this.updateInput();
     return this.compile(tpl);

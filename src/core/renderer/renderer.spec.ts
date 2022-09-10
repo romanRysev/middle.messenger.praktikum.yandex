@@ -8,13 +8,13 @@ class EmptyLayout extends Block {
     super("div", {});
   }
   render(): ChildNode | null {
-    return this.compile(() => '<div class="test"></div>');
+    return this.compile(() => '<div id="test"></div>');
   }
 }
 
 describe("Testing renderer", () => {
   it("DOM must contains element with '.test' class", () => {
     renderer.render(new EmptyLayout(), "#app");
-    expect(document.querySelector(".test")).not.toBe(null);
+    expect(document.querySelector("#test")).not.toBe(null);
   });
 });

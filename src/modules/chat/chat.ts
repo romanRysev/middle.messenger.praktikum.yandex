@@ -192,7 +192,7 @@ export class Chats extends Block {
           })
           .reverse(),
       });
-      const chatElem = document.querySelector(".chat__right-column");
+      const chatElem = document.querySelector("#chat__right-column");
       chatElem?.scrollTo(0, chatElem.scrollHeight);
     });
 

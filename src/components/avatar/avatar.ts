@@ -15,8 +15,6 @@ export class Avatar extends Block {
   }
 
   async componentDidMount() {
-    console.log(this.props.url);
-
     const res = await new ChatAPI().isExists(String(this.props.url ?? ""));
     if (!res) {
       this.setProps({ url: avatarUrl });
