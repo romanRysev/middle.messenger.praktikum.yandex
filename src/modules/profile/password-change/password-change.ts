@@ -49,8 +49,10 @@ export class PasswordChange extends Block {
             const form = document.forms.namedItem("passwordChange");
             if (form) {
               new UserAPI().updatePassword({
-                newPassword: getFormData<Record<string, string>>(new FormData(form)).newPassport,
-                oldPassword: getFormData<Record<string, string>>(new FormData(form)).oldPassword,
+                newPassword: (getFormData(new FormData(form)) as Record<string, string>)
+                  .newPassport,
+                oldPassword: (getFormData(new FormData(form)) as Record<string, string>)
+                  .oldPassword,
               });
             }
           },

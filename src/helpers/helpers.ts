@@ -11,12 +11,12 @@ export const validationOnBlur: ValidationOnBlur = (event) => {
   v.getFormValidity();
 };
 
-export const getFormData = <T>(formData: FormData): T => {
+export const getFormData = (formData: FormData) => {
   const formDataObject: Record<string, FormDataEntryValue> = {};
   for (const pair of formData.entries()) {
     formDataObject[pair[0]] = pair[1];
   }
-  return <T>formDataObject;
+  return formDataObject;
 };
 
 export function isEqual(a: Indexed, b: Indexed): boolean {

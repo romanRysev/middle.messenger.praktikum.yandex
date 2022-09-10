@@ -97,7 +97,7 @@ export class ProfileEdit extends Block {
             event.preventDefault();
             const form = document.forms.namedItem("profile");
             if (form) {
-              new UserAPI().changeProfile(getFormData<UserData>(new FormData(form)));
+              new UserAPI().changeProfile(getFormData(new FormData(form)) as unknown as UserData);
             }
           },
         },
