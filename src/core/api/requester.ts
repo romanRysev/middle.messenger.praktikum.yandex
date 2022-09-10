@@ -5,7 +5,14 @@ enum METHODS {
   DELETE = "DELETE",
 }
 
-type RequestOptions = { headers?: Record<string, string> | null; method?: METHODS; data?: Record<string, unknown> | FormData | null; timeout?: number; withCredentials?: boolean; file?: boolean };
+type RequestOptions = {
+  headers?: Record<string, string> | null;
+  method?: METHODS;
+  data?: Record<string, unknown> | FormData | null;
+  timeout?: number;
+  withCredentials?: boolean;
+  file?: boolean;
+};
 
 function queryStringify(data: Record<string, unknown> | FormData): string {
   if (typeof data !== "object" || data instanceof FormData) {
@@ -35,7 +42,11 @@ export class HTTPTransport {
     return this.request(url, { ...options, method: METHODS.DELETE }, options.timeout);
   };
 
-  request = (url: string, options: RequestOptions = { headers: null, method: METHODS.GET, data: null }, timeout = 5000) => {
+  request = (
+    url: string,
+    options: RequestOptions = { headers: null, method: METHODS.GET, data: null },
+    timeout = 5000
+  ) => {
     const { headers, method = METHODS.GET, data } = options;
 
     return new Promise<XMLHttpRequest>(function (resolve, reject) {

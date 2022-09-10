@@ -8,7 +8,13 @@ import tpl from "./avatar-change-modal.hbs";
 export class AvatarChangeModal extends Block {
   constructor(props: Props) {
     super("div", {
-      avatarInput: new Input({ name: "avatar", type: "file", placeholder: "avatar", required: true, value: store.getState().userData.avatar ?? "" }),
+      avatarInput: new Input({
+        name: "avatar",
+        type: "file",
+        placeholder: "avatar",
+        required: true,
+        value: store.getState().userData.avatar ?? "",
+      }),
       saveButton: new Button({
         text: "Save",
         events: {

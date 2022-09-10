@@ -44,7 +44,16 @@ class Store extends EventBus {
   private state: State = {
     activeChatId: null,
     isAuthorized: false,
-    userData: { id: -1, first_name: "", second_name: "", display_name: "", login: "", email: "", phone: "", avatar: "" },
+    userData: {
+      id: -1,
+      first_name: "",
+      second_name: "",
+      display_name: "",
+      login: "",
+      email: "",
+      phone: "",
+      avatar: "",
+    },
     chatMessages: [],
   };
 

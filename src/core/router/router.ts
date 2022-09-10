@@ -9,7 +9,14 @@ import { PasswordChange } from "../../modules/profile/password-change/password-c
 import { ProfileEdit } from "../../modules/profile/profile-edit/profile-edit";
 import { Profile } from "../../modules/profile/profile";
 
-type BlockType = typeof Chats | typeof Registration | typeof Signin | typeof ErrorTemplate | typeof PasswordChange | typeof Profile | typeof ProfileEdit;
+type BlockType =
+  | typeof Chats
+  | typeof Registration
+  | typeof Signin
+  | typeof ErrorTemplate
+  | typeof PasswordChange
+  | typeof Profile
+  | typeof ProfileEdit;
 
 class Route {
   private _pathname: string;
@@ -88,7 +95,8 @@ export class Router {
 
   _onRoute(pathname: string) {
     const signinPageUnreachable = pathname === "/signin" && store.getState().isAuthorized;
-    const unAuthorized = pathname !== "/signin" && pathname !== "/registration" && !store.getState().isAuthorized;
+    const unAuthorized =
+      pathname !== "/signin" && pathname !== "/registration" && !store.getState().isAuthorized;
 
     let path = pathname;
     if (unAuthorized) {
@@ -130,7 +138,9 @@ export class Router {
     if (route) {
       return route;
     } else {
-      return this.routes.find((route) => route.match("/404")) /*?? new Route("/404", ErrorTemplate, { rootQuery: this._rootQuery })*/;
+      return this.routes.find((route) =>
+        route.match("/404")
+      ) /*?? new Route("/404", ErrorTemplate, { rootQuery: this._rootQuery })*/;
     }
   }
 }

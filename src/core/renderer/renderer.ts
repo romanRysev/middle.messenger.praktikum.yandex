@@ -2,7 +2,8 @@ import { Block } from "../block/block";
 
 export class Renreder {
   render(layuot: Block, rootQuery: string) {
-    const rootElement = document.querySelector(rootQuery) ?? document.body.appendChild(document.createElement("div"));
+    const rootElement =
+      document.querySelector(rootQuery) ?? document.body.appendChild(document.createElement("div"));
 
     if (rootElement) {
       rootElement.appendChild(layuot.getContent());

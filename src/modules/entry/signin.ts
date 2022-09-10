@@ -10,8 +10,26 @@ import { router } from "../../index";
 import { Auth, SigninProps } from "../../services/api/auth";
 
 const inputs = [
-  new Input({ label: "login", type: "text", name: "login", placeholder: "login", minlength: "3", maxlength: "20", pattern: loginRegExp, required: true, callbacks: { blur: validationOnBlur } }),
-  new Input({ label: "password", type: "password", name: "password", placeholder: "password", pattern: passwordRegExp, required: true, callbacks: { blur: validationOnBlur } }),
+  new Input({
+    label: "login",
+    type: "text",
+    name: "login",
+    placeholder: "login",
+    minlength: "3",
+    maxlength: "20",
+    pattern: loginRegExp,
+    required: true,
+    callbacks: { blur: validationOnBlur },
+  }),
+  new Input({
+    label: "password",
+    type: "password",
+    name: "password",
+    placeholder: "password",
+    pattern: passwordRegExp,
+    required: true,
+    callbacks: { blur: validationOnBlur },
+  }),
 ];
 
 export class Signin extends Block {

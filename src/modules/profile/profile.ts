@@ -18,7 +18,9 @@ export class Profile extends Block {
   constructor(props: Props) {
     super("div", {
       avatar: new Avatar({
-        url: store.getState().userData?.avatar ? `${HOST}resources` + store.getState().userData?.avatar : avatarUrl,
+        url: store.getState().userData?.avatar
+          ? `${HOST}resources` + store.getState().userData?.avatar
+          : avatarUrl,
         class: "profile__avatar",
         height: 130,
         width: 130,

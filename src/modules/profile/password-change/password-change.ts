@@ -7,8 +7,24 @@ import tpl from "./password-change.hbs";
 import { UserAPI } from "../../../services/api/user";
 
 const inputs = [
-  new Input({ label: "old password", type: "password", name: "oldPassword", placeholder: "old password", pattern: passwordRegExp, required: true, callbacks: { blur: validationOnBlur } }),
-  new Input({ label: "new password", type: "password", name: "newPassport", placeholder: "new password", pattern: passwordRegExp, required: true, callbacks: { blur: validationOnBlur } }),
+  new Input({
+    label: "old password",
+    type: "password",
+    name: "oldPassword",
+    placeholder: "old password",
+    pattern: passwordRegExp,
+    required: true,
+    callbacks: { blur: validationOnBlur },
+  }),
+  new Input({
+    label: "new password",
+    type: "password",
+    name: "newPassport",
+    placeholder: "new password",
+    pattern: passwordRegExp,
+    required: true,
+    callbacks: { blur: validationOnBlur },
+  }),
   new Input({
     label: "new password one more time",
     type: "password",
@@ -32,7 +48,10 @@ export class PasswordChange extends Block {
             event.preventDefault();
             const form = document.forms.namedItem("passwordChange");
             if (form) {
-              new UserAPI().updatePassword({ newPassword: getFormData(new FormData(form)).newPassport as string, oldPassword: getFormData(new FormData(form)).oldPassword as string });
+              new UserAPI().updatePassword({
+                newPassword: getFormData(new FormData(form)).newPassport as string,
+                oldPassword: getFormData(new FormData(form)).oldPassword as string,
+              });
             }
           },
         },

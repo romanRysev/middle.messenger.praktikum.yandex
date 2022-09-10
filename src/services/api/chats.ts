@@ -24,11 +24,13 @@ export type ChatsData = {
 }[];
 export class ChatAPI {
   createChat(title: string) {
-    requester.post(`${HOST}chats`, { headers, withCredentials: true, data: { title: title } }).then((data) => {
-      if (data.status === 200) {
-        return true;
-      }
-    });
+    requester
+      .post(`${HOST}chats`, { headers, withCredentials: true, data: { title: title } })
+      .then((data) => {
+        if (data.status === 200) {
+          return true;
+        }
+      });
   }
 
   getChats(): Promise<ChatsData> {
@@ -50,21 +52,25 @@ export class ChatAPI {
   }
 
   addUsersToChat(users: number[], chatId: number) {
-    return requester.put(`${HOST}chats/users`, { headers, withCredentials: true, data: { users, chatId } }).then((data) => {
-      if (data.status === 200) {
-        return true;
-      }
-      return false;
-    });
+    return requester
+      .put(`${HOST}chats/users`, { headers, withCredentials: true, data: { users, chatId } })
+      .then((data) => {
+        if (data.status === 200) {
+          return true;
+        }
+        return false;
+      });
   }
 
   removeUsersFromChat(users: number[], chatId: number) {
-    return requester.delete(`${HOST}chats/users`, { headers, withCredentials: true, data: { users, chatId } }).then((data) => {
-      if (data.status === 200) {
-        return true;
-      }
-      return false;
-    });
+    return requester
+      .delete(`${HOST}chats/users`, { headers, withCredentials: true, data: { users, chatId } })
+      .then((data) => {
+        if (data.status === 200) {
+          return true;
+        }
+        return false;
+      });
   }
 
   /*

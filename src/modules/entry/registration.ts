@@ -11,9 +11,35 @@ import { Auth } from "../../services/api/auth";
 import { UserDataSendable } from "../../services/api/user";
 
 const inputs = [
-  new Input({ label: "first name", type: "text", name: "first_name", placeholder: "first name", pattern: nameRegExp, required: true, callbacks: { blur: validationOnBlur } }),
-  new Input({ label: "second name", type: "text", name: "second_name", placeholder: "second name", pattern: nameRegExp, required: true, callbacks: { blur: validationOnBlur } }),
-  new Input({ label: "login", type: "text", name: "login", placeholder: "login", minlength: "3", maxlength: "20", pattern: loginRegExp, required: true, callbacks: { blur: validationOnBlur } }),
+  new Input({
+    label: "first name",
+    type: "text",
+    name: "first_name",
+    placeholder: "first name",
+    pattern: nameRegExp,
+    required: true,
+    callbacks: { blur: validationOnBlur },
+  }),
+  new Input({
+    label: "second name",
+    type: "text",
+    name: "second_name",
+    placeholder: "second name",
+    pattern: nameRegExp,
+    required: true,
+    callbacks: { blur: validationOnBlur },
+  }),
+  new Input({
+    label: "login",
+    type: "text",
+    name: "login",
+    placeholder: "login",
+    minlength: "3",
+    maxlength: "20",
+    pattern: loginRegExp,
+    required: true,
+    callbacks: { blur: validationOnBlur },
+  }),
   new Input({
     label: "email",
     type: "email",
@@ -24,7 +50,15 @@ const inputs = [
       blur: validationOnBlur,
     },
   }),
-  new Input({ label: "password", type: "password", name: "password", placeholder: "password", pattern: passwordRegExp, required: true, callbacks: { blur: validationOnBlur } }),
+  new Input({
+    label: "password",
+    type: "password",
+    name: "password",
+    placeholder: "password",
+    pattern: passwordRegExp,
+    required: true,
+    callbacks: { blur: validationOnBlur },
+  }),
   new Input({
     label: "password one more time",
     type: "password",
@@ -34,7 +68,15 @@ const inputs = [
     required: true,
     callbacks: { blur: validationOnBlur },
   }),
-  new Input({ label: "phone", type: "phone", name: "phone", placeholder: "phone", pattern: phoneRegExp, required: true, callbacks: { blur: validationOnBlur } }),
+  new Input({
+    label: "phone",
+    type: "phone",
+    name: "phone",
+    placeholder: "phone",
+    pattern: phoneRegExp,
+    required: true,
+    callbacks: { blur: validationOnBlur },
+  }),
 ];
 export class Registration extends Block {
   constructor(props: Props) {

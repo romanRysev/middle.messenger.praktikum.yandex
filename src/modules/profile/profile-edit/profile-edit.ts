@@ -9,7 +9,15 @@ import { getFormData, ValidationOnBlur, validationOnBlur } from "../../../helper
 import { UserAPI } from "../../../services/api/user";
 import { store, StoreEvents, UserData } from "../../../core/store/store";
 
-type InputProps = { value: string; label?: string; type?: string; name: names; placeholder?: string; pattern?: RegExp; callbacks?: { blur: ValidationOnBlur } };
+type InputProps = {
+  value: string;
+  label?: string;
+  type?: string;
+  name: names;
+  placeholder?: string;
+  pattern?: RegExp;
+  callbacks?: { blur: ValidationOnBlur };
+};
 
 enum names {
   "first_name" = "first_name",

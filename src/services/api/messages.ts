@@ -8,7 +8,9 @@ export type WsProps = {
 export class MessagesWSS {
   socket;
   constructor(props: WsProps) {
-    this.socket = new WebSocket(`wss://ya-praktikum.tech/ws/chats/${props.userId}/${props.chatId}/${props.token}`);
+    this.socket = new WebSocket(
+      `wss://ya-praktikum.tech/ws/chats/${props.userId}/${props.chatId}/${props.token}`
+    );
 
     this.socket.addEventListener("open", () => {
       console.log("Соединение установлено");

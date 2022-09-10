@@ -12,23 +12,27 @@ export type SigninProps = { login: string; password: string };
 
 export class Auth {
   signup(data: UserDataSendable) {
-    return requester.post(`${host}/signup`, { headers, withCredentials: true, data: data }).then((data) => {
-      if (data.status === 200) {
-        router.go("/");
-      }
-    });
+    return requester
+      .post(`${host}/signup`, { headers, withCredentials: true, data: data })
+      .then((data) => {
+        if (data.status === 200) {
+          router.go("/");
+        }
+      });
   }
   signin(data: SigninProps) {
-    return requester.post(`${host}/signin`, { headers, withCredentials: true, data: data }).then((data) => {
-      if (data.status === 200) {
-        this.getUserInfo()
-          .then((data) => store.set("userData", data))
-          .then(() => {
-            store.set("isAuthorized", true);
-            router.go("/");
-          });
-      }
-    });
+    return requester
+      .post(`${host}/signin`, { headers, withCredentials: true, data: data })
+      .then((data) => {
+        if (data.status === 200) {
+          this.getUserInfo()
+            .then((data) => store.set("userData", data))
+            .then(() => {
+              store.set("isAuthorized", true);
+              router.go("/");
+            });
+        }
+      });
   }
   getUserInfo() {
     return requester.get(`${host}/user`, { headers, withCredentials: true }).then((data) => {

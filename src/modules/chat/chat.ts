@@ -39,7 +39,11 @@ async function setChats(chats: ChatsData) {
     const connection = new ChatAPI().getToken(chatItem.id).then((token) => {
       console.log(token);
 
-      return new MessagesWSS({ userId: String(store.getState().userData.id), chatId: String(chatItem.id), token: String(token) });
+      return new MessagesWSS({
+        userId: String(store.getState().userData.id),
+        chatId: String(chatItem.id),
+        token: String(token),
+      });
     });
     connections[chatItem.id] = connection;
     acc.push(
@@ -63,8 +67,15 @@ function openUserAddingModal() {
             name: "add-user",
             events: {
               click: async () => {
-                const userId = (document.forms.namedItem("chat-user")?.elements.namedItem("id") as HTMLInputElement)?.value;
-                await new ChatAPI().addUsersToChat([Number(userId)], store.getState().activeChatId ?? 0);
+                const userId = (
+                  document.forms
+                    .namedItem("chat-user")
+                    ?.elements.namedItem("id") as HTMLInputElement
+                )?.value;
+                await new ChatAPI().addUsersToChat(
+                  [Number(userId)],
+                  store.getState().activeChatId ?? 0
+                );
                 (document.querySelector(".modal__close") as HTMLButtonElement)?.click();
               },
             },
@@ -87,8 +98,15 @@ function openUserDelitingModal() {
             name: "delete-user",
             events: {
               click: async () => {
-                const userId = (document.forms.namedItem("chat-user")?.elements.namedItem("id") as HTMLInputElement)?.value;
-                await new ChatAPI().removeUsersFromChat([Number(userId)], store.getState().activeChatId ?? 0);
+                const userId = (
+                  document.forms
+                    .namedItem("chat-user")
+                    ?.elements.namedItem("id") as HTMLInputElement
+                )?.value;
+                await new ChatAPI().removeUsersFromChat(
+                  [Number(userId)],
+                  store.getState().activeChatId ?? 0
+                );
                 (document.querySelector(".modal__close") as HTMLButtonElement)?.click();
               },
             },
@@ -108,8 +126,14 @@ export class Chats extends Block {
       messages: [],
       sendIconUrl: sendIconUrl,
       searchInput: new Input({ type: "text", placeholder: "search" }),
-      addUserButton: new Button({ text: "Add user to chat", events: { click: openUserAddingModal } }),
-      deleteUserButton: new Button({ text: "Remove user from chat", events: { click: openUserDelitingModal } }),
+      addUserButton: new Button({
+        text: "Add user to chat",
+        events: { click: openUserAddingModal },
+      }),
+      deleteUserButton: new Button({
+        text: "Remove user from chat",
+        events: { click: openUserDelitingModal },
+      }),
       newChatButton: new Button({
         text: "new chat",
         events: {
@@ -123,19 +147,27 @@ export class Chats extends Block {
                     events: {
                       click: async () => {
                         const chatApi = new ChatAPI();
-                        const title = (document.forms.namedItem("create-chat")?.elements.namedItem("title") as HTMLInputElement)?.value;
+                        const title = (
+                          document.forms
+                            .namedItem("create-chat")
+                            ?.elements.namedItem("title") as HTMLInputElement
+                        )?.value;
                         await chatApi.createChat(title);
                         const newChats = await chatApi.getChats();
                         setChats(newChats).then((chats) => {
                           this.setProps({ shortView: chats });
                           if (Array.isArray(this.children.shortView)) {
-                            this.children.shortView.forEach((child) => child.dispatchComponentDidMount());
+                            this.children.shortView.forEach((child) =>
+                              child.dispatchComponentDidMount()
+                            );
                           } else {
                             this.children.shortView.dispatchComponentDidMount();
                           }
                         });
                         if (Array.isArray(this.children.shortView)) {
-                          this.children.shortView.forEach((child) => child.dispatchComponentDidMount());
+                          this.children.shortView.forEach((child) =>
+                            child.dispatchComponentDidMount()
+                          );
                         } else {
                           this.children.shortView.dispatchComponentDidMount();
                         }
@@ -205,7 +237,9 @@ export class Chats extends Block {
         } else {
           this.children.shortView.dispatchComponentDidMount();
         }
-        (chats[0].props.connection as Promise<MessagesWSS>).then((data: MessagesWSS) => data.getOldMessages());
+        (chats[0].props.connection as Promise<MessagesWSS>).then((data: MessagesWSS) =>
+          data.getOldMessages()
+        );
       });
     });
     return true;

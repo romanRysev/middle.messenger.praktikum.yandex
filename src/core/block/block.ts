@@ -13,7 +13,10 @@ export abstract class Block {
   };
 
   private _element: HTMLElement;
-  private _meta: { tagName: string; propsAndChildren: Props } = { tagName: "div", propsAndChildren: {} };
+  private _meta: { tagName: string; propsAndChildren: Props } = {
+    tagName: "div",
+    propsAndChildren: {},
+  };
   private _id: string;
 
   public props: Props;
