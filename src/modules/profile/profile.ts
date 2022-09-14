@@ -2,34 +2,94 @@ import tpl from "./profile.hbs";
 import avatarUrl from "../../../static/Union.svg";
 import "./profile.scss";
 import backIconUrl from "../../../static/back.svg";
-import { Block } from "../block/block";
+import { Block } from "../../core/block/block";
 import { Avatar } from "../../components/avatar/avatar";
 import { Button } from "../../components/button/button";
+import { Link } from "../../components/link/link";
+import { router } from "../../index";
+import { Auth } from "../../services/api/auth";
+import { store, StoreEvents } from "../../core/store/store";
+import { Modal } from "../../components/modal/modal";
+import { AvatarChangeModal } from "../../components/modal/avatar-change-modal/avatar-change-modal";
+import { renderer } from "../../core/renderer/renderer";
+import { HOST } from "../../constants/base";
 
 export class Profile extends Block {
   constructor(props: Props) {
     super("div", {
-      avatar: new Avatar({ url: avatarUrl, class: "profile__avatar", height: 130, width: 130 }),
+      avatar: new Avatar({
+        url: store.getState().userData?.avatar
+          ? `${HOST}resources` + store.getState().userData?.avatar
+          : avatarUrl,
+        class: "profile__avatar",
+        height: 130,
+        width: 130,
+        events: {
+          click: () => {
+            renderer.render(new Modal({ content: new AvatarChangeModal({}) }), ".popup-container");
+          },
+        },
+      }),
       button: new Button({
         class: "profile__button",
         text: "Sign out",
         events: {
-          click: () => {
-            window.location.replace("/signin");
+          click: async () => {
+            await new Auth().signout();
+            router.go("/signin");
+          },
+        },
+      }),
+      passwordLink: new Link({
+        text: "Change password",
+        events: {
+          click: (event: Event) => {
+            event.preventDefault();
+            router.go("/change-password");
+          },
+        },
+      }),
+      profileEditLink: new Link({
+        text: "Edit profile",
+        events: {
+          click: (event: Event) => {
+            event.preventDefault();
+            router.go("/edit-profile");
           },
         },
       }),
       backIconUrl,
-      firstName: "Roman",
-      email: "roman@gmail.com",
-      login: "roman",
-      lastName: "Rysev",
-      displayName: "ROM",
-      phone: "+71237894567",
+      firstName: store.getState().userData?.first_name,
+      email: store.getState().userData?.email,
+      login: store.getState().userData?.login,
+      lastName: store.getState().userData?.second_name,
+      displayName: store.getState().userData?.display_name,
+      phone: store.getState().userData?.phone,
       ...props,
+    });
+
+    store.on(StoreEvents.Updated, () => {
+      if (store.getState().userData) {
+        this.setProps({
+          firstName: store.getState().userData?.first_name,
+          email: store.getState().userData?.email,
+          login: store.getState().userData?.login,
+          lastName: store.getState().userData?.second_name,
+          displayName: store.getState().userData?.display_name,
+          phone: store.getState().userData?.phone,
+        });
+      }
     });
   }
   render(): ChildNode | null {
     return this.compile(tpl);
+  }
+
+  public componentDidMount(): boolean {
+    document.querySelector("#profile-container__back-link")?.addEventListener("click", (event) => {
+      event.preventDefault();
+      router.go("/chat");
+    });
+    return true;
   }
 }

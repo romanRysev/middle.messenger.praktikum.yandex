@@ -4,6 +4,9 @@
     class="{{class}} input__field"
     type="{{type}}"
     placeholder="{{placeholder}}"
+    {{#if value}}
+    value="{{value}}"
+    {{/if}}
     name="{{name}}"
     {{#if minlength}}
     minlength="{{minlength}}"

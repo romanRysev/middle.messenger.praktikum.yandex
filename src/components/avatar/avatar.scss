@@ -1,6 +1,8 @@
+@import '../../vars';
+
 .avatar {
   border-radius: 50%;
   object-fit: scale-down;
-  background-color: #efefef;
+  background-color: $avatar-background-color;
   cursor: pointer;
 }

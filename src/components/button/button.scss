@@ -1,6 +1,7 @@
+@import '../../vars';
 .button {
-  color: white;
-  background-color: #3369F3;
+  color: $button-text-color;
+  background-color: $primary-color;
   border-radius: 8px;
   width: 280px;
   height: 37px;
@@ -9,5 +10,5 @@
 }
 
 .button_disabled {
-  background-color: gray;
+  background-color: $button-disabled-color;
 }

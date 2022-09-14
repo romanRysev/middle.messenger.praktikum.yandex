@@ -2,13 +2,34 @@ import { Button } from "../../components/button/button";
 import { Input } from "../../components/input/input";
 import { loginRegExp, passwordRegExp } from "../../constants/regexps";
 import { getFormData, validationOnBlur } from "../../helpers/helpers";
-import { Block } from "../block/block";
+import { Block } from "../../core/block/block";
 import tpl from "./signin.hbs";
 import "./signin.scss";
+import { Link } from "../../components/link/link";
+import { router } from "../../index";
+import { Auth, SigninProps } from "../../services/api/auth";
 
 const inputs = [
-  new Input({ label: "login", type: "text", name: "login", placeholder: "login", minlength: "3", maxlength: "20", pattern: loginRegExp, callbacks: { blur: validationOnBlur } }),
-  new Input({ label: "password", type: "password", name: "password", placeholder: "password", pattern: passwordRegExp, callbacks: { blur: validationOnBlur } }),
+  new Input({
+    label: "login",
+    type: "text",
+    name: "login",
+    placeholder: "login",
+    minlength: "3",
+    maxlength: "20",
+    pattern: loginRegExp,
+    required: true,
+    callbacks: { blur: validationOnBlur },
+  }),
+  new Input({
+    label: "password",
+    type: "password",
+    name: "password",
+    placeholder: "password",
+    pattern: passwordRegExp,
+    required: true,
+    callbacks: { blur: validationOnBlur },
+  }),
 ];
 
 export class Signin extends Block {
@@ -19,13 +40,26 @@ export class Signin extends Block {
         class: "signin__button card__button button_disabled",
         text: "Sign in",
         name: "submit",
+        disabled: true,
         callbacks: {
           click: (event: Event) => {
             event.preventDefault();
-            const form = document.forms.namedItem("signin");
-            if (form) {
-              console.log(getFormData(new FormData(form)));
+            if (!this.element.attributes.getNamedItem("disabled")) {
+              const form = document.forms.namedItem("signin");
+              if (form) {
+                new Auth().signin(getFormData(new FormData(form)) as SigninProps);
+              }
             }
+          },
+        },
+      }),
+      registrationLink: new Link({
+        text: "Registration",
+        class: "signin__link",
+        events: {
+          click: (event: Event) => {
+            event.preventDefault();
+            router.go("/registration");
           },
         },
       }),

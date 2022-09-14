@@ -5,11 +5,18 @@ enum METHODS {
   DELETE = "DELETE",
 }
 
-type RequestOptions = { headers?: Record<string, string> | null; method?: METHODS; data?: Record<string, unknown> | null };
+type RequestOptions = {
+  headers?: Record<string, string> | null;
+  method?: METHODS;
+  data?: Record<string, unknown> | FormData | null;
+  timeout?: number;
+  withCredentials?: boolean;
+  file?: boolean;
+};
 
-function queryStringify(data: Record<string, unknown>): string {
-  if (typeof data !== "object") {
-    throw new Error("Data must be object");
+function queryStringify(data: Record<string, unknown> | FormData): string {
+  if (typeof data !== "object" || data instanceof FormData) {
+    throw new Error("Data must be object, not a file");
   }
 
   const keys = Object.keys(data);
@@ -19,26 +26,30 @@ function queryStringify(data: Record<string, unknown>): string {
 }
 
 export class HTTPTransport {
-  get = (url: string, options = { timeout: 5000 }) => {
+  get = (url: string, options: RequestOptions = { timeout: 5000 }) => {
     return this.request(url, { ...options, method: METHODS.GET }, options.timeout);
   };
 
-  post = (url: string, options = { timeout: 5000 }) => {
+  post = (url: string, options: RequestOptions = { timeout: 5000 }) => {
     return this.request(url, { ...options, method: METHODS.POST }, options.timeout);
   };
 
-  put = (url: string, options = { timeout: 5000 }) => {
+  put = (url: string, options: RequestOptions = { timeout: 5000 }) => {
     return this.request(url, { ...options, method: METHODS.PUT }, options.timeout);
   };
 
-  delete = (url: string, options = { timeout: 5000 }) => {
+  delete = (url: string, options: RequestOptions = { timeout: 5000 }) => {
     return this.request(url, { ...options, method: METHODS.DELETE }, options.timeout);
   };
 
-  request = (url: string, options: RequestOptions = { headers: null, method: METHODS.GET, data: null }, timeout = 5000) => {
+  request = (
+    url: string,
+    options: RequestOptions = { headers: null, method: METHODS.GET, data: null },
+    timeout = 5000
+  ) => {
     const { headers, method = METHODS.GET, data } = options;
 
-    return new Promise(function (resolve, reject) {
+    return new Promise<XMLHttpRequest>(function (resolve, reject) {
       const xhr = new XMLHttpRequest();
       const isGet = method === METHODS.GET;
 
@@ -54,6 +65,10 @@ export class HTTPTransport {
         resolve(xhr);
       };
 
+      if (options.withCredentials) {
+        xhr.withCredentials = options.withCredentials;
+      }
+
       xhr.onabort = reject;
       xhr.onerror = reject;
 
@@ -62,6 +77,8 @@ export class HTTPTransport {
 
       if (isGet || !data) {
         xhr.send();
+      } else if (options.file && data instanceof FormData) {
+        xhr.send(data);
       } else {
         xhr.send(JSON.stringify(data));
       }

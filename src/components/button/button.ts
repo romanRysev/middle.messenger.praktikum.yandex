@@ -1,8 +1,8 @@
-import { Block } from "../../modules/block/block";
+import { Block } from "../../core/block/block";
 import tpl from "./button.hbs";
 import "./button.scss";
 
-type ButtonProps = { callbacks: Record<string, EventListener> };
+type ButtonProps = { callbacks: Record<string, EventListener>; ["string"]?: unknown };
 
 export class Button extends Block {
   constructor(props: Props) {

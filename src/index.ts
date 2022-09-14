@@ -1,16 +1,45 @@
-// Стили
 import "normalize.css";
 import "./index.scss";
+import { store } from "./core/store/store";
+import { Auth } from "./services/api/auth";
 
-// Слои
-import { MainLayout } from "./layout/main-layout";
+import { Router } from "./core/router/router";
+import { Chats } from "./modules/chat/chat";
+import { Profile } from "./modules/profile/profile";
+import { Signin } from "./modules/entry/signin";
+import { Registration } from "./modules/entry/registration";
+import { ProfileEdit } from "./modules/profile/profile-edit/profile-edit";
+import { PasswordChange } from "./modules/profile/password-change/password-change";
+import { ErrorTemplate } from "./modules/error/error";
 
-// Сервисы
-import { renderer } from "./services/renderer/renderer";
-import { router } from "./services/router/router";
+const routerModule = new Router("#app");
+routerModule
+  .use("/chat", Chats)
+  .use("/", Chats)
+  .use("/profile", Profile)
+  .use("/signin", Signin)
+  .use("/registration", Registration)
+  .use("/edit-profile", ProfileEdit)
+  .use("/change-password", PasswordChange)
+  .use("/404", ErrorTemplate);
 
-const layout = new MainLayout({
-  ...router.currentRoute?.params,
-});
+export const router = routerModule;
 
-renderer.render(layout);
+async function init() {
+  try {
+    const userData = await new Auth().getUserInfo();
+    if (userData) {
+      store.set("isAuthorized", true);
+      store.set("userData", userData);
+    } else {
+      store.set("isAuthorized", false);
+    }
+    router.start();
+  } catch (error) {
+    console.error(error);
+    store.set("isAuthorized", false);
+    store.set("userData", {});
+    router.start();
+  }
+}
+init();

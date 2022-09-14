@@ -1,13 +1,18 @@
+@import '../../vars.scss';
 .short-view {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 12px ;
+  cursor: pointer;
+}
+
+.short-view:hover {
+  background-color: $short-view-background-color;
 }
 
 .short-view_active {
-background-color: #E4EDFD;
-;
+background-color: $short-view-active-background-color;
 }
 
 .short-view__right-column {
@@ -18,7 +23,7 @@ background-color: #E4EDFD;
 }
 
 .short-view__unread-number {
-  background-color: #3369F3;
+  background-color: $primary-color;
   border-radius: 50%;
   height: 20px;
   min-width: 20px;

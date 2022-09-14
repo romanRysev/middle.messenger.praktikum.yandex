@@ -1,4 +1,4 @@
-import { EventBus } from "../../services/event-bus/event-bus";
+import { EventBus } from "../event-bus/event-bus";
 import { v4 as uuidv4 } from "uuid";
 import * as Handlebars from "handlebars";
 
@@ -13,7 +13,10 @@ export abstract class Block {
   };
 
   private _element: HTMLElement;
-  private _meta: { tagName: string; propsAndChildren: Props } = { tagName: "div", propsAndChildren: {} };
+  private _meta: { tagName: string; propsAndChildren: Props } = {
+    tagName: "div",
+    propsAndChildren: {},
+  };
   private _id: string;
 
   public props: Props;
@@ -31,7 +34,7 @@ export abstract class Block {
 
     const { children, props } = this._getChildren(propsAndChildren);
     this.children = children;
-    this.props = this._makePropsProxy({ ...props, id: this._id }, this);
+    this.props = this._makePropsProxy({ ...props, uuid: this._id }, this);
     this.eventBus = () => eventBus;
 
     this._registerEvents(eventBus);
@@ -62,10 +65,10 @@ export abstract class Block {
       if (Array.isArray(child)) {
         propsAndStubs[key] = "";
         child.forEach((child) => {
-          propsAndStubs[key] += `<div data-id="${child.props.id}"></div>`;
+          propsAndStubs[key] += `<div data-id="${child.props.uuid}"></div>`;
         });
       } else {
-        propsAndStubs[key] = `<div data-id="${child.props.id}"></div>`;
+        propsAndStubs[key] = `<div data-id="${child.props.uuid}"></div>`;
       }
     });
 
@@ -75,11 +78,11 @@ export abstract class Block {
     Object.values(this.children).forEach((child) => {
       if (Array.isArray(child)) {
         child.forEach((child) => {
-          const stub = fragment.querySelector(`[data-id="${child.props.id}"]`);
+          const stub = fragment.querySelector(`[data-id="${child.props.uuid}"]`);
           stub?.replaceWith(child.getContent() as Node);
         });
       } else {
-        const stub = fragment.querySelector(`[data-id="${child.props.id}"]`);
+        const stub = fragment.querySelector(`[data-id="${child.props.uuid}"]`);
         stub?.replaceWith(child.getContent() as Node);
       }
     });
@@ -153,7 +156,7 @@ export abstract class Block {
     });
   }
 
-  public componentDidMount() {
+  public componentDidMount(): Promise<boolean> | boolean {
     return true;
   }
 
@@ -186,7 +189,7 @@ export abstract class Block {
     return this.element;
   }
 
-  _makePropsProxy(props: Record<string, unknown>, self: Block): Record<string, unknown> {
+  private _makePropsProxy(props: Record<string, unknown>, self: Block): Record<string, unknown> {
     const proxyData = new Proxy(props, {
       get(target, prop) {
         if (typeof prop !== "symbol") {
@@ -205,7 +208,7 @@ export abstract class Block {
             throw new Error("нет доступа");
           }
 
-          if (value instanceof Block) {
+          if (value instanceof Block || (Array.isArray(value) && value[0] instanceof Block)) {
             self.children[prop] = value;
           } else {
             target[prop] = value;
@@ -222,9 +225,17 @@ export abstract class Block {
     return proxyData;
   }
 
-  _createDocumentElement(tagName: string): HTMLElement {
+  private _createDocumentElement(tagName: string): HTMLElement {
     const element = document.createElement(tagName);
-    element.setAttribute("data-id", String(this.props.id));
+    element.setAttribute("data-id", String(this.props.uuid));
     return element;
+  }
+
+  public show() {
+    this.getContent().style.display = "block";
+  }
+
+  public hide() {
+    this.getContent().style.display = "none";
   }
 }

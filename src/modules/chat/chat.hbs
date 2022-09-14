@@ -1,21 +1,27 @@
 <div class="chat">
   <aside class="chat__left-column">
-    <a href="/profile">Profile ></a>
+    {{{profileLink}}}
     {{{searchInput}}}
     <hr class="divider_h" />
     <div class="chat__list">
-      {{{shortView}}}
-      <hr class="divider_h" />
+      {{#if this.shortView}}
+        {{{shortView}}}
+      {{/if}}
     </div>
+    <div class="chat__left-column-footer">
+      {{{newChatButton}}}</div>
   </aside>
-  <section class="chat__right-column">
+  <section class="chat__right-column" id="chat__right-column">
+    <div class="chat__right-column-header">
+      {{{addUserButton}}}
+      {{{deleteUserButton}}}</div>
     <div class="chat__messages">
       {{#each messages}}
         {{#if this.isMy}}
-          <div class="chat__message_my"><p>{{this.text}}</p><small
+          <div class="chat__message_my"><p>{{this.content}}</p><small
             >{{this.time}}</small></div>
         {{else}}
-          <div class="chat__message_other"><p>{{this.text}}</p><small
+          <div class="chat__message_other"><p>{{this.content}}</p><small
             >{{this.time}}</small></div>
         {{/if}}
       {{/each}}</div>

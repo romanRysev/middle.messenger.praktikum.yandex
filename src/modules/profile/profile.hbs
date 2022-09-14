@@ -1,5 +1,9 @@
 <div class="profile-container">
-  <a href="/chat"><aside class="back-to-chat"><img
+  <a
+    href="/chat"
+    class="profile-container__back-link"
+    id="profile-container__back-link"
+  ><aside class="back-to-chat"><img
         class="back-to-chat__icon"
         src="{{backIconUrl}}"
         alt="back to chats"
@@ -13,8 +17,8 @@
     <p>Last name: {{lastName}}</p>
     <p>Display name: {{displayName}}</p>
     <p>Phone: {{phone}}</p>
-    <a href="/edit-profile">Edit profile</a>
-    <a href="/change-password">Change password</a>
+    {{{profileEditLink}}}
+    {{{passwordLink}}}
     {{{button}}}
   </section>
 </div>

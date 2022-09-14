@@ -1,3 +1,4 @@
+@import '../../vars.scss';
 .profile-container {
   display: flex;
   height: 100%;
@@ -10,14 +11,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #FBFBFB;
-  border-right: #EAEAEA solid 1px;
+  background-color: $default-background-color;
+  border-right: #eaeaea solid 1px;
   cursor: pointer;
 }
 
 .profile {
   height: 100%;
-  width: 100%;  
+  width: 100%;
 }
 
 .profile__avatar {

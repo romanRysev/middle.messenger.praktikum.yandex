@@ -1,3 +1,4 @@
+@import '../../vars.scss';
 .chat {
   width: 100%;
   height: 100%;
@@ -8,8 +9,15 @@
   min-width: 310px;
   max-height: 100%;
   border-right: #EAEAEA solid 1px;
-  background-color: #FBFBFB;
+  background-color: $default-background-color;
   text-align: right;
+}
+
+.chat__left-column-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
 }
 
 .chat__right-column {
@@ -17,6 +25,18 @@
   flex-direction: column;
   display: flex;
   justify-content: space-between;
+
+}
+
+.chat__messages {
+  overflow-y: auto;
+  height: 100%;
+}
+
+.chat__right-column-header {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
 }
 
 .chat__list {
@@ -40,7 +60,7 @@
 }
 
 .chat__message_other {
-background-color: #F8F8F8;
+background-color: $default-background-color;
 max-width: 40%;
 align-self: start;
 padding: 11px;
@@ -49,7 +69,7 @@ border-radius: 0 10px 10px 10px;
 }
 
 .chat__message_my {
-  background-color: #E4EDFD;
+  background-color: $default-background-color;
   max-width: 40%;
   align-self: end;
   padding: 11px;
@@ -69,7 +89,7 @@ box-sizing: border-box;
 }
 
 .chat__send-button {
-  background-color: white;
+  background-color: $default-background-color;
   border: none;
   cursor: pointer;
 }

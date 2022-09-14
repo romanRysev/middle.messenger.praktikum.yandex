@@ -3,15 +3,14 @@
 {{else}}
 <div class="short-view">
 {{/if}}
-  {{{avatar}}}
+  {{{avatarComponent}}}
   <div class="short-view__central-column">
-    <h3 class="short-view__username">{{userName}}</h3>
-    <p class="short-view__short-text">{{shortText}}</p>
+    <h3 class="short-view__username">{{title}}</h3>
+    <p class="short-view__short-text">{{last_message.content}}</p>
   </div>
   <div class="short-view__right-column">
-    <small class="short-view__last-message-time">{{lastMessageTime}}</small>
-    {{#if unreadNumber}}
-      <div class="short-view__unread-number">{{unreadNumber}}</div>
+    {{#if unread_count}}
+      <div class="short-view__unread-number">{{unread_count}}</div>
     {{/if}}
   </div>
 </div>
