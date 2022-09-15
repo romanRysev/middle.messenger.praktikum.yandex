@@ -1,7 +1,7 @@
 import { Input } from "../../components/input/input";
 import { ShortView } from "../../components/short-view/short-view";
 import { Block } from "../../core/block/block";
-import tpl from "./chat.hbs";
+import tpl from "./chat.handlebars";
 import "./chat.scss";
 import sendIconUrl from "../../../static/forward.svg";
 import { Link } from "../../components/link/link";

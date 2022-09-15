@@ -1,4 +1,4 @@
-import tpl from "./profile-edit.hbs";
+import tpl from "./profile-edit.handlebars";
 import "./profile-edit.scss";
 import avatarUrl from "../../../../static/Union.svg";
 import { Block } from "../../../core/block/block";

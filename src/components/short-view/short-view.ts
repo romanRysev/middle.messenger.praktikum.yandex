@@ -1,6 +1,6 @@
 import { Block } from "../../core/block/block";
 import { Avatar } from "../avatar/avatar";
-import tpl from "./short-view.hbs";
+import tpl from "./short-view.handlebars";
 import "./short-view.scss";
 import avatarUrl from "../../../static/Union.svg";
 import { HOST } from "../../constants/base";

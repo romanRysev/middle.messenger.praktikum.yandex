@@ -1,4 +1,4 @@
-import tpl from "./avatar.hbs";
+import tpl from "./avatar.handlebars";
 import "./avatar.scss";
 import { Block } from "../../core/block/block";
 import avatarUrl from "../../../static/Union.svg";
