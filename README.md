@@ -35,3 +35,7 @@
 ## Netlify
 
 Приложение также доступно по [ссылке](https://endearing-twilight-3d5890.netlify.app/).
+
+## Heroku
+
+Приложение также доступно по [ссылке](https://messenger-ya-pr.herokuapp.com/).
