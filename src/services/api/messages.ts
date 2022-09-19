@@ -6,50 +6,71 @@ export type WsProps = {
   token: string;
 };
 export class MessagesWSS {
-  socket;
+  socket: WebSocket;
+  props;
   constructor(props: WsProps) {
+    this.props = props;
+    this.init();
+  }
+
+  init() {
     this.socket = new WebSocket(
-      `wss://ya-praktikum.tech/ws/chats/${props.userId}/${props.chatId}/${props.token}`
+      // eslint-disable-next-line max-len
+      `wss://ya-praktikum.tech/ws/chats/${this.props.userId}/${this.props.chatId}/${this.props.token}`
     );
 
     this.socket.addEventListener("message", (event) => {
-      const messages = store.getState().chatMessages;
+      const messages = store.getState().chatMessages.slice();
       const data = JSON.parse(event.data);
 
-      if (messages[0] && messages[0]?.chat_id === data[0]?.chat_id) {
-        if (Array.isArray(data)) {
-          messages.unshift(...data);
-        } else {
-          messages.unshift(data);
-        }
-        store.set("chatMessages", messages);
-      } else {
+      if (Array.isArray(data)) {
         store.set("chatMessages", data);
+      } else {
+        messages.unshift({ ...data, chat_id: 118, file: null, is_read: false });
+        store.set("chatMessages", messages);
       }
     });
 
     this.socket.addEventListener("error", (event) => {
       console.error("Ошибка", event);
     });
+    this.socket.addEventListener("close", () => {
+      this.init();
+    });
   }
 
   getOldMessages(count = 0) {
-    if (this.socket.readyState === 1) {
-      this.socket.send(
-        JSON.stringify({
-          content: String(count),
-          type: "get old",
-        })
-      );
-    } else {
-      setTimeout(() => {
+    switch (this.socket.readyState) {
+      case 1:
         this.socket.send(
           JSON.stringify({
             content: String(count),
             type: "get old",
           })
         );
-      }, 1000);
+        break;
+
+      case 0:
+        setTimeout(() => {
+          this.socket.send(
+            JSON.stringify({
+              content: String(count),
+              type: "get old",
+            })
+          );
+        }, 1000);
+        break;
+      case 3:
+        this.init();
+        setTimeout(() => {
+          this.socket.send(
+            JSON.stringify({
+              content: String(count),
+              type: "get old",
+            })
+          );
+        }, 1000);
+        break;
     }
   }
 

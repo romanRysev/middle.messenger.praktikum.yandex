@@ -37,10 +37,12 @@ export class ShortView extends Block {
 
   componentDidMount() {
     this.getContent().addEventListener("click", async () => {
-      store.set("activeChatId", this.props.id);
-      this.setProps({ current: true });
-      const res = await (this.props.connection as Promise<MessagesWSS>);
-      res.getOldMessages();
+      if (this.props.id !== store.getState().activeChatId) {
+        store.set("activeChatId", this.props.id);
+        this.setProps({ current: true });
+        const res = await (this.props.connection as Promise<MessagesWSS>);
+        res.getOldMessages();
+      }
     });
 
     return true;

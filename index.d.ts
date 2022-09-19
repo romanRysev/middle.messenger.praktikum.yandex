@@ -15,6 +15,6 @@ type TemplateFunction = (props: Props) => string;
 
 type EventsProp = Record<string, (event?: Event) => void>;
 
-type Indexed<T = any> = {
+type Indexed<T = unknown> = {
   [key in string]: T;
 };

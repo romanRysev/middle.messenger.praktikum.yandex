@@ -15,7 +15,7 @@
     <div class="chat__right-column-header">
       {{{addUserButton}}}
       {{{deleteUserButton}}}</div>
-    <div class="chat__messages">
+    <div id="chat__messages" class="chat__messages">
       {{#each messages}}
         {{#if this.isMy}}
           <div class="chat__message_my"><p>{{this.content}}</p><small
