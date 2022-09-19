@@ -1,7 +1,7 @@
 import { Link } from "../../components/link/link";
 import { Block } from "../../core/block/block";
 import { router } from "../../index";
-import tpl from "./error.hbs";
+import tpl from "./error.handlebars";
 import "./error.scss";
 
 export class ErrorTemplate extends Block {

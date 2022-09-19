@@ -1,5 +1,5 @@
 import { Block } from "../../core/block/block";
-import tpl from "./button.hbs";
+import tpl from "./button.handlebars";
 import "./button.scss";
 
 type ButtonProps = { callbacks: Record<string, EventListener>; ["string"]?: unknown };

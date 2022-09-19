@@ -1,5 +1,5 @@
 import { Block } from "../../core/block/block";
-import tpl from "./link.hbs";
+import tpl from "./link.handlebars";
 import "./link.scss";
 
 export class Link extends Block {

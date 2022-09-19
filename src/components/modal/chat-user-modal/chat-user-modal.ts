@@ -1,5 +1,5 @@
 import { Block } from "../../../core/block/block";
-import tpl from "./chat-user-modal.hbs";
+import tpl from "./chat-user-modal.handlebars";
 
 export class ChatUserModal extends Block {
   constructor(props: Props) {

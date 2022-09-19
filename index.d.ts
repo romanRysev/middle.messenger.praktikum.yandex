@@ -1,4 +1,4 @@
-declare module "*.hbs";
+declare module "*.handlebars";
 declare module "*.svg";
 declare module "*.scss";
 declare module "*.css";

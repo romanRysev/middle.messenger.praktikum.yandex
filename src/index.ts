@@ -1,4 +1,3 @@
-import "normalize.css";
 import "./index.scss";
 import { store } from "./core/store/store";
 import { Auth } from "./services/api/auth";

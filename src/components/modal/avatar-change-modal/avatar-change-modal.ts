@@ -3,7 +3,7 @@ import { store } from "../../../core/store/store";
 import { UserAPI } from "../../../services/api/user";
 import { Button } from "../../button/button";
 import { Input } from "../../input/input";
-import tpl from "./avatar-change-modal.hbs";
+import tpl from "./avatar-change-modal.handlebars";
 
 export class AvatarChangeModal extends Block {
   constructor(props: Props) {

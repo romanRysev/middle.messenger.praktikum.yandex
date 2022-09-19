@@ -3,7 +3,7 @@ import { Input } from "../../../components/input/input";
 import { passwordRegExp } from "../../../constants/regexps";
 import { getFormData, validationOnBlur } from "../../../helpers/helpers";
 import { Block } from "../../../core/block/block";
-import tpl from "./password-change.hbs";
+import tpl from "./password-change.handlebars";
 import { UserAPI } from "../../../services/api/user";
 
 const inputs = [
