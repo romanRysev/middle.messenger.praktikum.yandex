@@ -24,7 +24,7 @@ export function isEqual(a: Indexed, b: Indexed): boolean {
     if (typeof a[key] !== "object" || a[key] === null) {
       return a[key] !== b[key];
     } else {
-      return !isEqual(a[key], b[key]);
+      return !isEqual(a[key] as Indexed, b[key] as Indexed);
     }
   });
 
@@ -39,7 +39,7 @@ export function merge(lhs: Indexed, rhs: Indexed): Indexed {
     }
 
     try {
-      if (rhs[p].constructor === Object) {
+      if ((rhs[p] as object).constructor === Object) {
         rhs[p] = merge(lhs[p] as Indexed, rhs[p] as Indexed);
       } else {
         lhs[p] = rhs[p];
@@ -65,7 +65,7 @@ export function set(object: Indexed | unknown, path: string, value: unknown): In
     (acc, key) => ({
       [key]: acc,
     }),
-    value as any
+    value as Indexed
   );
   return merge(object as Indexed, result);
 }

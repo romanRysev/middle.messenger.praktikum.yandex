@@ -1,6 +1,6 @@
 import { Block } from "../../core/block/block";
 import { Avatar } from "../avatar/avatar";
-import tpl from "./short-view.hbs";
+import tpl from "./short-view.handlebars";
 import "./short-view.scss";
 import avatarUrl from "../../../static/Union.svg";
 import { HOST } from "../../constants/base";
@@ -37,10 +37,12 @@ export class ShortView extends Block {
 
   componentDidMount() {
     this.getContent().addEventListener("click", async () => {
-      store.set("activeChatId", this.props.id);
-      this.setProps({ current: true });
-      const res = await (this.props.connection as Promise<MessagesWSS>);
-      res.getOldMessages();
+      if (this.props.id !== store.getState().activeChatId) {
+        store.set("activeChatId", this.props.id);
+        this.setProps({ current: true });
+        const res = await (this.props.connection as Promise<MessagesWSS>);
+        res.getOldMessages();
+      }
     });
 
     return true;

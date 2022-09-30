@@ -1,6 +1,6 @@
 import { Block } from "../../core/block/block";
 import { ValidationOnBlur } from "../../helpers/helpers";
-import tpl from "./input.hbs";
+import tpl from "./input.handlebars";
 import "./input.scss";
 
 export type InputProps = {

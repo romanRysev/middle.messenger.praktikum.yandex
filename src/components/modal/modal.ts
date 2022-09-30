@@ -1,5 +1,5 @@
 import { Block } from "../../core/block/block";
-import tpl from "./modal.hbs";
+import tpl from "./modal.handlebars";
 import "./modal.scss";
 
 export class Modal extends Block {

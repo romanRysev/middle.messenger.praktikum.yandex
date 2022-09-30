@@ -3,7 +3,7 @@ import { Input } from "../../components/input/input";
 import { loginRegExp, passwordRegExp } from "../../constants/regexps";
 import { getFormData, validationOnBlur } from "../../helpers/helpers";
 import { Block } from "../../core/block/block";
-import tpl from "./signin.hbs";
+import tpl from "./signin.handlebars";
 import "./signin.scss";
 import { Link } from "../../components/link/link";
 import { router } from "../../index";

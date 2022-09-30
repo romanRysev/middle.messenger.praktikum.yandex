@@ -1,4 +1,4 @@
-import tpl from "./profile.hbs";
+import tpl from "./profile.handlebars";
 import avatarUrl from "../../../static/Union.svg";
 import "./profile.scss";
 import backIconUrl from "../../../static/back.svg";
